@@ -1,13 +1,13 @@
 <template>
   <div>
-    <AuthPage />
+    <router-view> </router-view>
   </div>
 </template>
 
 <script>
-import AuthPage from "@/components/Auth/Auth"
+// import AuthPage from "@/components/Auth/Auth"
 
 export default {
-  components: { AuthPage },
+  // components: { AuthPage },
 }
 </script>

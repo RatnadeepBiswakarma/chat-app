@@ -47,6 +47,13 @@
 import { signupUser } from "@/apis/auth"
 
 export default {
+  props: {
+    loginPage: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
   data() {
     return {
       firstName: "",
@@ -54,11 +61,6 @@ export default {
       email: "",
       password: "",
     }
-  },
-  computed: {
-    loginPage() {
-      return false
-    },
   },
   methods: {
     handleSubmit() {
