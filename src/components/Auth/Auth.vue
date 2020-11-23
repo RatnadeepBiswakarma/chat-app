@@ -1,18 +1,40 @@
 <template>
   <div class="login-page">
-    <form class="form">
+    <form class="form" @submit.prevent="handleSubmit">
       <h2>{{ loginPage ? "Log In" : "Sign Up" }}</h2>
       <div v-if="!loginPage">
-        <label for="name">Name</label>
-        <input id="name" type="text" autocomplete="off" />
+        <label for="name">First Name</label>
+        <input
+          v-model="firstName"
+          required
+          id="firstName"
+          type="text"
+          autocomplete="off"
+        />
+      </div>
+      <div v-if="!loginPage">
+        <label for="lastName">Last Name</label>
+        <input
+          v-model="lastName"
+          required
+          id="lastName"
+          type="text"
+          autocomplete="off"
+        />
       </div>
       <div>
         <label for="email">Email</label>
-        <input id="email" type="email" autocomplete="off" />
+        <input
+          v-model="email"
+          required
+          id="email"
+          type="email"
+          autocomplete="off"
+        />
       </div>
       <div>
         <label for="password">Password</label>
-        <input id="password" type="password" />
+        <input v-model="password" required id="password" type="password" />
       </div>
       <div>
         <input type="submit" class="submit-btn" value="JOIN" />
@@ -25,6 +47,8 @@
 export default {
   data() {
     return {
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
     }
@@ -32,6 +56,44 @@ export default {
   computed: {
     loginPage() {
       return false
+    },
+  },
+  methods: {
+    handleSubmit() {
+      if (this.loginPage) {
+        this.loginUser()
+      } else {
+        this.signupUser()
+      }
+    },
+    loginUser() {
+      //
+    },
+    signupUser() {
+      //
+      const payload = {
+        first_name: this.firstName,
+        last_name: this.lastName,
+        email: this.email,
+        password: this.password,
+      }
+      fetch("http://localhost:5050/users", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(payload),
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data)
+          if (data.user && data.token) {
+            console.log("sign up successful!")
+          } else {
+            alert(data.message)
+          }
+        })
+        .catch(err => console.log(err))
     },
   },
 }
