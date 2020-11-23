@@ -44,6 +44,8 @@
 </template>
 
 <script>
+import { signupUser } from "@/apis/auth"
+
 export default {
   data() {
     return {
@@ -77,20 +79,13 @@ export default {
         email: this.email,
         password: this.password,
       }
-      fetch("http://localhost:5050/users", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(payload),
-      })
-        .then(res => res.json())
-        .then(data => {
-          console.log(data)
-          if (data.user && data.token) {
+      signupUser(payload)
+        .then(res => {
+          console.log(res.data)
+          if (res.data.user && res.data.token) {
             console.log("sign up successful!")
           } else {
-            alert(data.message)
+            alert(res.data.message)
           }
         })
         .catch(err => console.log(err))
