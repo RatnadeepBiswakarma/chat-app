@@ -1,7 +1,7 @@
 <template>
   <div class="login-page">
     <form class="form" @submit.prevent="handleSubmit">
-      <h2>{{ loginPage ? "Log In" : "Sign Up" }}</h2>
+      <h2 class="text-3xl">{{ loginPage ? "Log In" : "Sign Up" }}</h2>
       <div v-if="!loginPage">
         <label for="name">First Name</label>
         <input
@@ -39,6 +39,18 @@
       <div>
         <input type="submit" class="submit-btn" value="JOIN" />
       </div>
+      <p v-if="loginPage" class="inline-block mt-4">
+        Don't have account?
+        <router-link class="text-blue-400 ml-2" to="/signup">
+          Sign Up
+        </router-link>
+      </p>
+      <p v-else class="inline-block mt-4">
+        Already have account?
+        <router-link class="text-blue-400 ml-2" to="/login">
+          Login
+        </router-link>
+      </p>
     </form>
   </div>
 </template>
