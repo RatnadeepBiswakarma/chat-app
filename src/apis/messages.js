@@ -1,3 +1,3 @@
 export function getMessages() {
-  return window.api.get("/posts")
+  return window.api.get("/messages")
 }
