@@ -1,9 +1,12 @@
 <template>
-  <div>Hello there!</div>
+  <div><Chat /></div>
 </template>
 
 <script>
-export default {}
+import Chat from "@/components/Main/Chat/Chat"
+export default {
+  components: { Chat },
+}
 </script>
 
 <style></style>
