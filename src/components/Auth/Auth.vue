@@ -86,6 +86,9 @@ export default {
           console.log(res.data)
           if (res.data.user && res.data.token) {
             console.log("sign up successful!")
+            localStorage.token = res.data.token
+            localStorage.user = JSON.stringify(res.data.user)
+            localStorage.userId = res.data.user.id
           } else {
             alert(res.data.message)
           }
@@ -100,19 +103,21 @@ export default {
 .login-page {
   width: 100%;
   height: 100vh;
+  background-image: url("https://res.cloudinary.com/deepb/image/upload/v1608454031/discord-clone/landscape_qu2eab.jpg");
 }
 
 .form {
   width: 100%;
   position: absolute;
-  max-width: 80%;
+  max-width: 30rem;
   margin: auto;
-  top: 40%;
-  left: 50%;
+  top: 50%;
+  left: 30%;
   transform: translate(-50%, -50%);
   padding: 1.5rem;
   box-shadow: 0 2px 5px 0 #1b1b1b;
   border-radius: 2px;
+  background-color: var(--primary-bg-color);
 }
 
 .login-page h2 {
@@ -148,9 +153,11 @@ export default {
   border-color: #7289da;
 }
 
-@media screen and (min-width: 540px) {
+@media screen and (max-width: 540px) {
   .form {
-    max-width: 30rem;
+    max-width: 80%;
+    top: 40%;
+    left: 50%;
   }
 }
 </style>
