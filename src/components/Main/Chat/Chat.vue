@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div class="header flex items-center">
+      <div class="name text-xl text-white ml-4">
+        Coder Deep
+      </div>
+    </div>
     <div class="messages overflow-y-auto py-4">
       <div v-for="item in messages" :key="item.id">
         <Message :item="item" />
@@ -40,8 +45,15 @@ export default {
 </script>
 
 <style scoped>
+.header {
+  height: 3rem;
+  background-color: var(--header-bg-color);
+  box-shadow: 0 2px 10px 0 #2c2c2c;
+  z-index: 1;
+}
+
 .messages {
-  height: calc(100vh - 3rem);
+  height: calc(100vh - 3rem - 3rem);
   transform: translateZ(0);
   will-change: transform;
 }

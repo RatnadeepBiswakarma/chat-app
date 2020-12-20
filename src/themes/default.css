@@ -1,6 +1,14 @@
 :root {
   --primary-bg-color: #ffffff;
   --primary-color: #3a3a3a;
-  --other-message-bg-color: #3E7BAB;
+  --other-message-bg-color: #0093ad;
   --secondary-color: #7289da;
+  --header-bg-color: #0093ad;
+}
+
+body {
+  /* https://in.pinterest.com/pin/543950461247824082/ */
+  background-image: url("https://i.pinimg.com/564x/1b/b1/3f/1bb13f4acb5b69fb41bc5974c6dc8248.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }

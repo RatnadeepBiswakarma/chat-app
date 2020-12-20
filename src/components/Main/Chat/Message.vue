@@ -50,6 +50,6 @@ export default {
 }
 
 .sent .message-section {
-  background-color: #d445ff;
+  background-color: #3B5894;
 }
 </style>
