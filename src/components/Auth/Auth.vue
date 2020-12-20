@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { signupUser } from "@/apis/auth"
+import { signupUser, loginUser } from "@/apis/auth"
 
 export default {
   props: {
@@ -83,10 +83,23 @@ export default {
       }
     },
     loginUser() {
-      //
+      const payload = {
+        email: this.email,
+        password: this.password,
+      }
+
+      loginUser(payload)
+        .then(res => {
+          localStorage.token = res.data.token
+          localStorage.user = JSON.stringify(res.data.user)
+          localStorage.userId = res.data.user.id
+          this.$router.push({ name: "Home" })
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     signupUser() {
-      //
       const payload = {
         first_name: this.firstName,
         last_name: this.lastName,
@@ -95,12 +108,12 @@ export default {
       }
       signupUser(payload)
         .then(res => {
-          console.log(res.data)
           if (res.data.user && res.data.token) {
             console.log("sign up successful!")
             localStorage.token = res.data.token
             localStorage.user = JSON.stringify(res.data.user)
             localStorage.userId = res.data.user.id
+            this.$router.push({ name: "Home" })
           } else {
             alert(res.data.message)
           }

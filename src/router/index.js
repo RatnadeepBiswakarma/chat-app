@@ -24,6 +24,14 @@ const routes = [
       title: "Signup Page",
     },
   },
+  {
+    path: "/",
+    name: "Home",
+    component: load("Main/Home"),
+    meta: {
+      title: "App",
+    },
+  },
 ]
 
 const router = createRouter({
