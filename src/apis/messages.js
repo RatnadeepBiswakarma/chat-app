@@ -1,3 +1,3 @@
-export function getMessages() {
-  return window.api.get("/messages")
+export function getMessages(roomId) {
+  return window.api.get(`/messages/${roomId}`)
 }

@@ -1,46 +1,141 @@
 <template>
   <div>
-    <div class="header flex items-center">
-      <div class="name text-xl text-white ml-4">
-        Coder Deep
-      </div>
+    <div v-if="chatWithRoom || newSelectedUser">
+      <ChatWindow
+        v-if="chatWithRoom"
+        :room="chatWithRoom"
+        :socket="socket"
+        @send-message="sendMessage"
+        @new-room-created="handleNewRoomCreation"
+      />
+      <ChatWindow
+        v-if="newSelectedUser"
+        :newUser="newSelectedUser"
+        :socket="socket"
+        @send-message="sendMessage"
+        @new-room-created="handleNewRoomCreation"
+      />
     </div>
-    <div class="messages overflow-y-auto py-4">
-      <div v-for="item in messages" :key="item.id">
-        <Message :item="item" />
-      </div>
+    <div v-else>
+      <RoomList :rooms="rooms" @chat-with="chatWith" />
     </div>
-    <form class="input-section flex">
-      <textarea
-        class="input h-full w-full text-grey p-2 border"
-        placeholder="Enter your message"
-      ></textarea>
-      <input type="submit" value=">" class="send-btn" />
-    </form>
+    <div>
+      <div v-if="newUser">
+        <div @click="startWithNewUser">
+          {{ newUser.first_name }} {{ newUser.last_name }}
+        </div>
+      </div>
+      <form
+        v-if="!chatWithRoom && !newSelectedUser"
+        @submit.prevent="startNewChat"
+      >
+        <input type="email" v-model="newUserEmail" />
+        <button>Start Chat</button>
+      </form>
+    </div>
+    <!-- <div v-else>
+      <div class="header flex items-center">
+        <div class="name text-xl text-white ml-4">
+          Coder Deep
+        </div>
+      </div>
+      <div ref="messages" class="messages overflow-y-auto py-4">
+        <div v-for="item in messages" :key="item.id">
+          <Message :item="item" />
+        </div>
+      </div>
+      <form class="input-section flex" @submit.prevent="sendMessage">
+        <input
+          type="text"
+          v-model="message"
+          class="input h-full w-full text-grey p-2 border"
+          placeholder="Enter your message"
+          @keypress.enter="sendMessage"
+        />
+        <input type="submit" value=">" class="send-btn" />
+      </form>
+    </div> -->
   </div>
 </template>
 
 <script>
-import { getMessages } from "@/apis/messages"
-import Message from "@/components/Main/Chat/Message"
+import RoomList from "@/components/Main/Chat/RoomList"
+import ChatWindow from "@/components/Main/Chat/ChatWindow"
+// import Message from "@/components/Main/Chat/Message"
+import { getRooms, getUser } from "@/apis/room"
+import socketConnect from "socket.io-client"
 
 export default {
-  components: { Message },
+  components: { RoomList, ChatWindow },
   data() {
     return {
-      messages: [],
+      rooms: [],
+      socket: null,
+      chatWithRoom: null,
+      newUserEmail: "coder@mail.com",
+      newUser: null,
+      newSelectedUser: null,
     }
   },
   created() {
-    getMessages()
+    getRooms()
       .then(res => {
-        this.messages = res.data.messages
+        this.rooms = res.data.rooms
+        // this.scrollToBottom()
       })
       .catch(err => {
         console.log(err)
       })
+
+    this.socket = socketConnect("http://localhost:5050/", {
+      auth: { userId: localStorage.userId },
+    })
   },
-  methods: {},
+  mounted() {
+    // this.$nextTick(() => {
+    this.scrollToBottom()
+    // })
+  },
+  methods: {
+    chatWith(room) {
+      this.chatWithRoom = room
+    },
+    handleNewRoomCreation(room) {
+      this.chatWithRoom = room
+      this.newSelectedUser = null
+    },
+    startWithNewUser() {
+      this.newSelectedUser = this.newUser
+      this.newUser = null
+    },
+    startNewChat() {
+      getUser(this.newUserEmail)
+        .then(res => {
+          console.log("new user res", res)
+          this.newUser = res.data.user
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    scrollToBottom() {
+      this.$nextTick(() => {
+        // this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+      })
+    },
+    sendMessage(payload) {
+      console.log("sending message", payload)
+      this.socket.emit("new_message", payload)
+      this.socket.on("connect", data => {
+        console.log("socket connected", data)
+      })
+      // this.socket.on("room_created", room => {
+      //   console.log("newly created room", room)
+      //   // this.$emit("new-room-created", room)
+      //   this.chatWithRoom = room
+      // })
+    },
+  },
 }
 </script>
 

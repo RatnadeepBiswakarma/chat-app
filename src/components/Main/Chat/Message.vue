@@ -2,11 +2,15 @@
   <div
     class="flex items-start"
     :class="
-      item.sent_by_me ? 'mr-4 justify-end received' : 'ml-4 justify-start sent'
+      sentByMe(item.sender_id)
+        ? 'mr-4 justify-end sent'
+        : 'ml-4 justify-start received'
     "
   >
-    <div class="message-section my-1 p-1 px-2 text-white leading-tight">
-      {{ item.message }}
+    <div
+      class="message-section my-1 p-1 px-2 text-white leading-tight shadow-lg"
+    >
+      {{ item.text }}
     </div>
   </div>
 </template>
@@ -26,6 +30,9 @@ export default {
     getProfilePic(first_name) {
       return first_name.slice(0, 1)
     },
+    sentByMe(senderId) {
+      return senderId === localStorage.userId
+    },
   },
 }
 </script>
@@ -42,14 +49,15 @@ export default {
 .message-section {
   width: auto;
   max-width: 70%;
-  border-radius: 10px;
 }
 
 .received .message-section {
-  background-color: var(--other-message-bg-color);
+  background-color: #3b5894;
+  border-radius: 0px 10px 8px 10px;
 }
 
 .sent .message-section {
-  background-color: #3B5894;
+  background-color: var(--other-message-bg-color);
+  border-radius: 10px 0px 10px 8px;
 }
 </style>
