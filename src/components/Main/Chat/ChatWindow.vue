@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="header flex items-center">
+      <button class="back-button text-white text-3xl leading-none"></button>
       <div class="name text-xl text-white ml-4">
         Coder Deep
       </div>
@@ -17,7 +18,7 @@
         class="input h-full w-full text-grey p-2 border"
         placeholder="Enter your message"
       />
-      <input type="submit" value=">" class="send-btn" />
+      <input type="submit" value="➤" class="send-btn" />
     </form>
   </div>
 </template>
@@ -99,11 +100,18 @@ export default {
 </script>
 
 <style scoped>
+.back-button {
+  width: 2rem;
+  position: relative;
+}
+
 .header {
   height: 3rem;
   background-color: var(--header-bg-color);
   box-shadow: 0 2px 10px 0 #2c2c2c;
   z-index: 1;
+  position: sticky;
+  top: 0;
 }
 
 .messages {

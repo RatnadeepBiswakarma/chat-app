@@ -17,7 +17,12 @@
       />
     </div>
     <div v-else>
-      <RoomList :rooms="rooms" @chat-with="chatWith" />
+      <div class="header flex items-center">
+        <div class="name text-xl text-white ml-4">
+          All Chats
+        </div>
+      </div>
+      <RoomList :rooms="rooms" @chat-with="chatWith" class="py-4 bg-white" />
     </div>
     <div>
       <div v-if="newUser">
@@ -129,11 +134,6 @@ export default {
       this.socket.on("connect", data => {
         console.log("socket connected", data)
       })
-      // this.socket.on("room_created", room => {
-      //   console.log("newly created room", room)
-      //   // this.$emit("new-room-created", room)
-      //   this.chatWithRoom = room
-      // })
     },
   },
 }
@@ -145,6 +145,8 @@ export default {
   background-color: var(--header-bg-color);
   box-shadow: 0 2px 10px 0 #2c2c2c;
   z-index: 1;
+  position: sticky;
+  top: 0;
 }
 
 .messages {

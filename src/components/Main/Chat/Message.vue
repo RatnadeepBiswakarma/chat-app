@@ -38,14 +38,6 @@ export default {
 </script>
 
 <style scoped>
-.profile-pic {
-  width: 2.5rem;
-  height: 2.5rem;
-  font-size: 1.7rem;
-  text-align: center;
-  box-shadow: 0 2px 3px 0 black;
-}
-
 .message-section {
   width: auto;
   max-width: 70%;
