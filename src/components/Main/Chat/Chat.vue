@@ -5,25 +5,32 @@
         v-if="chatWithRoom"
         :room="chatWithRoom"
         :socket="socket"
+        :typingInRooms="typingInRooms"
         @send-message="sendMessage"
         @new-room-created="handleNewRoomCreation"
+        @go-back="goBack"
       />
       <ChatWindow
         v-if="newSelectedUser"
         :newUser="newSelectedUser"
         :socket="socket"
+        :typingInRooms="typingInRooms"
         @send-message="sendMessage"
         @new-room-created="handleNewRoomCreation"
+        @go-back="goBack"
       />
     </div>
-    <div v-else>
-      <div class="header flex items-center">
-        <div class="name text-xl text-white ml-4">
-          All Chats
+    <transition v-else name="zoomOut" appear>
+      <div>
+        <div class="header flex items-center">
+          <div class="name text-xl text-white ml-4">
+            All Chats
+          </div>
         </div>
+        <RoomList :rooms="rooms" @chat-with="chatWith" class="py-4 bg-white" />
       </div>
-      <RoomList :rooms="rooms" @chat-with="chatWith" class="py-4 bg-white" />
-    </div>
+    </transition>
+
     <div>
       <div v-if="newUser">
         <div @click="startWithNewUser">
@@ -69,6 +76,7 @@ import ChatWindow from "@/components/Main/Chat/ChatWindow"
 // import Message from "@/components/Main/Chat/Message"
 import { getRooms, getUser } from "@/apis/room"
 import socketConnect from "socket.io-client"
+import debounce from "@/util/debouncer"
 
 export default {
   components: { RoomList, ChatWindow },
@@ -80,6 +88,7 @@ export default {
       newUserEmail: "coder@mail.com",
       newUser: null,
       newSelectedUser: null,
+      typingInRooms: [],
     }
   },
   created() {
@@ -95,6 +104,8 @@ export default {
     this.socket = socketConnect("http://localhost:5050/", {
       auth: { userId: localStorage.userId },
     })
+    this.socket.on("typing", this.handleTypingEvent)
+    this.socket.on("no_longer_typing", this.removeTyping)
   },
   mounted() {
     // this.$nextTick(() => {
@@ -113,15 +124,26 @@ export default {
       this.newSelectedUser = this.newUser
       this.newUser = null
     },
+    handleTypingEvent(data) {
+      if (!this.typingInRooms.includes(data.room_id)) {
+        this.typingInRooms.push(data.room_id)
+      }
+      debounce(this.removeTyping, 1000, data.room_id)
+    },
+    removeTyping(room_id) {
+      this.typingInRooms = this.typingInRooms.filter(id => id !== room_id)
+    },
     startNewChat() {
       getUser(this.newUserEmail)
         .then(res => {
-          console.log("new user res", res)
           this.newUser = res.data.user
         })
         .catch(err => {
           console.log(err)
         })
+    },
+    goBack() {
+      this.chatWithRoom = null
     },
     scrollToBottom() {
       this.$nextTick(() => {
@@ -129,11 +151,7 @@ export default {
       })
     },
     sendMessage(payload) {
-      console.log("sending message", payload)
       this.socket.emit("new_message", payload)
-      this.socket.on("connect", data => {
-        console.log("socket connected", data)
-      })
     },
   },
 }

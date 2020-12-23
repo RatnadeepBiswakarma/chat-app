@@ -1,31 +1,41 @@
 <template>
-  <div>
-    <div class="header flex items-center">
-      <button class="back-button text-white text-3xl leading-none"></button>
-      <div class="name text-xl text-white ml-4">
-        Coder Deep
+  <transition name="zoomIn" appear>
+    <div>
+      <div class="header flex items-center">
+        <button
+          class="back-button text-white leading-none ml-2 px-2"
+          @click="goBack"
+        >
+          Back
+        </button>
+        <div class="name text-xl text-white ml-4">
+          {{ getFullName }}
+          <small class="text-green">{{ isTyping ? "typing..." : "" }}</small>
+        </div>
       </div>
-    </div>
-    <div ref="messages" class="messages overflow-y-auto py-4">
-      <div v-for="item in messages" :key="item.id">
-        <Message :item="item" />
+      <div ref="messages" class="messages overflow-y-auto py-4">
+        <div v-for="item in messages" :key="item.id">
+          <Message :item="item" />
+        </div>
       </div>
+      <form class="input-section flex" @submit.prevent="sendMessage">
+        <input
+          type="text"
+          v-model="message"
+          class="input h-full w-full text-grey p-2 border"
+          placeholder="Enter your message"
+          @input="handleMessageInput"
+        />
+        <input type="submit" value="➤" class="send-btn" />
+      </form>
     </div>
-    <form class="input-section flex" @submit.prevent="sendMessage">
-      <input
-        type="text"
-        v-model="message"
-        class="input h-full w-full text-grey p-2 border"
-        placeholder="Enter your message"
-      />
-      <input type="submit" value="➤" class="send-btn" />
-    </form>
-  </div>
+  </transition>
 </template>
 
 <script>
 import Message from "@/components/Main/Chat/Message"
 import { getMessages } from "@/apis/messages"
+import debounce from "@/util/debouncer"
 
 export default {
   components: { Message },
@@ -42,18 +52,46 @@ export default {
       type: Object,
       required: true,
     },
+    typingInRooms: {
+      type: Array,
+      required: false,
+      default() {
+        return []
+      },
+    },
   },
   data() {
     return {
       message: "",
       messages: [],
+      timerId: null,
     }
+  },
+  computed: {
+    getOtherUser() {
+      if (this.room) {
+        let user = this.room.users.find(user => user.id !== localStorage.userId)
+        if (user) {
+          return user
+        }
+        return {}
+      }
+      return {}
+    },
+    getFullName() {
+      if (this.getOtherUser.first_name) {
+        return `${this.getOtherUser.first_name} ${this.getOtherUser.last_name}`
+      }
+      return "New Chat"
+    },
+    isTyping() {
+      return this.room && this.typingInRooms.includes(this.room.id)
+    },
   },
   created() {
     if (this.room) {
       getMessages(this.room.id)
         .then(res => {
-          // console.log(res.data.messages)
           this.messages = res.data.items
           this.scrollToBottom()
         })
@@ -62,15 +100,14 @@ export default {
         })
     }
 
-    this.socket.on("room_created", room => {
-      console.log("newly created room", room)
-      this.$emit("new-room-created", room)
-    })
-    this.socket.on("new_message", message => {
-      console.log("new message", message)
-      this.messages.push(message)
-      this.scrollToBottom()
-    })
+    this.socket.on("room_created", this.handleNewRoomCreated)
+    this.socket.on("new_message", this.handleNewMessage)
+  },
+  beforeUnmount() {
+    if (this.socket) {
+      this.socket.off("new_message", this.handleNewMessage)
+      this.socket.off("room_created", this.handleNewRoomCreated)
+    }
   },
   mounted() {
     this.scrollToBottom()
@@ -81,7 +118,23 @@ export default {
         this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
       })
     },
+    handleMessageInput() {
+      if (this.room) {
+        this.userTyping(), 400
+        debounce(this.userNoLongerTyping, 500)
+      }
+    },
+    handleNewMessage(message) {
+      if (this.room && message.room_id === this.room.id) {
+        this.messages.push(message)
+        this.scrollToBottom()
+      }
+    },
+    handleNewRoomCreated(room) {
+      this.$emit("new-room-created", room)
+    },
     sendMessage() {
+      this.userNoLongerTyping()
       // send message
       const payload = {
         text: this.message,
@@ -95,13 +148,32 @@ export default {
       this.$emit("send-message", payload)
       this.message = ""
     },
+    goBack() {
+      this.$emit("go-back")
+    },
+    userTyping() {
+      if (this.room) {
+        this.socket.emit("typing", {
+          room_id: this.room.id,
+          sender_id: localStorage.userId,
+        })
+      }
+    },
+    userNoLongerTyping() {
+      if (this.room) {
+        this.socket.emit("no_longer_typing", {
+          room_id: this.room.id,
+          sender_id: localStorage.userId,
+        })
+      }
+    },
   },
 }
 </script>
 
 <style scoped>
 .back-button {
-  width: 2rem;
+  /* width: 2rem; */
   position: relative;
 }
 
