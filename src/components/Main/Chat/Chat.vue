@@ -4,7 +4,6 @@
       <ChatWindow
         v-if="chatWithRoom"
         :room="chatWithRoom"
-        :socket="socket"
         @send-message="sendMessage"
         @new-room-created="handleNewRoomCreation"
         @go-back="goBack"
@@ -12,7 +11,6 @@
       <ChatWindow
         v-if="newSelectedUser"
         :newUser="newSelectedUser"
-        :socket="socket"
         @send-message="sendMessage"
         @new-room-created="handleNewRoomCreation"
         @go-back="goBack"
@@ -82,7 +80,6 @@ export default {
   data() {
     return {
       rooms: [],
-      socket: null,
       chatWithRoom: null,
       newUserEmail: "coder@mail.com",
       newUser: null,
@@ -90,7 +87,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("chat", ["getTypingUsers"]),
+    ...mapGetters("chat", ["getTypingUsers", "getSocket"]),
   },
   created() {
     getRooms()
@@ -102,11 +99,13 @@ export default {
         console.log(err)
       })
 
-    this.socket = socketConnect("http://localhost:5050/", {
+    const socket = socketConnect("http://localhost:5050/", {
       auth: { userId: localStorage.userId },
     })
-    this.socket.on("typing", this.handleTypingEvent)
-    this.socket.on("no_longer_typing", this.removeTyping)
+
+    this.UPDATE_SOCKET(socket)
+    this.getSocket.on("typing", this.handleTypingEvent)
+    this.getSocket.on("no_longer_typing", this.removeTyping)
   },
   mounted() {
     // this.$nextTick(() => {
@@ -114,7 +113,11 @@ export default {
     // })
   },
   methods: {
-    ...mapActions("chat", ["INCLUDE_TYPING_ROOM", "EXCLUDE_TYPING_ROOM"]),
+    ...mapActions("chat", [
+      "INCLUDE_TYPING_ROOM",
+      "EXCLUDE_TYPING_ROOM",
+      "UPDATE_SOCKET",
+    ]),
     chatWith(room) {
       this.chatWithRoom = room
     },
@@ -153,7 +156,7 @@ export default {
       })
     },
     sendMessage(payload) {
-      this.socket.emit("new_message", payload)
+      this.getSocket.emit("new_message", payload)
     },
   },
 }

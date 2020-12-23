@@ -49,10 +49,6 @@ export default {
       type: Object,
       required: false,
     },
-    socket: {
-      type: Object,
-      required: true,
-    },
   },
   data() {
     return {
@@ -62,7 +58,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("chat", ["getTypingUsers"]),
+    ...mapGetters("chat", ["getTypingUsers", "getSocket"]),
     getOtherUser() {
       if (this.room) {
         let user = this.room.users.find(user => user.id !== localStorage.userId)
@@ -95,13 +91,13 @@ export default {
         })
     }
 
-    this.socket.on("room_created", this.handleNewRoomCreated)
-    this.socket.on("new_message", this.handleNewMessage)
+    this.getSocket.on("room_created", this.handleNewRoomCreated)
+    this.getSocket.on("new_message", this.handleNewMessage)
   },
   beforeUnmount() {
-    if (this.socket) {
-      this.socket.off("new_message", this.handleNewMessage)
-      this.socket.off("room_created", this.handleNewRoomCreated)
+    if (this.getSocket) {
+      this.getSocket.off("new_message", this.handleNewMessage)
+      this.getSocket.off("room_created", this.handleNewRoomCreated)
     }
   },
   mounted() {
@@ -148,7 +144,7 @@ export default {
     },
     userTyping() {
       if (this.room) {
-        this.socket.emit("typing", {
+        this.getSocket.emit("typing", {
           room_id: this.room.id,
           sender_id: localStorage.userId,
         })
@@ -156,7 +152,7 @@ export default {
     },
     userNoLongerTyping() {
       if (this.room) {
-        this.socket.emit("no_longer_typing", {
+        this.getSocket.emit("no_longer_typing", {
           room_id: this.room.id,
           sender_id: localStorage.userId,
         })

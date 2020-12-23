@@ -10,6 +10,9 @@ const mutations = {
   REMOVE_TYPING_ROOM(state, room_id) {
     state.typingUsers = state.typingUsers.filter(id => id !== room_id)
   },
+  SET_SOCKET(state, socket) {
+    state.socket = socket
+  },
 }
 
 export default mutations

@@ -8,6 +8,9 @@ const actions = {
   EXCLUDE_TYPING_ROOM({ commit }, room_id) {
     commit("REMOVE_TYPING_ROOM", room_id)
   },
+  UPDATE_SOCKET({ commit }, socket) {
+    commit("SET_SOCKET", socket)
+  },
 }
 
 export default actions

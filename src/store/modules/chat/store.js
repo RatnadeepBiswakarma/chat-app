@@ -5,10 +5,12 @@ const getters = {
   getAllRooms: state => state.allRooms,
   getChatWithRoom: state => state.chatWithRoom,
   getTypingUsers: state => state.typingUsers,
+  getSocket: state => state.socket,
 }
 
 const state = () => ({
   chatWithRoom: null,
+  socket: null,
   allRooms: [],
   typingUsers: [],
 })
