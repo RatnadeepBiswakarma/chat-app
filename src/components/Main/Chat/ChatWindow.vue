@@ -36,6 +36,7 @@
 import Message from "@/components/Main/Chat/Message"
 import { getMessages } from "@/apis/messages"
 import debounce from "@/util/debouncer"
+import { mapGetters } from "vuex"
 
 export default {
   components: { Message },
@@ -52,13 +53,6 @@ export default {
       type: Object,
       required: true,
     },
-    typingInRooms: {
-      type: Array,
-      required: false,
-      default() {
-        return []
-      },
-    },
   },
   data() {
     return {
@@ -68,6 +62,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters("chat", ["getTypingUsers"]),
     getOtherUser() {
       if (this.room) {
         let user = this.room.users.find(user => user.id !== localStorage.userId)
@@ -85,7 +80,7 @@ export default {
       return "New Chat"
     },
     isTyping() {
-      return this.room && this.typingInRooms.includes(this.room.id)
+      return this.room && this.getTypingUsers.includes(this.room.id)
     },
   },
   created() {

@@ -5,7 +5,6 @@
         v-if="chatWithRoom"
         :room="chatWithRoom"
         :socket="socket"
-        :typingInRooms="typingInRooms"
         @send-message="sendMessage"
         @new-room-created="handleNewRoomCreation"
         @go-back="goBack"
@@ -14,7 +13,6 @@
         v-if="newSelectedUser"
         :newUser="newSelectedUser"
         :socket="socket"
-        :typingInRooms="typingInRooms"
         @send-message="sendMessage"
         @new-room-created="handleNewRoomCreation"
         @go-back="goBack"
@@ -77,6 +75,7 @@ import ChatWindow from "@/components/Main/Chat/ChatWindow"
 import { getRooms, getUser } from "@/apis/room"
 import socketConnect from "socket.io-client"
 import debounce from "@/util/debouncer"
+import { mapActions, mapGetters } from "vuex"
 
 export default {
   components: { RoomList, ChatWindow },
@@ -88,8 +87,10 @@ export default {
       newUserEmail: "coder@mail.com",
       newUser: null,
       newSelectedUser: null,
-      typingInRooms: [],
     }
+  },
+  computed: {
+    ...mapGetters("chat", ["getTypingUsers"]),
   },
   created() {
     getRooms()
@@ -113,6 +114,7 @@ export default {
     // })
   },
   methods: {
+    ...mapActions("chat", ["INCLUDE_TYPING_ROOM", "EXCLUDE_TYPING_ROOM"]),
     chatWith(room) {
       this.chatWithRoom = room
     },
@@ -125,13 +127,13 @@ export default {
       this.newUser = null
     },
     handleTypingEvent(data) {
-      if (!this.typingInRooms.includes(data.room_id)) {
-        this.typingInRooms.push(data.room_id)
+      if (!this.getTypingUsers.includes(data.room_id)) {
+        this.INCLUDE_TYPING_ROOM(data.room_id)
       }
       debounce(this.removeTyping, 1000, data.room_id)
     },
     removeTyping(room_id) {
-      this.typingInRooms = this.typingInRooms.filter(id => id !== room_id)
+      this.EXCLUDE_TYPING_ROOM(room_id)
     },
     startNewChat() {
       getUser(this.newUserEmail)
