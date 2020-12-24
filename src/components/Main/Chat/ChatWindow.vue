@@ -174,7 +174,6 @@ export default {
       }
     },
     emitSocketEvent(evt, payload) {
-      console.log(evt, payload)
       this.socket.emit(evt, payload)
     },
   },
