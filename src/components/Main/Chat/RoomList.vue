@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header flex items-center">
-      <div class="name text-xl text-white ml-4">
+      <div class="name text-xl text-white pl-12">
         All Chats
       </div>
     </div>

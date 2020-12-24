@@ -8,7 +8,7 @@
         >
           Back
         </button>
-        <div class="name text-xl text-white ml-4">
+        <div class="name text-xl text-white">
           {{ getFullName }}
           <small class="text-green">{{ isTyping ? "typing..." : "" }}</small>
         </div>
