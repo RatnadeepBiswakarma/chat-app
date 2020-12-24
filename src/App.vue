@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <transition name="zoomOut" appear>
-      <RoomList class="py-4 bg-white" />
+      <RoomList class="py-4 bg-white" :class="{ zoomOut: focused }" />
     </transition>
     <router-view> </router-view>
   </div>
@@ -27,6 +27,9 @@ export default {
   },
   computed: {
     ...mapGetters("chat", ["socket"]),
+    focused() {
+      return this.$route.path === "/"
+    },
   },
   methods: {
     ...mapActions("chat", [
@@ -57,3 +60,8 @@ export default {
   },
 }
 </script>
+<style scoped>
+.zoomOut {
+  animation: zoom-out 0.3s ease-out;
+}
+</style>
