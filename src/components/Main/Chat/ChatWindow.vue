@@ -14,7 +14,7 @@
         </div>
       </div>
       <div ref="messages" class="messages overflow-y-auto py-4">
-        <div v-for="item in messages" :key="item.id">
+        <div v-for="item in allMessages" :key="item.id">
           <Message :item="item" />
         </div>
       </div>
@@ -34,34 +34,37 @@
 
 <script>
 import Message from "@/components/Main/Chat/Message"
-import { getMessages } from "@/apis/messages"
 import debounce from "@/util/debouncer"
-import { mapGetters } from "vuex"
+import { mapActions, mapGetters } from "vuex"
 
 export default {
   components: { Message },
-  props: {
-    room: {
-      type: Object,
-      required: false,
-    },
-    newUser: {
-      type: Object,
-      required: false,
-    },
-  },
   data() {
     return {
       message: "",
-      messages: [],
       timerId: null,
     }
   },
   computed: {
-    ...mapGetters("chat", ["getTypingUsers", "getSocket"]),
+    ...mapGetters("chat", [
+      "getTypingUsers",
+      "getOpenWindow",
+      "getNewUser",
+      "allMessages",
+      "socket",
+      "getLastMessage",
+    ]),
+    messages() {
+      if (this.getOpenWindow) {
+        return this.allMessages[this.getOpenWindow.id]
+      }
+      return []
+    },
     getOtherUser() {
-      if (this.room) {
-        let user = this.room.users.find(user => user.id !== localStorage.userId)
+      if (this.getOpenWindow) {
+        let user = this.getOpenWindow.users.find(
+          user => user.id !== localStorage.userId
+        )
         if (user) {
           return user
         }
@@ -76,87 +79,103 @@ export default {
       return "New Chat"
     },
     isTyping() {
-      return this.room && this.getTypingUsers.includes(this.room.id)
+      return (
+        this.getOpenWindow &&
+        this.getTypingUsers.includes(this.getOpenWindow.id)
+      )
     },
   },
   created() {
-    if (this.room) {
-      getMessages(this.room.id)
-        .then(res => {
-          this.messages = res.data.items
-          this.scrollToBottom()
-        })
-        .catch(err => {
-          console.log(err)
-        })
+    if (!this.getOpenWindow && !this.getNewUser) {
+      this.$router.replace({ name: "Home" })
+      return
     }
-
-    this.getSocket.on("room_created", this.handleNewRoomCreated)
-    this.getSocket.on("new_message", this.handleNewMessage)
+    if (this.allMessages.length === 0) {
+      this.FETCH_ROOM_MESSAGES(this.getOpenWindow.id)
+    }
   },
-  beforeUnmount() {
-    if (this.getSocket) {
-      this.getSocket.off("new_message", this.handleNewMessage)
-      this.getSocket.off("room_created", this.handleNewRoomCreated)
-    }
+  watch: {
+    getLastMessage(msg) {
+      if (msg.room_id === this.getOpenWindow.id) {
+        this.scrollToBottom()
+      }
+    },
+    allMessages(newList) {
+      if (newList.length > 0) {
+        this.scrollToBottom()
+      }
+    },
   },
   mounted() {
     this.scrollToBottom()
   },
   methods: {
+    ...mapActions("chat", [
+      "UPDATE_CHAT_WINDOW",
+      "UPDATE_NEW_USER_DETAILS",
+      "FETCH_ROOM_MESSAGES",
+    ]),
     scrollToBottom() {
       this.$nextTick(() => {
         this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
       })
     },
     handleMessageInput() {
-      if (this.room) {
-        this.userTyping(), 400
+      if (this.getOpenWindow) {
+        this.userTyping()
         debounce(this.userNoLongerTyping, 500)
       }
     },
     handleNewMessage(message) {
-      if (this.room && message.room_id === this.room.id) {
+      if (this.getOpenWindow && message.room_id === this.getOpenWindow.id) {
         this.messages.push(message)
         this.scrollToBottom()
       }
     },
     handleNewRoomCreated(room) {
-      this.$emit("new-room-created", room)
+      this.UPDATE_CHAT_WINDOW(room)
+      this.$router.replace({ name: "Chat", params: { roomId: room.id } })
     },
     sendMessage() {
       this.userNoLongerTyping()
+      if (!this.message) {
+        return
+      }
       // send message
       const payload = {
         text: this.message,
         sender_id: localStorage.userId,
       }
-      if (this.room) {
-        payload.room_id = this.room.id
+      if (this.getOpenWindow) {
+        payload.room_id = this.getOpenWindow.id
       } else {
-        payload.target_id = this.newUser.id
+        payload.target_id = this.getNewUser.id
       }
-      this.$emit("send-message", payload)
+      this.emitSocketEvent("new_message", payload)
       this.message = ""
     },
     goBack() {
-      this.$emit("go-back")
+      this.$router.go(-1)
     },
     userTyping() {
-      if (this.room) {
-        this.getSocket.emit("typing", {
-          room_id: this.room.id,
+      // if (this.getOpenWindow) {
+      this.emitSocketEvent("typing", {
+        room_id: this.getOpenWindow.id,
+        sender_id: localStorage.userId,
+      })
+      // }
+    },
+    userNoLongerTyping() {
+      if (this.getOpenWindow) {
+        this.emitSocketEvent("no_longer_typing", {
+          room_id: this.getOpenWindow.id,
           sender_id: localStorage.userId,
         })
       }
     },
-    userNoLongerTyping() {
-      if (this.room) {
-        this.getSocket.emit("no_longer_typing", {
-          room_id: this.room.id,
-          sender_id: localStorage.userId,
-        })
-      }
+    emitSocketEvent(evt, payload) {
+      console.log(evt, payload)
+      this.socket.emit(evt, payload)
     },
   },
 }

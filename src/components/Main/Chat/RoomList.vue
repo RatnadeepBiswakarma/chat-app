@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-for="room in rooms"
+      v-for="room in getAllRooms"
       :key="room.id"
       @click="chatWith(room)"
       class="room-list-item flex items-center p-2 bg-white"
@@ -20,14 +20,14 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex"
+
 export default {
-  props: {
-    rooms: {
-      type: Array,
-      required: true,
-    },
+  computed: {
+    ...mapGetters("chat", ["getAllRooms"]),
   },
   methods: {
+    ...mapActions("chat", ["UPDATE_CHAT_WINDOW"]),
     generateRandomColor() {
       return `#${Math.floor(Math.random() * 16777215).toString(16)}`
     },
@@ -39,7 +39,8 @@ export default {
       return `${name.slice(0, 1)}`.toUpperCase()
     },
     chatWith(room) {
-      this.$emit("chat-with", room)
+      this.UPDATE_CHAT_WINDOW(room)
+      this.$router.push({ name: "Chat", params: { roomId: room.id } })
     },
   },
 }

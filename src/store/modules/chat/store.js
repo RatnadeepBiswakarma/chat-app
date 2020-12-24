@@ -2,17 +2,28 @@ import actions from "./actions"
 import mutations from "./mutations"
 
 const getters = {
+  socket: state => state.socket,
   getAllRooms: state => state.allRooms,
-  getChatWithRoom: state => state.chatWithRoom,
   getTypingUsers: state => state.typingUsers,
-  getSocket: state => state.socket,
+  getOpenWindow: state => state.openWindow,
+  getNewUser: state => state.newUser,
+  allMessages: state => {
+    if (state.openWindow) {
+      return state.messages[state.openWindow.id] || []
+    }
+    return []
+  },
+  getLastMessage: state => state.lastMessage,
 }
 
 const state = () => ({
-  chatWithRoom: null,
   socket: null,
   allRooms: [],
   typingUsers: [],
+  openWindow: null,
+  newUser: null,
+  messages: {},
+  lastMessage: {},
 })
 
 const module = {

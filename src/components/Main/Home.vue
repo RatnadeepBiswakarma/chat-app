@@ -8,5 +8,3 @@ export default {
   components: { Chat },
 }
 </script>
-
-<style></style>

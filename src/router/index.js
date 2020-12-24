@@ -25,12 +25,17 @@ const routes = [
     },
   },
   {
-    path: "/",
-    name: "Home",
-    component: load("Main/Home"),
+    path: "/:roomId",
+    name: "Chat",
+    component: load("Main/Chat/Chat"),
     meta: {
-      title: "App",
+      title: "Chat",
     },
+  },
+  {
+    path: "/*",
+    name: "Home",
+    redirect: "/",
   },
 ]
 
