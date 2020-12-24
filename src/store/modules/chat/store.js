@@ -14,6 +14,7 @@ const getters = {
     return []
   },
   getLastMessage: state => state.lastMessage,
+  getUnreadCounts: state => state.unreadCounts,
 }
 
 const state = () => ({
@@ -24,6 +25,7 @@ const state = () => ({
   newUser: null,
   messages: {},
   lastMessage: {},
+  unreadCounts: [],
 })
 
 const module = {

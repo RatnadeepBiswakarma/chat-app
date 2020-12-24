@@ -45,6 +45,12 @@ const actions = {
   UPDATE_NEW_USER_DETAILS({ commit }, room) {
     commit("SET_NEW_USER_DETAILS", room)
   },
+  ADD_UNREAD_MESSAGE({ commit }, message) {
+    commit("SET_UNREAD_MESSAGE", message)
+  },
+  EXCLUDE_UNREAD_MESSAGE({ commit }, room_id) {
+    commit("REMOVE_UNREAD_MESSAGE", room_id)
+  },
 }
 
 export default actions

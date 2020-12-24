@@ -17,8 +17,16 @@
       >
         {{ getRoomPic(getRoomName(room.users)) }}
       </div>
-      <div class="room-name">
-        {{ getRoomName(room.users) }}
+      <div class="flex items-center justify-between w-full">
+        <div class="room-name">
+          {{ getRoomName(room.users) }}
+        </div>
+        <span
+          v-if="unreads(room.id) > 0"
+          class="unread-count text-white rounded-full text-sm flex items-center justify-center mr-4"
+        >
+          {{ unreads(room.id) }}
+        </span>
       </div>
     </div>
   </div>
@@ -29,10 +37,10 @@ import { mapActions, mapGetters } from "vuex"
 
 export default {
   computed: {
-    ...mapGetters("chat", ["getAllRooms"]),
+    ...mapGetters("chat", ["getAllRooms", "getUnreadCounts"]),
   },
   methods: {
-    ...mapActions("chat", ["UPDATE_CHAT_WINDOW"]),
+    ...mapActions("chat", ["UPDATE_CHAT_WINDOW", "EXCLUDE_UNREAD_MESSAGE"]),
     generateRandomColor() {
       return `#${Math.floor(Math.random() * 16777215).toString(16)}`
     },
@@ -46,6 +54,14 @@ export default {
     chatWith(room) {
       this.UPDATE_CHAT_WINDOW(room)
       this.$router.push({ name: "Chat", params: { roomId: room.id } })
+      this.EXCLUDE_UNREAD_MESSAGE(room.id)
+    },
+    unreads(room_id) {
+      let room = this.getUnreadCounts.find(item => item.room_id === room_id)
+      if (room) {
+        return room.count
+      }
+      return 0
     },
   },
 }
@@ -63,5 +79,11 @@ export default {
   text-align: center;
   /* box-shadow: 0 2px 3px 0 black; */
   border-radius: 100px;
+}
+
+.unread-count {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: var(--other-message-bg-color);
 }
 </style>

@@ -39,6 +39,24 @@ const mutations = {
   SET_ALL_MESSAGES(state, data) {
     state[data.room_id] = data.messages
   },
+  SET_UNREAD_MESSAGE(state, message) {
+    const localCopy = JSON.parse(JSON.stringify(state.unreadCounts))
+    const index = localCopy.findIndex(item => item.room_id === message.room_id)
+    if (index >= 0) {
+      localCopy[index].count += 1
+      state.unreadCounts = localCopy
+    } else {
+      state.unreadCounts = [
+        ...localCopy,
+        { count: 1, room_id: message.room_id },
+      ]
+    }
+  },
+  REMOVE_UNREAD_MESSAGE(state, room_id) {
+    state.unreadCounts = state.unreadCounts.filter(
+      item => item.room_id !== room_id
+    )
+  },
 }
 
 export default mutations

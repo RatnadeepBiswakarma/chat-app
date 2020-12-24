@@ -26,7 +26,7 @@ export default {
     this.$router.replace("/")
   },
   computed: {
-    ...mapGetters("chat", ["socket"]),
+    ...mapGetters("chat", ["socket", "getOpenWindow"]),
     focused() {
       return this.$route.path === "/"
     },
@@ -38,6 +38,7 @@ export default {
       "INCLUDE_TYPING_ROOM",
       "EXCLUDE_TYPING_ROOM",
       "UPDATE_NEW_MESSAGE",
+      "ADD_UNREAD_MESSAGE",
     ]),
     bindSocketEvents() {
       this.socket.on("room_created", this.handleNewRoomCreated)
@@ -48,8 +49,12 @@ export default {
     handleNewRoomCreated(room) {
       console.log(room)
     },
-    handleNewMessage(data) {
-      this.UPDATE_NEW_MESSAGE(data)
+    handleNewMessage(message) {
+      if (this.getOpenWindow && this.getOpenWindow.id === message.room_id) {
+        this.UPDATE_NEW_MESSAGE(message)
+      } else {
+        this.ADD_UNREAD_MESSAGE(message)
+      }
     },
     handleTypingEvent(data) {
       this.INCLUDE_TYPING_ROOM(data.room_id)
