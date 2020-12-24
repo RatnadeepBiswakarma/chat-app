@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div class="header flex items-center">
+      <div class="name text-xl text-white ml-4">
+        All Chats
+      </div>
+    </div>
     <div
       v-for="room in getAllRooms"
       :key="room.id"

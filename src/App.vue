@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <transition name="zoomOut" appear>
-      <RoomList class="py-4 bg-white" :class="{ zoomOut: focused }" />
+      <RoomList class="bg-white" :class="{ zoomOut: focused }" />
     </transition>
     <router-view> </router-view>
   </div>
