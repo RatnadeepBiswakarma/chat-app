@@ -8,11 +8,9 @@
 </template>
 
 <script>
-// import Chat from "@/components/Main/Chat/Chat"
 import { mapActions, mapGetters } from "vuex"
 import RoomList from "@/components/Main/Chat/RoomList"
 import socketConnect from "socket.io-client"
-// import AuthPage from "@/components/Auth/Auth"
 
 export default {
   components: { RoomList },
