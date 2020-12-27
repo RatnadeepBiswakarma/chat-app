@@ -12,13 +12,11 @@
       class="room-list-item flex items-center p-2 bg-white"
     >
       <div
-        class="room-pic font-bold"
+        class="room-pic mr-4 ml-2"
         :style="`color: ${generateRandomColor()}`"
-      >
-        {{ getRoomPic(getRoomName(room.users)) }}
-      </div>
-      <div class="w-full h-full">
-        <div class="user-name flex">
+      ></div>
+      <div class="w-4/5 h-full">
+        <div class="user-name flex truncate">
           {{ getRoomName(room.users) }}
         </div>
         <div class="flex justify-between w-full">
@@ -57,9 +55,6 @@ export default {
       const user = users.find(item => item.id !== localStorage.userId)
       return `${user.first_name} ${user.last_name}`
     },
-    getRoomPic(name) {
-      return `${name.slice(0, 1)}`.toUpperCase()
-    },
     chatWith(room) {
       this.UPDATE_CHAT_WINDOW(room)
       this.$router.push({ name: "Chat", params: { roomId: room.id } })
@@ -95,11 +90,9 @@ export default {
 .room-pic {
   width: 2.5rem;
   height: 2.5rem;
-  font-size: 1.7rem;
-  text-align: center;
-  /* box-shadow: 0 2px 3px 0 black; */
   border-radius: 100px;
   flex-shrink: 0;
+  background-image: url("../../../assets/Icons/user.svg");
 }
 
 .unread-count {
