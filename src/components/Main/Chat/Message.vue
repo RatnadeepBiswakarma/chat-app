@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex items-start"
+    class="flex items-start relative"
     :class="
       sentByMe(item.sender_id)
         ? 'mr-4 justify-end sent'
@@ -8,15 +8,27 @@
     "
   >
     <div
-      class="message-section my-1 p-1 px-2 text-white leading-tight shadow-lg"
+      class="message-section my-1 p-1 px-2 text-white leading-tight shadow-lg flex items-end"
     >
       {{ item.text }}
+      <span v-if="sentByMe(item.sender_id)" class="flex justify-end">
+        <DoubleTick
+          v-if="item.status === 'read' || item.status === 'delivered'"
+          :read="item.status === 'read'"
+          class="tick-mark ml-2"
+        />
+        <SingleTick v-else class="tick-mark single-tick ml-2" />
+      </span>
     </div>
   </div>
 </template>
 
 <script>
+import SingleTick from "@/components/Main/Chat/SingleTick"
+import DoubleTick from "@/components/Main/Chat/DoubleTick"
+
 export default {
+  components: { SingleTick, DoubleTick },
   props: {
     item: {
       type: Object,
@@ -51,5 +63,11 @@ export default {
 .sent .message-section {
   background-color: var(--other-message-bg-color);
   border-radius: 10px 0px 10px 8px;
+}
+
+.tick-mark {
+  width: 1rem;
+  fill: #ffffff;
+  padding-bottom: 2px;
 }
 </style>
