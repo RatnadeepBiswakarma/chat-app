@@ -109,6 +109,9 @@ export default {
   },
   mounted() {
     this.scrollToBottom()
+    if (this.allMessages.length > 0) {
+      this.updateReadToSocket()
+    }
   },
   methods: {
     ...mapActions("chat", [
@@ -116,6 +119,7 @@ export default {
       "UPDATE_NEW_USER_DETAILS",
       "UPDATE_ROOM_MESSAGES",
       "UPDATE_READ",
+      "UPDATE_CHAT_WINDOW",
     ]),
     scrollToBottom() {
       this.$nextTick(() => {
@@ -157,7 +161,8 @@ export default {
       this.message = ""
     },
     goBack() {
-      this.$router.go(-1)
+      this.$router.replace({ name: "Home" })
+      this.UPDATE_CHAT_WINDOW(null)
     },
     userTyping() {
       // if (this.getOpenWindow) {
@@ -187,6 +192,13 @@ export default {
           this.UPDATE_READ(this.getOpenWindow.id)
         })
         .catch(err => console.error(err))
+      this.updateReadToSocket()
+    },
+    updateReadToSocket() {
+      this.socket.emit("read_message", {
+        room_id: this.getOpenWindow.id,
+        sender_id: this.getOtherUser.id,
+      })
     },
     fetchMessages() {
       getMessages(this.getOpenWindow.id)
