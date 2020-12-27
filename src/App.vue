@@ -40,6 +40,7 @@ export default {
       "UPDATE_NEW_MESSAGE",
       "ADD_UNREAD_MESSAGE",
       "UPDATE_READ",
+      "UPDATE_DELIVERED",
     ]),
     bindSocketEvents() {
       this.socket.on("room_created", this.handleNewRoomCreated)
@@ -47,11 +48,16 @@ export default {
       this.socket.on("typing", this.handleTypingEvent)
       this.socket.on("no_longer_typing", this.removeTyping)
       this.socket.on("read_updated", this.handleMessageRead)
+      this.socket.on("message_delivered", this.handleMessageDeliver)
     },
     handleNewRoomCreated(room) {
       console.log(room)
     },
     handleNewMessage(message) {
+      if (message.sender_id !== localStorage.userId) {
+        // update other users with message delivery
+        this.messageReceived(message)
+      }
       if (this.getOpenWindow && this.getOpenWindow.id === message.room_id) {
         this.UPDATE_NEW_MESSAGE(message)
         // do not mark own message as read
@@ -61,6 +67,12 @@ export default {
       } else {
         this.ADD_UNREAD_MESSAGE(message)
       }
+    },
+    messageReceived(message) {
+      this.socket.emit("message_received", message)
+    },
+    handleMessageDeliver(message) {
+      this.UPDATE_DELIVERED(message)
     },
     emitRead(room_id, sender_id) {
       this.socket.emit("read_message", {

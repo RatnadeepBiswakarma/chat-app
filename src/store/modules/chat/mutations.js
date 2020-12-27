@@ -37,18 +37,30 @@ const mutations = {
     state.lastMessage = message
     state.latestMessages[message.room_id] = message
   },
+  SET_DELIVERED(state, message) {
+    if (state.messages[message.room_id]) {
+      const localCopy = [...state.messages[message.room_id]]
+      localCopy.forEach(m => {
+        if (m.status === "sent") {
+          m.status = "delivered"
+        }
+      })
+      state.messages[message.room_id] = localCopy
+    }
+  },
   SET_READ(state, room_id) {
-    const localCopy = [...state.messages[room_id]]
-    localCopy.forEach(msg => {
-      msg.status = "read"
-    })
-    state.messages[room_id] = localCopy
+    if (state.messages[room_id]) {
+      const localCopy = [...state.messages[room_id]]
+      localCopy.forEach(msg => {
+        msg.status = "read"
+      })
+      state.messages[room_id] = localCopy
+    }
   },
   SET_ALL_MESSAGES(state, data) {
     state[data.room_id] = data.messages
   },
   SET_UNREAD_MESSAGE(state, message) {
-    console.log("set unread", message)
     const localCopy = JSON.parse(JSON.stringify(state.unreadCounts))
     const index = localCopy.findIndex(item => item.room_id === message.room_id)
     if (index >= 0) {
