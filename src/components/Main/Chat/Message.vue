@@ -53,6 +53,8 @@ export default {
 .message-section {
   width: auto;
   max-width: 70%;
+  word-wrap: break-word;
+  word-break: normal;
 }
 
 .received .message-section {
