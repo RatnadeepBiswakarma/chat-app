@@ -36,7 +36,7 @@
 import Message from "@/components/Main/Chat/Message"
 import debounce from "@/util/debouncer"
 import { mapActions, mapGetters } from "vuex"
-import { getMessages } from "@/apis/messages"
+import { getMessages, patchRead } from "@/apis/messages"
 
 export default {
   components: { Message },
@@ -92,16 +92,7 @@ export default {
       return
     }
     if (this.allMessages.length === 0) {
-      getMessages(this.getOpenWindow.id)
-        .then(res => {
-          this.UPDATE_ROOM_MESSAGES({
-            room_id: this.getOpenWindow.id,
-            messages: res.data.items,
-          })
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      this.fetchMessages()
     }
   },
   watch: {
@@ -124,6 +115,7 @@ export default {
       "UPDATE_CHAT_WINDOW",
       "UPDATE_NEW_USER_DETAILS",
       "UPDATE_ROOM_MESSAGES",
+      "UPDATE_READ",
     ]),
     scrollToBottom() {
       this.$nextTick(() => {
@@ -185,6 +177,29 @@ export default {
     },
     emitSocketEvent(evt, payload) {
       this.socket.emit(evt, payload)
+    },
+    markMessagesAsRead() {
+      const payload = {
+        sender_id: this.getOtherUser.id,
+      }
+      patchRead(this.getOpenWindow.id, payload)
+        .then(() => {
+          this.UPDATE_READ(this.getOpenWindow.id)
+        })
+        .catch(err => console.error(err))
+    },
+    fetchMessages() {
+      getMessages(this.getOpenWindow.id)
+        .then(res => {
+          this.UPDATE_ROOM_MESSAGES({
+            room_id: this.getOpenWindow.id,
+            messages: res.data.items,
+          })
+          this.markMessagesAsRead()
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
   },
 }

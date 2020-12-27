@@ -37,6 +37,13 @@ const mutations = {
     state.lastMessage = message
     state.latestMessages[message.room_id] = message
   },
+  SET_READ(state, room_id) {
+    const localCopy = [...state.messages[room_id]]
+    localCopy.forEach(msg => {
+      msg.status = "read"
+    })
+    state.messages[room_id] = localCopy
+  },
   SET_ALL_MESSAGES(state, data) {
     state[data.room_id] = data.messages
   },

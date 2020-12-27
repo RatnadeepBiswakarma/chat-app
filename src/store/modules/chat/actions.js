@@ -16,6 +16,9 @@ const actions = {
         console.log(err)
       })
   },
+  UPDATE_READ({ commit }, room_id) {
+    commit("SET_READ", room_id)
+  },
   UPDATE_ALL_MESSAGES({ commit }, data) {
     commit("SET_ALL_MESSAGES", data)
   },
