@@ -9,9 +9,13 @@
           <Back class="back-arrow" />
         </button>
         <div class="user-pic ml-2 px-2"></div>
-        <div class="name text-xl text-white ml-2 px-2">
+        <div
+          class="name text-base text-white ml-2 px-2 flex flex-col leading-tight"
+        >
           {{ getFullName }}
-          <small class="text-green">{{ isTyping ? "typing..." : "" }}</small>
+          <small class="text-green text-xs font-normal typing-text">{{
+            isTyping ? "typing..." : ""
+          }}</small>
         </div>
       </div>
       <div ref="messages" class="messages overflow-y-auto py-4">
@@ -242,6 +246,14 @@ export default {
   border-radius: 100px;
   flex-shrink: 0;
   background-image: url("../../../assets/Icons/user.svg");
+}
+
+.name {
+  font-weight: 500;
+}
+
+.typing-text {
+  color: var(--typing-text-color);
 }
 
 .header {
