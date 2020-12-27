@@ -36,6 +36,7 @@
 import Message from "@/components/Main/Chat/Message"
 import debounce from "@/util/debouncer"
 import { mapActions, mapGetters } from "vuex"
+import { getMessages } from "@/apis/messages"
 
 export default {
   components: { Message },
@@ -91,7 +92,16 @@ export default {
       return
     }
     if (this.allMessages.length === 0) {
-      this.FETCH_ROOM_MESSAGES(this.getOpenWindow.id)
+      getMessages(this.getOpenWindow.id)
+        .then(res => {
+          this.UPDATE_ROOM_MESSAGES({
+            room_id: this.getOpenWindow.id,
+            messages: res.data.items,
+          })
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   },
   watch: {
@@ -113,7 +123,7 @@ export default {
     ...mapActions("chat", [
       "UPDATE_CHAT_WINDOW",
       "UPDATE_NEW_USER_DETAILS",
-      "FETCH_ROOM_MESSAGES",
+      "UPDATE_ROOM_MESSAGES",
     ]),
     scrollToBottom() {
       this.$nextTick(() => {

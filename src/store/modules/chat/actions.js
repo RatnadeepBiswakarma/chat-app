@@ -1,21 +1,11 @@
 import { getRooms } from "@/apis/room"
-import { getMessages } from "@/apis/messages"
 
 const actions = {
   UPDATE_SOCKET({ commit }, socket) {
     commit("SET_SOCKET", socket)
   },
-  FETCH_ROOM_MESSAGES({ commit }, room_id) {
-    getMessages(room_id)
-      .then(res => {
-        commit("SET_ROOM_MESSAGE", {
-          room_id,
-          messages: res.data.items,
-        })
-      })
-      .catch(err => {
-        console.log(err)
-      })
+  UPDATE_ROOM_MESSAGES({ commit }, payload) {
+    commit("SET_ROOM_MESSAGE", payload)
   },
   UPDATE_ALL_ROOMS({ commit }) {
     getRooms()
