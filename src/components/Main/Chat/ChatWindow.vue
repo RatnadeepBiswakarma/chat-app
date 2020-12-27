@@ -20,6 +20,7 @@
       </div>
       <form class="input-section flex" @submit.prevent="sendMessage">
         <input
+          ref="msgBox"
           type="text"
           v-model="message"
           class="input h-full w-full text-grey p-2 border"
@@ -112,6 +113,7 @@ export default {
     if (this.allMessages.length > 0) {
       this.updateReadToSocket()
     }
+    this.focusInput()
   },
   methods: {
     ...mapActions("chat", [
@@ -121,6 +123,11 @@ export default {
       "UPDATE_READ",
       "UPDATE_CHAT_WINDOW",
     ]),
+    focusInput() {
+      if (this.$refs.msgBox) {
+        this.$refs.msgBox.focus()
+      }
+    },
     scrollToBottom() {
       this.$nextTick(() => {
         this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
