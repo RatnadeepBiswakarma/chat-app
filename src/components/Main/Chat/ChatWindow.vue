@@ -6,9 +6,10 @@
           class="back-button text-white leading-none ml-2 px-2"
           @click="goBack"
         >
-          Back
+          <Back class="back-arrow" />
         </button>
-        <div class="name text-xl text-white">
+        <div class="user-pic ml-2 px-2"></div>
+        <div class="name text-xl text-white ml-2 px-2">
           {{ getFullName }}
           <small class="text-green">{{ isTyping ? "typing..." : "" }}</small>
         </div>
@@ -38,9 +39,10 @@ import Message from "@/components/Main/Chat/Message"
 import debounce from "@/util/debouncer"
 import { mapActions, mapGetters } from "vuex"
 import { getMessages, patchRead } from "@/apis/messages"
+import Back from "@/components/Shared/Back"
 
 export default {
-  components: { Message },
+  components: { Message, Back },
   data() {
     return {
       message: "",
@@ -226,8 +228,20 @@ export default {
 
 <style scoped>
 .back-button {
-  /* width: 2rem; */
   position: relative;
+}
+
+.back-arrow {
+  width: 1.3rem;
+  fill: white;
+}
+
+.user-pic {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 100px;
+  flex-shrink: 0;
+  background-image: url("../../../assets/Icons/user.svg");
 }
 
 .header {
