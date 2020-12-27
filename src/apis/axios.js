@@ -1,4 +1,5 @@
 import axios from "axios"
+import router from "@/router/index"
 
 const instance = axios.create({
   baseURL: "http://localhost:5050/",
@@ -12,6 +13,23 @@ instance.interceptors.request.use(config => {
   }
   return config
 })
+
+instance.interceptors.response.use(
+  function(response) {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    return response
+  },
+  function(error) {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    console.log(error)
+    if (error.response && error.response.status === 401) {
+      router.push({ name: "LoginPage" })
+    }
+    return Promise.reject(error)
+  }
+)
 
 window.api = {}
 
