@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="relative min-h-screen max-h-screen">
     <div class="header flex items-center">
       <div class="name text-xl text-white pl-12">
         All Chats
@@ -32,19 +32,27 @@
         </div>
       </div>
     </div>
+    <router-link to="/new" class="search-user flex justify-center items-center shadow-lg"
+      ><AppIcon name="plus" :attributes="iconAttributes" />
+    </router-link>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex"
+import AppIcon from "@/components/Shared/AppIcon"
 
 export default {
+  components: { AppIcon },
   computed: {
     ...mapGetters("chat", [
       "getAllRooms",
       "getUnreadCounts",
       "getLatestMessages",
     ]),
+    iconAttributes() {
+      return { width: 20, height: 20, fill: "#fff" }
+    },
   },
   methods: {
     ...mapActions("chat", ["UPDATE_CHAT_WINDOW", "EXCLUDE_UNREAD_MESSAGE"]),
@@ -111,5 +119,15 @@ export default {
 .user-list-last-message-seen {
   color: var(--last-message-seen-on-room-list);
   font-style: italic;
+}
+
+.search-user {
+  width: 3rem;
+  height: 3rem;
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  border-radius: 100px;
+  background-color: var(--header-bg-color);
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div class="relative overflow-x-hidden">
     <transition name="zoomOut" appear>
       <RoomList class="bg-white" :class="{ zoomOut: focused }" />
     </transition>

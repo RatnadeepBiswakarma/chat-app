@@ -33,6 +33,14 @@ const routes = [
     },
   },
   {
+    path: "/new",
+    name: "Search",
+    component: load("Main/NewChat"),
+    meta: {
+      title: "Search",
+    },
+  },
+  {
     path: "/*",
     name: "Home",
     redirect: "/",

@@ -8,6 +8,8 @@
   --user-name-on-room-list: #444444;
   --last-message-seen-on-room-list: #808080;
   --typing-text-color: #35ff35;
+  --search-input-font-color: #ffffff;
+  --search-input-placeholder-color: #c0c0c0;
 }
 
 .messages {
