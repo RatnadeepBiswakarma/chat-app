@@ -8,10 +8,10 @@
         >
           <Back class="back-arrow" />
         </button>
-        <div class="user-pic ml-2 px-2"></div>
-        <div
-          class="name text-base text-white ml-2 px-2 flex flex-col leading-tight"
-        >
+        <div class="user-pic">
+          <AppIcon name="user" :attributes="prifilePicAttributes" />
+        </div>
+        <div class="name text-base text-white ml-2 flex flex-col leading-tight">
           {{ getFullName }}
           <small class="text-green text-xs font-normal typing-text">{{
             isTyping ? "typing..." : ""
@@ -44,9 +44,10 @@ import debounce from "@/util/debouncer"
 import { mapActions, mapGetters } from "vuex"
 import { getMessages, patchRead } from "@/apis/messages"
 import Back from "@/components/Shared/Back"
+import AppIcon from "@/components/Shared/AppIcon"
 
 export default {
-  components: { Message, Back },
+  components: { Message, Back, AppIcon },
   data() {
     return {
       message: "",
@@ -62,6 +63,9 @@ export default {
       "socket",
       "getLastMessage",
     ]),
+    prifilePicAttributes() {
+      return { width: 32, height: 32 }
+    },
     messages() {
       if (this.getOpenWindow) {
         return this.allMessages[this.getOpenWindow.id]
@@ -245,7 +249,6 @@ export default {
   height: 2rem;
   border-radius: 100px;
   flex-shrink: 0;
-  background-image: url("../../../assets/Icons/user.svg");
 }
 
 .name {
