@@ -102,7 +102,9 @@ export default {
       this.$router.replace({ name: "Home" })
       return
     }
-    if (this.allMessages.length === 0) {
+    if (this.getNewUser) {
+      //
+    } else if (this.allMessages.length === 0) {
       this.fetchMessages()
     }
   },
@@ -182,12 +184,12 @@ export default {
       this.UPDATE_CHAT_WINDOW(null)
     },
     userTyping() {
-      // if (this.getOpenWindow) {
-      this.emitSocketEvent("typing", {
-        room_id: this.getOpenWindow.id,
-        sender_id: localStorage.userId,
-      })
-      // }
+      if (this.getOpenWindow) {
+        this.emitSocketEvent("typing", {
+          room_id: this.getOpenWindow.id,
+          sender_id: localStorage.userId,
+        })
+      }
     },
     userNoLongerTyping() {
       if (this.getOpenWindow) {

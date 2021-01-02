@@ -31,6 +31,7 @@
           v-for="user in searchResult"
           :key="user.id"
           class="room-list-item flex items-center p-2 bg-white"
+          @click="handleUserClick(user)"
         >
           <div class="room-pic mr-4 ml-2">
             <AppIcon name="user" :attributes="prifilePicAttributes" />
@@ -51,6 +52,7 @@
 import { getUser } from "@/apis/room"
 import Back from "@/components/Shared/Back"
 import AppIcon from "@/components/Shared/AppIcon"
+import { mapActions } from "vuex"
 
 export default {
   components: { Back, AppIcon },
@@ -71,6 +73,11 @@ export default {
     },
   },
   methods: {
+    ...mapActions("chat", ["UPDATE_NEW_USER_DETAILS"]),
+    handleUserClick(user) {
+      this.UPDATE_NEW_USER_DETAILS(user)
+      this.$router.push({ name: "NewChatWindow", params: { userId: user.id } })
+    },
     getUserName(user) {
       return `${user.first_name} ${user.last_name}`
     },

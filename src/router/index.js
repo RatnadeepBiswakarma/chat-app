@@ -33,6 +33,14 @@ const routes = [
     },
   },
   {
+    path: "/start-chat/:userId",
+    name: "NewChatWindow",
+    component: load("Main/Chat/Chat"),
+    meta: {
+      title: "Chat",
+    },
+  },
+  {
     path: "/new",
     name: "Search",
     component: load("Main/NewChat"),
