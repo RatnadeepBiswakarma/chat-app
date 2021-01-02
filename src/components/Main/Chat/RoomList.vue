@@ -22,7 +22,7 @@
           {{ getRoomName(room.users) }}
         </div>
         <div class="flex justify-between w-full">
-          <small class="user-list-last-message truncate w-4/5">{{
+          <small class="user-list-last-message truncate w-4/5 leading-none">{{
             getSubText(room.id)
           }}</small>
           <span
@@ -108,8 +108,8 @@ export default {
 }
 
 .unread-count {
-  min-width: 1.3rem;
-  height: 1.3rem;
+  min-width: 1.1rem;
+  height: 1.1rem;
   background-color: var(--last-message-on-room-list);
   padding: 4px;
 }
