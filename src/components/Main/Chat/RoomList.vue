@@ -14,7 +14,9 @@
       <div
         class="room-pic mr-4 ml-2"
         :style="`color: ${generateRandomColor()}`"
-      ></div>
+      >
+        <AppIcon name="user" :attributes="profilePicAttributes" />
+      </div>
       <div class="w-4/5 h-full">
         <div class="user-name flex truncate">
           {{ getRoomName(room.users) }}
@@ -33,7 +35,7 @@
       </div>
     </div>
     <router-link to="/new" class="search-user flex justify-center items-center shadow-lg"
-      ><AppIcon name="plus" :attributes="iconAttributes" />
+      ><AppIcon name="add-user" :attributes="iconAttributes" />
     </router-link>
   </div>
 </template>
@@ -52,6 +54,9 @@ export default {
     ]),
     iconAttributes() {
       return { width: 20, height: 20, fill: "#fff" }
+    },
+    profilePicAttributes() {
+      return {width: 40, height: 40}
     },
   },
   methods: {
@@ -100,7 +105,6 @@ export default {
   height: 2.5rem;
   border-radius: 100px;
   flex-shrink: 0;
-  background-image: url("../../../assets/Icons/user.svg");
 }
 
 .unread-count {
