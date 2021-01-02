@@ -42,6 +42,8 @@ export default {
       "ADD_UNREAD_MESSAGE",
       "UPDATE_READ",
       "UPDATE_DELIVERED",
+      "UPDATE_CHAT_WINDOW",
+      "UPDATE_NEW_ROOM",
     ]),
     bindSocketEvents() {
       this.socket.on("room_created", this.handleNewRoomCreated)
@@ -52,7 +54,12 @@ export default {
       this.socket.on("message_delivered", this.handleMessageDeliver)
     },
     handleNewRoomCreated(room) {
-      console.log(room)
+      this.UPDATE_NEW_ROOM(room)
+      // open the chat window if this user started the chat
+      if (room.creator_id === localStorage.userId) {
+        this.UPDATE_CHAT_WINDOW(room)
+        this.$router.push({ name: "Chat", params: { roomId: room.id } })
+      }
     },
     handleNewMessage(message) {
       if (message.sender_id !== localStorage.userId) {

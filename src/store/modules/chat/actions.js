@@ -46,6 +46,9 @@ const actions = {
   EXCLUDE_UNREAD_MESSAGE({ commit }, room_id) {
     commit("REMOVE_UNREAD_MESSAGE", room_id)
   },
+  UPDATE_NEW_ROOM({ commit }, room) {
+    commit("SET_NEW_ROOM", room)
+  },
 }
 
 export default actions

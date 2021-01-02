@@ -76,6 +76,9 @@ const mutations = {
       item => item.room_id !== room_id
     )
   },
+  SET_NEW_ROOM(state, room) {
+    state.allRooms = [room, ...state.allRooms]
+  },
 }
 
 export default mutations
