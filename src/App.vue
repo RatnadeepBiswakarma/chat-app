@@ -17,6 +17,7 @@ export default {
   created() {
     const socket = socketConnect("http://localhost:5050/", {
       auth: { userId: localStorage.userId },
+      transports: ["websocket"],
     })
     this.UPDATE_SOCKET(socket)
     this.bindSocketEvents()
