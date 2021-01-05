@@ -119,6 +119,9 @@ export default {
         this.scrollToBottom()
       }
     },
+    $route() {
+      this.fetchMessages()
+    },
   },
   mounted() {
     this.scrollToBottom()
