@@ -23,7 +23,7 @@
         </div>
         <div class="flex justify-between w-full">
           <small class="user-list-last-message truncate w-4/5 leading-none">{{
-            getSubText(room.id)
+            getSubText(room)
           }}</small>
           <span
             v-if="unreads(room.id) > 0"
@@ -34,7 +34,9 @@
         </div>
       </div>
     </div>
-    <router-link to="/new" class="search-user flex justify-center items-center shadow-lg"
+    <router-link
+      to="/new"
+      class="search-user flex justify-center items-center shadow-lg"
       ><AppIcon name="add-user" :attributes="iconAttributes" />
     </router-link>
   </div>
@@ -56,7 +58,7 @@ export default {
       return { width: 20, height: 20, fill: "#fff" }
     },
     profilePicAttributes() {
-      return {width: 40, height: 40}
+      return { width: 40, height: 40 }
     },
   },
   methods: {
@@ -80,9 +82,11 @@ export default {
       }
       return 0
     },
-    getSubText(room_id) {
-      if (this.getLatestMessages && this.getLatestMessages[room_id]) {
-        return this.getLatestMessages[room_id].text
+    getSubText(room) {
+      if (this.getLatestMessages && this.getLatestMessages[room.id]) {
+        return this.getLatestMessages[room.id].text
+      } else if (room.last_message) {
+        return `${room.last_message.text}`
       }
       return ""
     },
