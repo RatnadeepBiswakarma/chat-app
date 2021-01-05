@@ -119,8 +119,10 @@ export default {
         this.scrollToBottom()
       }
     },
-    $route() {
-      this.fetchMessages()
+    $route(nextRoute) {
+      if (nextRoute.name === "Chat") {
+        this.fetchMessages()
+      }
     },
   },
   mounted() {
