@@ -22,7 +22,9 @@
           {{ getRoomName(room.users) }}
         </div>
         <div class="flex justify-between w-full">
-          <small class="user-list-last-message truncate w-4/5 leading-none">{{
+          <small class="truncate w-4/5 leading-none"
+          :class="unreads(room.id) === 0 ? 'user-list-last-message' : 'user-list-last-message-unread'"
+          >{{
             getSubText(room)
           }}</small>
           <span
@@ -118,9 +120,15 @@ export default {
   padding: 4px;
 }
 
-.user-list-last-message {
-  color: var(--last-message-on-room-list);
+.user-list-last-message-unread {
+    color: var(--last-message-on-room-list-unread);
   font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.user-list-last-message {
+  color: var(--last-message-seen-on-room-list);
+  font-weight: normal;
   font-size: 0.9rem;
 }
 
