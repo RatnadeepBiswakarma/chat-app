@@ -104,12 +104,6 @@ export default {
 </script>
 
 <style scoped>
-.new-chat-window-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
 .back-arrow {
   width: 1.3rem;
   fill: white;

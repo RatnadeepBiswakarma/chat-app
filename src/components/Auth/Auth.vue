@@ -128,7 +128,6 @@ export default {
 .login-page {
   width: 100%;
   height: 100vh;
-  background-image: url("https://res.cloudinary.com/deepb/image/upload/v1608454031/discord-clone/landscape_qu2eab.jpg");
 }
 
 .form {

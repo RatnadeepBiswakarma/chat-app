@@ -13,9 +13,5 @@ export default {
 </script>
 
 <style scoped>
-.chat-window-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
+
 </style>

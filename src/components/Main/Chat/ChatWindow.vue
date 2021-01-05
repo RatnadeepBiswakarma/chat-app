@@ -265,12 +265,7 @@ export default {
 }
 
 .header {
-  height: 3rem;
-  background-color: var(--header-bg-color);
-  box-shadow: 0 2px 10px 0 #2c2c2c;
   z-index: 1;
-  position: sticky;
-  top: 0;
 }
 
 .messages {

@@ -7,33 +7,18 @@ body {
   font-size: 1rem;
   text-rendering: optimizeLegibility;
   color: var(--primary-color);
-  background-color: var(--primary-bg-color);
 }
 
 .header {
   height: 3rem;
   background-color: var(--header-bg-color);
-  box-shadow: 0 2px 10px 0 #2c2c2c;
+  /*box-shadow: 0 2px 10px 0 #2c2c2c;*/
   position: sticky;
   top: 0;
 }
 
 .form input {
   font-size: 1rem;
-}
-
-.zoomIn-enter-active {
-  animation: zoom-in 0.3s;
-}
-.zoomIn-leave-active {
-  animation: zoom-in 0.4s reverse;
-}
-
-.zoomOut-enter-active {
-  animation: zoom-out 0.3s;
-}
-.zoomOut-leave-active {
-  animation: zoom-out 0.4s;
 }
 
 .fadeIn {
@@ -71,5 +56,53 @@ body {
   }
   100% {
     opacity: 1;
+  }
+}
+
+.chat-app {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  max-width: 90rem;
+  margin: auto;
+  box-shadow: 0 4px 15px 0 #858585;
+  background-color: var(--primary-bg-color);
+}
+.room-list-container {
+  max-width: 25rem;
+}
+
+@media screen and (max-width: 940px) {
+  .room-list-container {
+    max-width: 100%;
+  }
+  .chat-window-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .new-chat-window-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .zoomOut {
+    animation: zoom-out 0.3s ease-out;
+  }
+
+  .zoomIn-enter-active {
+    animation: zoom-in 0.3s;
+  }
+  .zoomIn-leave-active {
+    animation: zoom-in 0.4s reverse;
+  }
+
+  .zoomOut-enter-active {
+    animation: zoom-out 0.3s;
+  }
+  .zoomOut-leave-active {
+    animation: zoom-out 0.4s;
   }
 }

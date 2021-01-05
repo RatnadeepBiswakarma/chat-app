@@ -1,5 +1,5 @@
 <template>
-  <div class="relative overflow-x-hidden">
+  <div class="relative overflow-x-hidden chat-app">
     <transition name="zoomOut" appear>
       <RoomList class="bg-white" :class="{ zoomOut: focused }" />
     </transition>
@@ -100,8 +100,3 @@ export default {
   },
 }
 </script>
-<style scoped>
-.zoomOut {
-  animation: zoom-out 0.3s ease-out;
-}
-</style>

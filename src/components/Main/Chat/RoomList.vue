@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen max-h-screen">
+  <div class="relative min-h-screen max-h-screen w-full room-list-container">
     <div class="header flex items-center">
       <div class="name text-xl text-white pl-12">
         All Chats
@@ -128,7 +128,7 @@ export default {
 .search-user {
   width: 3rem;
   height: 3rem;
-  position: fixed;
+  position: absolute;
   bottom: 1rem;
   right: 1rem;
   border-radius: 100px;
