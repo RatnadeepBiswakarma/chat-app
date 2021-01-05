@@ -22,16 +22,26 @@
           {{ getRoomName(room.users) }}
         </div>
         <div class="flex justify-between w-full">
-          <small class="truncate w-4/5 leading-none"
-          :class="unreads(room.id) === 0 ? 'user-list-last-message' : 'user-list-last-message-unread'"
-          >{{
-            getSubText(room)
-          }}</small>
+          <small
+            class="truncate w-4/5 leading-none"
+            :class="
+              unreads(room.id) === 0
+                ? 'user-list-last-message'
+                : 'user-list-last-message-unread'
+            "
+            >{{ getSubText(room) }}</small
+          >
           <span
             v-if="unreads(room.id) > 0"
             class="unread-count text-white rounded-full text-sm flex items-center justify-center mr-4"
           >
             {{ unreads(room.id) }}
+          </span>
+          <span
+            v-else-if="room.last_message"
+            class="user-list-last-message-time leading-none"
+          >
+            {{ getLastMessageTime(room.last_message.created_at) }}
           </span>
         </div>
       </div>
@@ -47,6 +57,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex"
 import AppIcon from "@/components/Shared/AppIcon"
+import { format, parseISO } from "date-fns"
 
 export default {
   components: { AppIcon },
@@ -92,6 +103,9 @@ export default {
       }
       return ""
     },
+    getLastMessageTime(date) {
+      return format(parseISO(date), "HH:mm")
+    },
   },
 }
 </script>
@@ -116,12 +130,12 @@ export default {
 .unread-count {
   min-width: 1.1rem;
   height: 1.1rem;
-  background-color: var(--last-message-on-room-list);
+  background-color: var(--last-message-on-room-list-unread);
   padding: 4px;
 }
 
 .user-list-last-message-unread {
-    color: var(--last-message-on-room-list-unread);
+  color: var(--last-message-on-room-list-unread);
   font-weight: 500;
   font-size: 0.9rem;
 }
@@ -130,6 +144,11 @@ export default {
   color: var(--last-message-seen-on-room-list);
   font-weight: normal;
   font-size: 0.9rem;
+}
+
+.user-list-last-message-time {
+  font-size: 0.8rem;
+  color: var(--last-message-seen-on-room-list-time);
 }
 
 .user-list-last-message-seen {
