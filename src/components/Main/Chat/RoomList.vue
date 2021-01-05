@@ -57,7 +57,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex"
 import AppIcon from "@/components/Shared/AppIcon"
-import { format, parseISO } from "date-fns"
+import { format, parseISO, differenceInDays } from "date-fns"
 
 export default {
   components: { AppIcon },
@@ -104,6 +104,9 @@ export default {
       return ""
     },
     getLastMessageTime(date) {
+      if (differenceInDays(parseISO(date), new Date()) > 1) {
+        return format(parseISO(date), "dd/MM/yy")
+      }
       return format(parseISO(date), "HH:mm")
     },
   },
