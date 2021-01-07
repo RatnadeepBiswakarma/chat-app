@@ -1,6 +1,6 @@
 {
-  "singleQuote": false,
-  "trailingComma": "es5",
-  "semi": false,
-  "htmlWhitespaceSensitivity": "css"
+  "tabWidth": 2,
+  "useTabs": false,
+  "arrowParens": "avoid",
+  "semi": false
 }
