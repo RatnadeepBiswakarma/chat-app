@@ -52,7 +52,7 @@
 import { getUser } from "@/apis/room"
 import Back from "@/components/Shared/Back"
 import AppIcon from "@/components/Shared/AppIcon"
-import { mapActions } from "vuex"
+import { mapActions, mapGetters } from "vuex"
 
 export default {
   components: { Back, AppIcon },
@@ -65,6 +65,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters("chat", ["getAllRooms"]),
     iconAttributes() {
       return { width: 20, height: 20, fill: "#fff" }
     },
@@ -73,10 +74,30 @@ export default {
     }
   },
   methods: {
-    ...mapActions("chat", ["UPDATE_NEW_USER_DETAILS"]),
+    ...mapActions("chat", [
+      "UPDATE_NEW_USER_DETAILS",
+      "UPDATE_CHAT_WINDOW",
+      "EXCLUDE_UNREAD_MESSAGE"
+    ]),
     handleUserClick(user) {
-      this.UPDATE_NEW_USER_DETAILS(user)
-      this.$router.push({ name: "NewChatWindow", params: { userId: user.id } })
+      const room = this.getAllRooms.find(r => {
+        if (r.users.find(u => u.id === user.id)) {
+          return r
+        }
+      })
+      // if room is already present, push that
+      if (room) {
+        this.UPDATE_CHAT_WINDOW(room)
+        this.$router.push({ name: "Chat", params: { roomId: room.id } })
+        this.EXCLUDE_UNREAD_MESSAGE(room.id)
+      } else {
+        // else user id is used to create initial chat window
+        this.UPDATE_NEW_USER_DETAILS(user)
+        this.$router.push({
+          name: "NewChatWindow",
+          params: { userId: user.id }
+        })
+      }
     },
     getUserName(user) {
       return `${user.first_name} ${user.last_name}`
