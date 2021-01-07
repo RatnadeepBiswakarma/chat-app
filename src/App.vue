@@ -19,6 +19,7 @@ export default {
     validateUserToken()
       .then(res => {
         console.log(res.data.user)
+        this.UPDATE_MY_DETAILS(res.data.user)
         const socket = socketConnect("http://localhost:5050/", {
           auth: { userId: localStorage.userId },
           transports: ["websocket"]
@@ -53,6 +54,7 @@ export default {
       "UPDATE_CHAT_WINDOW",
       "UPDATE_NEW_ROOM"
     ]),
+    ...mapActions("auth", ["UPDATE_MY_DETAILS"]),
     bindSocketEvents() {
       this.socket.on("room_created", this.handleNewRoomCreated)
       this.socket.on("new_message", this.handleNewMessage)
