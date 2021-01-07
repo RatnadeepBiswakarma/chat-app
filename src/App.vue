@@ -11,17 +11,25 @@
 import { mapActions, mapGetters } from "vuex"
 import RoomList from "@/components/Main/Chat/RoomList"
 import socketConnect from "socket.io-client"
+import { validateUserToken } from "@/apis/auth"
 
 export default {
   components: { RoomList },
   created() {
-    const socket = socketConnect("http://localhost:5050/", {
-      auth: { userId: localStorage.userId },
-      transports: ["websocket"],
-    })
-    this.UPDATE_SOCKET(socket)
-    this.bindSocketEvents()
-    this.UPDATE_ALL_ROOMS()
+    validateUserToken()
+      .then(res => {
+        console.log(res.data.user)
+        const socket = socketConnect("http://localhost:5050/", {
+          auth: { userId: localStorage.userId },
+          transports: ["websocket"]
+        })
+        this.UPDATE_SOCKET(socket)
+        this.bindSocketEvents()
+        this.UPDATE_ALL_ROOMS()
+      })
+      .catch(err => {
+        console.error(err)
+      })
   },
   mounted() {
     this.$router.replace("/")
@@ -30,7 +38,7 @@ export default {
     ...mapGetters("chat", ["socket", "getOpenWindow"]),
     focused() {
       return this.$route.path === "/"
-    },
+    }
   },
   methods: {
     ...mapActions("chat", [
@@ -43,7 +51,7 @@ export default {
       "UPDATE_READ",
       "UPDATE_DELIVERED",
       "UPDATE_CHAT_WINDOW",
-      "UPDATE_NEW_ROOM",
+      "UPDATE_NEW_ROOM"
     ]),
     bindSocketEvents() {
       this.socket.on("room_created", this.handleNewRoomCreated)
@@ -85,7 +93,7 @@ export default {
     emitRead(room_id, sender_id) {
       this.socket.emit("read_message", {
         room_id,
-        sender_id,
+        sender_id
       })
     },
     handleMessageRead(data) {
@@ -96,7 +104,7 @@ export default {
     },
     removeTyping(data) {
       this.EXCLUDE_TYPING_ROOM(data.room_id)
-    },
-  },
+    }
+  }
 }
 </script>

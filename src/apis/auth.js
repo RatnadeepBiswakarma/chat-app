@@ -5,3 +5,7 @@ export function signupUser(payload) {
 export function loginUser(payload) {
   return window.api.post("/users/login", payload)
 }
+
+export function validateUserToken() {
+	return window.api.get("/auth")
+}
