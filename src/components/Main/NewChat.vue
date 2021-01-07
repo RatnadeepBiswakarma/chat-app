@@ -61,7 +61,7 @@ export default {
       search: true,
       email: "coder@mail.com",
       searchResult: [],
-      errorMessage: "",
+      errorMessage: ""
     }
   },
   computed: {
@@ -70,7 +70,7 @@ export default {
     },
     prifilePicAttributes() {
       return { width: 40, height: 40 }
-    },
+    }
   },
   methods: {
     ...mapActions("chat", ["UPDATE_NEW_USER_DETAILS"]),
@@ -98,8 +98,8 @@ export default {
               "Something went wrong, we're looking into it. Please try after sometime"
           }
         })
-    },
-  },
+    }
+  }
 }
 </script>
 
