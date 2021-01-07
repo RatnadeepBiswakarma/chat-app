@@ -1,7 +1,11 @@
 <template>
   <div class="relative overflow-x-hidden chat-app">
     <transition name="zoomOut" appear>
-      <RoomList class="bg-white" :class="{ zoomOut: focused }" />
+      <RoomList
+        v-if="isLoggedIn"
+        class="bg-white"
+        :class="{ zoomOut: focused }"
+      />
     </transition>
     <router-view> </router-view>
   </div>
@@ -36,7 +40,7 @@ export default {
   },
   computed: {
     ...mapGetters("chat", ["socket", "getOpenWindow"]),
-    ...mapGetters("auth", ["getMyDetails"]),
+    ...mapGetters("auth", ["getMyDetails", "isLoggedIn"]),
     focused() {
       return this.$route.path === "/"
     }

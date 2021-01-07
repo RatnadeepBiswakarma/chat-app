@@ -2,7 +2,8 @@ import actions from "./actions"
 import mutations from "./mutations"
 
 const getters = {
-  getMyDetails: state => state.myDetails
+  getMyDetails: state => state.myDetails,
+  isLoggedIn: state => state.myDetails && state.myDetails.id ? true : false
 }
 
 const state = () => ({
