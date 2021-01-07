@@ -26,6 +26,7 @@
 <script>
 import SingleTick from "@/components/Main/Chat/SingleTick"
 import DoubleTick from "@/components/Main/Chat/DoubleTick"
+import { mapGetters } from "vuex"
 
 export default {
   components: { SingleTick, DoubleTick },
@@ -35,6 +36,9 @@ export default {
       required: true,
     },
   },
+  computed: {
+    ...mapGetters("auth", ["getMyDetails"]),
+  },
   methods: {
     getUserName(user) {
       return `${user.first_name} ${user.last_name}`
@@ -43,7 +47,7 @@ export default {
       return first_name.slice(0, 1)
     },
     sentByMe(senderId) {
-      return senderId === localStorage.userId
+      return senderId === this.getMyDetails.id
     },
   },
 }

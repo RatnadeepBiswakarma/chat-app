@@ -63,6 +63,7 @@ export default {
       "socket",
       "getLastMessage",
     ]),
+    ...mapGetters("auth", ["getMyDetails"]),
     prifilePicAttributes() {
       return { width: 32, height: 32 }
     },
@@ -75,7 +76,7 @@ export default {
     getOtherUser() {
       if (this.getOpenWindow) {
         let user = this.getOpenWindow.users.find(
-          user => user.id !== localStorage.userId
+          user => user.id !== this.getMyDetails.id
         )
         if (user) {
           return user
@@ -174,7 +175,7 @@ export default {
       // send message
       const payload = {
         text: this.message,
-        sender_id: localStorage.userId,
+        sender_id: this.getMyDetails.id,
       }
       if (this.getOpenWindow) {
         payload.room_id = this.getOpenWindow.id
@@ -192,7 +193,7 @@ export default {
       if (this.getOpenWindow) {
         this.emitSocketEvent("typing", {
           room_id: this.getOpenWindow.id,
-          sender_id: localStorage.userId,
+          sender_id: this.getMyDetails.id,
         })
       }
     },
@@ -200,7 +201,7 @@ export default {
       if (this.getOpenWindow) {
         this.emitSocketEvent("no_longer_typing", {
           room_id: this.getOpenWindow.id,
-          sender_id: localStorage.userId,
+          sender_id: this.getMyDetails.id,
         })
       }
     },

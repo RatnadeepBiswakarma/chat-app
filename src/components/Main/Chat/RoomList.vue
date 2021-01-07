@@ -62,6 +62,7 @@ import { format, parseISO, differenceInDays } from "date-fns"
 export default {
   components: { AppIcon },
   computed: {
+    ...mapGetters("auth", ["getMyDetails"]),
     ...mapGetters("chat", [
       "getAllRooms",
       "getUnreadCounts",
@@ -80,7 +81,7 @@ export default {
       return `#${Math.floor(Math.random() * 16777215).toString(16)}`
     },
     getRoomName(users) {
-      const user = users.find(item => item.id !== localStorage.userId)
+      const user = users.find(item => item.id !== this.getMyDetails.id)
       return `${user.first_name} ${user.last_name}`
     },
     chatWith(room) {

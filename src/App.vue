@@ -18,10 +18,9 @@ export default {
   created() {
     validateUserToken()
       .then(res => {
-        console.log(res.data.user)
         this.UPDATE_MY_DETAILS(res.data.user)
         const socket = socketConnect("http://localhost:5050/", {
-          auth: { userId: localStorage.userId },
+          auth: { userId: this.getMyDetails.id },
           transports: ["websocket"]
         })
         this.UPDATE_SOCKET(socket)
@@ -37,6 +36,7 @@ export default {
   },
   computed: {
     ...mapGetters("chat", ["socket", "getOpenWindow"]),
+    ...mapGetters("auth", ["getMyDetails"]),
     focused() {
       return this.$route.path === "/"
     }
@@ -66,20 +66,20 @@ export default {
     handleNewRoomCreated(room) {
       this.UPDATE_NEW_ROOM(room)
       // open the chat window if this user started the chat
-      if (room.creator_id === localStorage.userId) {
+      if (room.creator_id === this.getMyDetails.id) {
         this.UPDATE_CHAT_WINDOW(room)
         this.$router.push({ name: "Chat", params: { roomId: room.id } })
       }
     },
     handleNewMessage(message) {
-      if (message.sender_id !== localStorage.userId) {
+      if (message.sender_id !== this.getMyDetails.id) {
         // update other users with message delivery
         this.messageReceived(message)
       }
       if (this.getOpenWindow && this.getOpenWindow.id === message.room_id) {
         this.UPDATE_NEW_MESSAGE(message)
         // do not mark own message as read
-        if (message.sender_id !== localStorage.userId) {
+        if (message.sender_id !== this.getMyDetails.id) {
           this.emitRead(this.getOpenWindow.id, message.sender_id)
         }
       } else {
