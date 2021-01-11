@@ -13,9 +13,17 @@
         </div>
         <div class="name text-base text-white ml-2 flex flex-col leading-tight">
           {{ getFullName }}
-          <small class="text-green text-xs font-normal typing-text">{{
-            isTyping ? "typing..." : ""
-          }}</small>
+          <small
+            class="text-xs font-normal"
+            :class="{ 'typing-text': isTyping }"
+            >{{
+              isTyping
+                ? "typing..."
+                : getLastOnlinetime
+                ? `Last online ${getLastOnlinetime}`
+                : ""
+            }}</small
+          >
         </div>
       </div>
       <div ref="messages" class="messages overflow-y-auto py-4">
@@ -45,6 +53,7 @@ import { mapActions, mapGetters } from "vuex"
 import { getMessages, patchRead } from "@/apis/messages"
 import Back from "@/components/Shared/Back"
 import AppIcon from "@/components/Shared/AppIcon"
+import { format, parseISO, differenceInDays } from "date-fns"
 
 export default {
   components: { Message, Back, AppIcon },
@@ -64,6 +73,18 @@ export default {
       "getLastMessage"
     ]),
     ...mapGetters("auth", ["getMyDetails"]),
+    getLastOnlinetime() {
+      if (!this.getOtherUser || !this.getOtherUser.last_online) {
+        return ""
+      }
+      if (
+        differenceInDays(parseISO(this.getOtherUser.last_online), new Date()) >
+        1
+      ) {
+        return format(parseISO(this.getOtherUser.last_online), "dd/MM/yy")
+      }
+      return format(parseISO(this.getOtherUser.last_online), "HH:mm")
+    },
     prifilePicAttributes() {
       return { width: 32, height: 32 }
     },
