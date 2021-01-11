@@ -20,23 +20,29 @@ import { validateUserToken } from "@/apis/auth"
 export default {
   components: { RoomList },
   created() {
-    validateUserToken()
-      .then(res => {
-        this.UPDATE_MY_DETAILS(res.data.user)
-        const socket = socketConnect("http://localhost:5050/", {
-          auth: { userId: this.getMyDetails.id },
-          transports: ["websocket"]
+    if (localStorage.token) {
+      validateUserToken()
+        .then(res => {
+          this.UPDATE_MY_DETAILS(res.data.user)
+          const socket = socketConnect("http://localhost:5050/", {
+            auth: { userId: this.getMyDetails.id },
+            transports: ["websocket"]
+          })
+          this.UPDATE_SOCKET(socket)
+          this.bindSocketEvents()
+          this.UPDATE_ALL_ROOMS()
         })
-        this.UPDATE_SOCKET(socket)
-        this.bindSocketEvents()
-        this.UPDATE_ALL_ROOMS()
-      })
-      .catch(err => {
-        console.error(err)
-      })
+        .catch(err => {
+          console.error(err)
+        })
+    }
   },
   mounted() {
-    this.$router.replace("/")
+    if (localStorage.token) {
+      this.$router.replace("/")
+    } else {
+      this.$router.replace({ name: "LoginPage" })
+    }
   },
   computed: {
     ...mapGetters("chat", ["socket", "getOpenWindow"]),

@@ -179,7 +179,7 @@ export default {
 
 @media screen and (max-width: 540px) {
   .form {
-    max-width: 80%;
+    max-width: 95%;
     top: 40%;
     left: 50%;
   }
