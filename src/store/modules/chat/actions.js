@@ -19,8 +19,8 @@ const actions = {
         console.log(err)
       })
   },
-  UPDATE_DELIVERED({ commit }, message) {
-    commit("SET_DELIVERED", message)
+  UPDATE_DELIVERED({ commit }, room_id) {
+    commit("SET_DELIVERED", room_id)
   },
   UPDATE_READ({ commit }, room_id) {
     commit("SET_READ", room_id)

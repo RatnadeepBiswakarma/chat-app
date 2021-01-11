@@ -72,6 +72,7 @@ export default {
       this.socket.on("no_longer_typing", this.removeTyping)
       this.socket.on("read_updated", this.handleMessageRead)
       this.socket.on("message_delivered", this.handleMessageDeliver)
+      this.socket.on("all_messages_delivered", this.handleAllMessagesDelivery)
     },
     handleNewRoomCreated(room) {
       this.UPDATE_NEW_ROOM(room)
@@ -100,7 +101,10 @@ export default {
       this.socket.emit("message_received", message)
     },
     handleMessageDeliver(message) {
-      this.UPDATE_DELIVERED(message)
+      this.UPDATE_DELIVERED(message.room_id)
+    },
+    handleAllMessagesDelivery(data) {
+      this.UPDATE_DELIVERED(data.room_id)
     },
     emitRead(room_id, sender_id) {
       this.socket.emit("read_message", {

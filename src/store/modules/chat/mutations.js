@@ -37,15 +37,15 @@ const mutations = {
     state.lastMessage = message
     state.latestMessages[message.room_id] = message
   },
-  SET_DELIVERED(state, message) {
-    if (state.messages[message.room_id]) {
-      const localCopy = [...state.messages[message.room_id]]
+  SET_DELIVERED(state, room_id) {
+    if (state.messages[room_id]) {
+      const localCopy = [...state.messages[room_id]]
       localCopy.forEach(m => {
         if (m.status === "sent") {
           m.status = "delivered"
         }
       })
-      state.messages[message.room_id] = localCopy
+      state.messages[room_id] = localCopy
     }
   },
   SET_READ(state, room_id) {
@@ -78,7 +78,7 @@ const mutations = {
   },
   SET_NEW_ROOM(state, room) {
     state.allRooms = [room, ...state.allRooms]
-  },
+  }
 }
 
 export default mutations
