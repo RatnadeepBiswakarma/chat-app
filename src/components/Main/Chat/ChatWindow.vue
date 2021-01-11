@@ -14,7 +14,7 @@
         <div class="name text-base text-white ml-2 flex flex-col leading-tight">
           {{ getFullName }}
           <small
-            class="text-xs font-normal"
+            class="text-xs font-normal scale-up"
             :class="{ 'typing-text': isTyping }"
             >{{
               isTyping
