@@ -7,10 +7,13 @@ const actions = {
   UPDATE_ROOM_MESSAGES({ commit }, payload) {
     commit("SET_ROOM_MESSAGE", payload)
   },
-  UPDATE_ALL_ROOMS({ commit }) {
+  UPDATE_ALL_ROOMS({ commit, state, rootState }) {
     getRooms()
       .then(res => {
         commit("SET_ALL_ROOMS", res.data.rooms)
+        state.socket.emit("all_messages_delivered", {
+          user_id: rootState.auth.myDetails.id
+        })
       })
       .catch(err => {
         console.log(err)
@@ -48,7 +51,7 @@ const actions = {
   },
   UPDATE_NEW_ROOM({ commit }, room) {
     commit("SET_NEW_ROOM", room)
-  },
+  }
 }
 
 export default actions

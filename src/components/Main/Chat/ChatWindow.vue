@@ -51,7 +51,7 @@ export default {
   data() {
     return {
       message: "",
-      timerId: null,
+      timerId: null
     }
   },
   computed: {
@@ -61,7 +61,7 @@ export default {
       "getNewUser",
       "allMessages",
       "socket",
-      "getLastMessage",
+      "getLastMessage"
     ]),
     ...mapGetters("auth", ["getMyDetails"]),
     prifilePicAttributes() {
@@ -96,7 +96,7 @@ export default {
         this.getOpenWindow &&
         this.getTypingUsers.includes(this.getOpenWindow.id)
       )
-    },
+    }
   },
   created() {
     if (!this.getOpenWindow && !this.getNewUser) {
@@ -124,7 +124,7 @@ export default {
       if (nextRoute.name === "Chat") {
         this.fetchMessages()
       }
-    },
+    }
   },
   mounted() {
     this.scrollToBottom()
@@ -139,7 +139,7 @@ export default {
       "UPDATE_NEW_USER_DETAILS",
       "UPDATE_ROOM_MESSAGES",
       "UPDATE_READ",
-      "UPDATE_CHAT_WINDOW",
+      "UPDATE_CHAT_WINDOW"
     ]),
     focusInput() {
       if (this.$refs.msgBox) {
@@ -175,9 +175,10 @@ export default {
       // send message
       const payload = {
         text: this.message,
-        sender_id: this.getMyDetails.id,
+        sender_id: this.getMyDetails.id
       }
       if (this.getOpenWindow) {
+        payload.target_id = this.getOtherUser.id
         payload.room_id = this.getOpenWindow.id
       } else {
         payload.target_id = this.getNewUser.id
@@ -193,7 +194,7 @@ export default {
       if (this.getOpenWindow) {
         this.emitSocketEvent("typing", {
           room_id: this.getOpenWindow.id,
-          sender_id: this.getMyDetails.id,
+          sender_id: this.getMyDetails.id
         })
       }
     },
@@ -201,7 +202,7 @@ export default {
       if (this.getOpenWindow) {
         this.emitSocketEvent("no_longer_typing", {
           room_id: this.getOpenWindow.id,
-          sender_id: this.getMyDetails.id,
+          sender_id: this.getMyDetails.id
         })
       }
     },
@@ -210,11 +211,11 @@ export default {
     },
     markMessagesAsRead() {
       const payload = {
-        sender_id: this.getOtherUser.id,
+        sender_id: this.getOtherUser.id
       }
       patchRead(this.getOpenWindow.id, payload)
         .then(() => {
-          this.UPDATE_READ(this.getOpenWindow.id)
+          // do nothing
         })
         .catch(err => console.error(err))
       this.updateReadToSocket()
@@ -222,7 +223,7 @@ export default {
     updateReadToSocket() {
       this.socket.emit("read_message", {
         room_id: this.getOpenWindow.id,
-        sender_id: this.getOtherUser.id,
+        sender_id: this.getOtherUser.id
       })
     },
     fetchMessages() {
@@ -230,15 +231,15 @@ export default {
         .then(res => {
           this.UPDATE_ROOM_MESSAGES({
             room_id: this.getOpenWindow.id,
-            messages: res.data.items,
+            messages: res.data.items
           })
           this.markMessagesAsRead()
         })
         .catch(err => {
           console.log(err)
         })
-    },
-  },
+    }
+  }
 }
 </script>
 
