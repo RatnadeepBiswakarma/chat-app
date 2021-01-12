@@ -7,7 +7,7 @@
         :class="{ zoomOut: focused }"
       />
     </transition>
-    <router-view> </router-view>
+    <router-view @setup="setup"> </router-view>
   </div>
 </template>
 
@@ -21,21 +21,7 @@ export default {
   components: { RoomList },
   created() {
     if (localStorage.token) {
-      validateUserToken()
-        .then(res => {
-          this.UPDATE_MY_DETAILS(res.data.user)
-          const socket = socketConnect("http://localhost:5050/", {
-            auth: { userId: this.getMyDetails.id },
-            transports: ["websocket"]
-          })
-          this.UPDATE_SOCKET(socket)
-          this.bindSocketEvents()
-          this.UPDATE_ALL_ROOMS()
-          this.socket.on("connect", () => this.updateUserActiveStatus(true))
-        })
-        .catch(err => {
-          console.error(err)
-        })
+      this.setup()
     }
   },
   mounted() {
@@ -70,6 +56,23 @@ export default {
     ]),
     ...mapActions("auth", ["UPDATE_MY_DETAILS"]),
     ...mapActions("user", ["UPDATE_USER_ACTIVE_STATE"]),
+    setup() {
+      validateUserToken()
+        .then(res => {
+          this.UPDATE_MY_DETAILS(res.data.user)
+          const socket = socketConnect("http://localhost:5050/", {
+            auth: { userId: this.getMyDetails.id },
+            transports: ["websocket"]
+          })
+          this.UPDATE_SOCKET(socket)
+          this.bindSocketEvents()
+          this.UPDATE_ALL_ROOMS()
+          this.socket.on("connect", () => this.updateUserActiveStatus(true))
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    },
     bindSocketEvents() {
       this.socket.on("room_created", this.handleNewRoomCreated)
       this.socket.on("new_message", this.handleNewMessage)

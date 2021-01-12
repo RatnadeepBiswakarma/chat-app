@@ -93,7 +93,7 @@ export default {
           localStorage.token = res.data.token
           localStorage.user = JSON.stringify(res.data.user)
           localStorage.userId = res.data.user.id
-
+          this.$emit("setup")
           this.$router.push({ name: "Home" })
         })
         .catch(err => {
