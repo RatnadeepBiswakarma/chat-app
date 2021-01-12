@@ -14,6 +14,7 @@
         <div class="name text-base text-white ml-2 flex flex-col leading-tight">
           {{ getFullName }}
           <small
+            v-if="subText"
             class="text-xs font-normal scale-up"
             :class="{ 'typing-text': isTyping || isOnline }"
             >{{ subText }}</small
@@ -81,7 +82,10 @@ export default {
       return ""
     },
     isOnline() {
-      return this.getOnlineRooms[this.getOpenWindow.id]
+      if (this.getOpenWindow) {
+        return this.getOnlineRooms[this.getOpenWindow.id]
+      }
+      return false
     },
     getLastOnlinetime() {
       if (!this.getOtherUser || !this.getOtherUser.last_online) {
@@ -119,6 +123,9 @@ export default {
     getFullName() {
       if (this.getOtherUser.first_name) {
         return `${this.getOtherUser.first_name} ${this.getOtherUser.last_name}`
+      }
+      if (this.getNewUser) {
+        return `${this.getNewUser.first_name} ${this.getNewUser.last_name}`
       }
       return "New Chat"
     },
