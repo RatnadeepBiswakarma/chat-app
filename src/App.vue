@@ -31,6 +31,7 @@ export default {
           this.UPDATE_SOCKET(socket)
           this.bindSocketEvents()
           this.UPDATE_ALL_ROOMS()
+          this.socket.on("connect", () => this.updateUserActiveStatus(true))
         })
         .catch(err => {
           console.error(err)
@@ -43,6 +44,8 @@ export default {
     } else {
       this.$router.replace({ name: "LoginPage" })
     }
+    window.onblur = () => this.updateUserActiveStatus(false)
+    window.onfocus = () => this.updateUserActiveStatus(true)
   },
   computed: {
     ...mapGetters("chat", ["socket", "getOpenWindow"]),
@@ -65,6 +68,7 @@ export default {
       "UPDATE_NEW_ROOM"
     ]),
     ...mapActions("auth", ["UPDATE_MY_DETAILS"]),
+    ...mapActions("user", ["UPDATE_USER_ACTIVE_STATE"]),
     bindSocketEvents() {
       this.socket.on("room_created", this.handleNewRoomCreated)
       this.socket.on("new_message", this.handleNewMessage)
@@ -73,6 +77,12 @@ export default {
       this.socket.on("read_updated", this.handleMessageRead)
       this.socket.on("message_delivered", this.handleMessageDeliver)
       this.socket.on("all_messages_delivered", this.handleAllMessagesDelivery)
+    },
+    updateUserActiveStatus(status) {
+      this.UPDATE_USER_ACTIVE_STATE(status)
+      if (this.socket) {
+        this.socket.emit("user_online_status", { status })
+      }
     },
     handleNewRoomCreated(room) {
       this.UPDATE_NEW_ROOM(room)
