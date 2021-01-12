@@ -63,15 +63,15 @@ export default {
     loginPage: {
       type: Boolean,
       required: false,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {
       firstName: "",
       lastName: "",
       email: "",
-      password: "",
+      password: ""
     }
   },
   methods: {
@@ -85,7 +85,7 @@ export default {
     loginUser() {
       const payload = {
         email: this.email,
-        password: this.password,
+        password: this.password
       }
 
       loginUser(payload)
@@ -93,6 +93,7 @@ export default {
           localStorage.token = res.data.token
           localStorage.user = JSON.stringify(res.data.user)
           localStorage.userId = res.data.user.id
+
           this.$router.push({ name: "Home" })
         })
         .catch(err => {
@@ -104,7 +105,7 @@ export default {
         first_name: this.firstName,
         last_name: this.lastName,
         email: this.email,
-        password: this.password,
+        password: this.password
       }
       signupUser(payload)
         .then(res => {
@@ -119,8 +120,8 @@ export default {
           }
         })
         .catch(err => console.log(err))
-    },
-  },
+    }
+  }
 }
 </script>
 
