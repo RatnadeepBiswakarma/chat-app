@@ -78,6 +78,9 @@ const mutations = {
   },
   SET_NEW_ROOM(state, room) {
     state.allRooms = [room, ...state.allRooms]
+  },
+  SET_ONLINE_ROOM(state, data) {
+    state.onlineRooms[data.room_id] = data.status
   }
 }
 

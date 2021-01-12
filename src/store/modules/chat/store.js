@@ -16,11 +16,13 @@ const getters = {
   getLastMessage: state => state.lastMessage,
   getUnreadCounts: state => state.unreadCounts,
   getLatestMessages: state => state.latestMessages,
+  getOnlineRooms: state => state.onlineRooms,
 }
 
 const state = () => ({
   socket: null,
   allRooms: [],
+  onlineRooms: [],
   typingUsers: [],
   openWindow: null,
   newUser: null,

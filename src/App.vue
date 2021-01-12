@@ -65,6 +65,7 @@ export default {
       "UPDATE_READ",
       "UPDATE_DELIVERED",
       "UPDATE_CHAT_WINDOW",
+      "UPDATE_ONLINE_ROOM",
       "UPDATE_NEW_ROOM"
     ]),
     ...mapActions("auth", ["UPDATE_MY_DETAILS"]),
@@ -77,12 +78,19 @@ export default {
       this.socket.on("read_updated", this.handleMessageRead)
       this.socket.on("message_delivered", this.handleMessageDeliver)
       this.socket.on("all_messages_delivered", this.handleAllMessagesDelivery)
+      this.socket.on("user_online_status", this.handleOtherUserOnlineStatus)
     },
     updateUserActiveStatus(status) {
       this.UPDATE_USER_ACTIVE_STATE(status)
       if (this.socket) {
-        this.socket.emit("user_online_status", { status })
+        this.socket.emit("user_online_status", {
+          status,
+          user_id: this.getMyDetails.id
+        })
       }
+    },
+    handleOtherUserOnlineStatus(data) {
+      this.UPDATE_ONLINE_ROOM(data)
     },
     handleNewRoomCreated(room) {
       this.UPDATE_NEW_ROOM(room)

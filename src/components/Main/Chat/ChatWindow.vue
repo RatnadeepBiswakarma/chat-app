@@ -15,14 +15,8 @@
           {{ getFullName }}
           <small
             class="text-xs font-normal scale-up"
-            :class="{ 'typing-text': isTyping }"
-            >{{
-              isTyping
-                ? "typing..."
-                : getLastOnlinetime
-                ? `Last online ${getLastOnlinetime}`
-                : ""
-            }}</small
+            :class="{ 'typing-text': isTyping || isOnline }"
+            >{{ subText }}</small
           >
         </div>
       </div>
@@ -70,9 +64,25 @@ export default {
       "getNewUser",
       "allMessages",
       "socket",
+      "getOnlineRooms",
       "getLastMessage"
     ]),
     ...mapGetters("auth", ["getMyDetails"]),
+    subText() {
+      if (this.isTyping) {
+        return "typing..."
+      }
+      if (this.isOnline) {
+        return "online"
+      }
+      if (this.getLastOnlinetime) {
+        return `Last online ${this.getLastOnlinetime}`
+      }
+      return ""
+    },
+    isOnline() {
+      return this.getOnlineRooms[this.getOpenWindow.id]
+    },
     getLastOnlinetime() {
       if (!this.getOtherUser || !this.getOtherUser.last_online) {
         return ""

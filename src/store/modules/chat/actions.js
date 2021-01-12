@@ -51,6 +51,9 @@ const actions = {
   },
   UPDATE_NEW_ROOM({ commit }, room) {
     commit("SET_NEW_ROOM", room)
+  },
+  UPDATE_ONLINE_ROOM({ commit }, data) {
+    commit("SET_ONLINE_ROOM", data)
   }
 }
 
