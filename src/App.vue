@@ -52,6 +52,7 @@ export default {
       "UPDATE_DELIVERED",
       "UPDATE_CHAT_WINDOW",
       "UPDATE_ONLINE_ROOM",
+      "ADD_ALL_UNREADS",
       "UPDATE_NEW_ROOM"
     ]),
     ...mapActions("auth", ["UPDATE_MY_DETAILS"]),
@@ -67,7 +68,10 @@ export default {
           this.UPDATE_SOCKET(socket)
           this.bindSocketEvents()
           this.UPDATE_ALL_ROOMS()
-          this.socket.on("connect", () => this.updateUserActiveStatus(true))
+          this.socket.on("connect", () => {
+            this.updateUserActiveStatus(true)
+            this.socket.emit("get_unread_messages")
+          })
         })
         .catch(err => {
           console.error(err)
@@ -82,6 +86,7 @@ export default {
       this.socket.on("message_delivered", this.handleMessageDeliver)
       this.socket.on("all_messages_delivered", this.handleAllMessagesDelivery)
       this.socket.on("user_online_status", this.handleOtherUserOnlineStatus)
+      this.socket.on("unread_messages", this.handleUnreadMessages)
     },
     updateUserActiveStatus(status) {
       this.UPDATE_USER_ACTIVE_STATE(status)
@@ -141,6 +146,9 @@ export default {
     },
     removeTyping(data) {
       this.EXCLUDE_TYPING_ROOM(data.room_id)
+    },
+    handleUnreadMessages(data) {
+      this.ADD_ALL_UNREADS(data.unreads)
     }
   }
 }

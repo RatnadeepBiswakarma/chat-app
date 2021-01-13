@@ -46,6 +46,9 @@ const actions = {
   ADD_UNREAD_MESSAGE({ commit }, message) {
     commit("SET_UNREAD_MESSAGE", message)
   },
+  ADD_ALL_UNREADS( {commit }, unreads) {
+    commit("SET_ALL_UNREADS", unreads)
+  },
   EXCLUDE_UNREAD_MESSAGE({ commit }, room_id) {
     commit("REMOVE_UNREAD_MESSAGE", room_id)
   },

@@ -71,6 +71,9 @@ const mutations = {
     state.unreadCounts = localCopy
     state.latestMessages[message.room_id] = message
   },
+  SET_ALL_UNREADS(state, unreads) {
+    state.unreadCounts = unreads
+  },
   REMOVE_UNREAD_MESSAGE(state, room_id) {
     Reflect.deleteProperty(state.unreadCounts, room_id)
   },
