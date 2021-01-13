@@ -61,20 +61,18 @@ const mutations = {
     state[data.room_id] = data.messages
   },
   SET_UNREAD_MESSAGE(state, message) {
-    const localCopy = JSON.parse(JSON.stringify(state.unreadCounts))
-    const index = localCopy.findIndex(item => item.room_id === message.room_id)
-    if (index >= 0) {
-      localCopy[index].count += 1
-      state.unreadCounts = localCopy
+    const localCopy = Object.assign({}, state.unreadCounts)
+    if (hasKey(localCopy, message.room_id)) {
+      localCopy[message.room_id].message = message
+      localCopy[message.room_id].count += 1
     } else {
-      state.unreadCounts = [...localCopy, { count: 1, ...message }]
+      localCopy[message.room_id] = { message, count: 1 }
     }
+    state.unreadCounts = localCopy
     state.latestMessages[message.room_id] = message
   },
   REMOVE_UNREAD_MESSAGE(state, room_id) {
-    state.unreadCounts = state.unreadCounts.filter(
-      item => item.room_id !== room_id
-    )
+    Reflect.deleteProperty(state.unreadCounts, room_id)
   },
   SET_NEW_ROOM(state, room) {
     state.allRooms = [room, ...state.allRooms]

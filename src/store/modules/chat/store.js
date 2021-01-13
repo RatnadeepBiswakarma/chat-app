@@ -28,7 +28,7 @@ const state = () => ({
   newUser: null,
   messages: {},
   lastMessage: {},
-  unreadCounts: [],
+  unreadCounts: {},
   latestMessages: {},
 })
 

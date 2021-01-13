@@ -66,14 +66,14 @@ export default {
     ...mapGetters("chat", [
       "getAllRooms",
       "getUnreadCounts",
-      "getLatestMessages",
+      "getLatestMessages"
     ]),
     iconAttributes() {
       return { width: 20, height: 20, fill: "#fff" }
     },
     profilePicAttributes() {
       return { width: 40, height: 40 }
-    },
+    }
   },
   methods: {
     ...mapActions("chat", ["UPDATE_CHAT_WINDOW", "EXCLUDE_UNREAD_MESSAGE"]),
@@ -90,9 +90,8 @@ export default {
       this.EXCLUDE_UNREAD_MESSAGE(room.id)
     },
     unreads(room_id) {
-      let room = this.getUnreadCounts.find(item => item.room_id === room_id)
-      if (room) {
-        return room.count
+      if (this.getUnreadCounts[room_id]) {
+        return this.getUnreadCounts[room_id].count
       }
       return 0
     },
@@ -109,8 +108,8 @@ export default {
         return format(parseISO(date), "dd/MM/yy")
       }
       return format(parseISO(date), "HH:mm")
-    },
-  },
+    }
+  }
 }
 </script>
 
