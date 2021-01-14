@@ -1,88 +1,165 @@
 <template>
-  <div class="login-page">
-    <form class="form" @submit.prevent="handleSubmit">
-      <h2 class="text-3xl">{{ loginPage ? "Log In" : "Sign Up" }}</h2>
-      <div v-if="!loginPage">
-        <label for="name">First Name</label>
-        <input
-          v-model="firstName"
-          required
-          id="firstName"
-          type="text"
-          autocomplete="off"
-        />
+  <transition name="zoomOut" appear>
+    <div class="login-page flex justify-center items-center">
+      <div class="card-wrapper" :class="getCardClass">
+        <h2
+          class="text-2xl md:text-3xl"
+          :class="{
+            'delay-fadeIn animate-duration-400': newUser || existingUser
+          }"
+        >
+          {{ heading }}
+        </h2>
+        <form class="form" @submit.prevent="handleSubmit">
+          <div class="flex flex-col mt-4">
+            <label for="email">Enter your email</label>
+            <input
+              v-model="email"
+              required
+              id="email"
+              type="email"
+              placeholder="Email"
+              autocomplete="off"
+            />
+          </div>
+          <div v-if="newUser">
+            <div class="flex flex-col mt-4 delay-fadeIn animate-duration-600">
+              <label for="name">First Name</label>
+              <input
+                ref="firstName"
+                v-model="firstName"
+                required
+                id="firstName"
+                type="text"
+                placeholder="First name"
+                autocomplete="off"
+              />
+            </div>
+            <div class="flex flex-col mt-4 delay-fadeIn animate-duration-700">
+              <label for="lastName">Last Name</label>
+              <input
+                v-model="lastName"
+                required
+                id="lastName"
+                type="text"
+                placeholder="Last name"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+          <div
+            v-if="newUser || existingUser"
+            class="flex flex-col mt-4 delay-fadeIn animate-duration-800"
+          >
+            <label for="password">Password</label>
+            <input
+              ref="password"
+              v-model="password"
+              required
+              id="password"
+              placeholder="Password"
+              type="password"
+            />
+            <small class="text-red-500 text-center h-4">{{
+              errorMessage
+            }}</small>
+          </div>
+          <div
+            class="block flex justify-end items-center"
+            :class="{
+              'delay-fadeIn animate-duration-900 justify-between':
+                newUser || existingUser
+            }"
+          >
+            <input
+              v-show="newUser || existingUser"
+              type="button"
+              class="submit-btn px-4"
+              value="Back"
+              @click.prevent="goBack"
+            />
+            <input type="submit" class="submit-btn px-4" value="Next" />
+          </div>
+        </form>
       </div>
-      <div v-if="!loginPage">
-        <label for="lastName">Last Name</label>
-        <input
-          v-model="lastName"
-          required
-          id="lastName"
-          type="text"
-          autocomplete="off"
-        />
-      </div>
-      <div>
-        <label for="email">Email</label>
-        <input
-          v-model="email"
-          required
-          id="email"
-          type="email"
-          autocomplete="off"
-        />
-      </div>
-      <div>
-        <label for="password">Password</label>
-        <input v-model="password" required id="password" type="password" />
-      </div>
-      <div>
-        <input type="submit" class="submit-btn" value="JOIN" />
-      </div>
-      <p v-if="loginPage" class="inline-block mt-4">
-        Don't have account?
-        <router-link class="text-blue-400 ml-2" to="/signup">
-          Sign Up
-        </router-link>
-      </p>
-      <p v-else class="inline-block mt-4">
-        Already have account?
-        <router-link class="text-blue-400 ml-2" to="/login">
-          Login
-        </router-link>
-      </p>
-    </form>
-  </div>
+    </div>
+  </transition>
 </template>
 
 <script>
 import { signupUser, loginUser } from "@/apis/auth"
+import { getUser } from "@/apis/room"
 
 export default {
-  props: {
-    loginPage: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
-  },
   data() {
     return {
       firstName: "",
       lastName: "",
-      email: "",
+      email: "test@mail.com",
+      newUser: false,
+      existingUser: false,
+      errorMessage: false,
       password: ""
+    }
+  },
+  computed: {
+    heading() {
+      if (this.existingUser) {
+        return `Welcome back! ${this.firstName}`
+      }
+      if (this.newUser) {
+        return `Let's sign up!`
+      }
+      return `Let's start`
+    },
+    getCardClass() {
+      if (this.newUser) {
+        return "card-new-user"
+      }
+      if (this.existingUser) {
+        return "card-existing-user"
+      }
+      return ""
     }
   },
   methods: {
     handleSubmit() {
-      if (this.loginPage) {
+      if (!this.newUser && !this.existingUser) {
+        this.findUser()
+      } else if (this.existingUser) {
         this.loginUser()
-      } else {
+      } else if (this.newUser) {
         this.signupUser()
       }
     },
+    findUser() {
+      this.errorMessage = ""
+      getUser(this.email)
+        .then(res => {
+          this.firstName = res.data.user.first_name
+          this.$nextTick(() => {
+            this.existingUser = true
+            this.newUser = false
+            setTimeout(() => {
+              this.$refs.password.focus()
+            }, 1000)
+          })
+        })
+        .catch(() => {
+          this.existingUser = false
+          this.newUser = true
+          setTimeout(() => {
+            this.$refs.firstName.focus()
+          }, 1000)
+        })
+    },
+    goBack() {
+      this.existingUser = false
+      this.newUser = false
+      this.firstName = ""
+    },
     loginUser() {
+      this.errorMessage = ""
       const payload = {
         email: this.email,
         password: this.password
@@ -97,7 +174,9 @@ export default {
           this.$router.push({ name: "Home" })
         })
         .catch(err => {
-          console.log(err)
+          if (err && err.response.status === 403) {
+            this.errorMessage = "Invalid password"
+          }
         })
     },
     signupUser() {
@@ -131,18 +210,24 @@ export default {
   height: 100vh;
 }
 
-.form {
+.card-wrapper {
   width: 100%;
-  position: absolute;
+  height: 14rem;
   max-width: 30rem;
   margin: auto;
-  top: 50%;
-  left: 30%;
-  transform: translate(-50%, -50%);
   padding: 1.5rem;
   box-shadow: 0 2px 5px 0 #1b1b1b;
   border-radius: 2px;
   background-color: var(--primary-bg-color);
+  transition: height 0.3s ease-out;
+}
+
+.card-new-user {
+  height: 31.25rem;
+}
+
+.card-existing-user {
+  height: 21rem;
 }
 
 .login-page h2 {
@@ -150,19 +235,13 @@ export default {
   margin: 0;
 }
 
-.form > div {
-  display: flex;
-  flex-direction: column;
-  margin-top: 1rem;
-}
-
-.form > div > input {
+.form input {
   padding: 0.5rem;
   border-radius: 3px;
   margin-top: 0.5rem;
-  color: #d6d6d6;
+  color: var(--primary-color);
   border: 1px solid;
-  border-color: var(--primary-bg-color);
+  border-color: var(--auth-page-input-default-border);
   transition: border-color 0.3s ease-out;
   background-color: var(--primary-bg-color-dark);
 }
@@ -170,6 +249,8 @@ export default {
 .form .submit-btn {
   text-align: center;
   background: #7289da;
+  padding: 0.5rem 1rem;
+  color: var(--auth-page-submit-btn-color);
 }
 
 .form input:active,
@@ -179,10 +260,11 @@ export default {
 }
 
 @media screen and (max-width: 540px) {
-  .form {
-    max-width: 95%;
-    top: 40%;
-    left: 50%;
+  .card-wrapper {
+    max-width: 96%;
+    top: 5%;
+    left: 0;
+    margin: 2%;
   }
 }
 </style>

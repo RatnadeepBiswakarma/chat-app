@@ -11,6 +11,8 @@
   --typing-text-color: #35ff35;
   --search-input-font-color: #ffffff;
   --search-input-placeholder-color: #c0c0c0;
+  --auth-page-submit-btn-color: #fff;
+  --auth-page-input-default-border: #e6e6e6;
 }
 
 .messages {

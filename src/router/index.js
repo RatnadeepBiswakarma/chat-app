@@ -8,20 +8,9 @@ const routes = [
   {
     path: "/login",
     name: "LoginPage",
-    props: {
-      loginPage: true,
-    },
     component: load("Auth/Auth"),
     meta: {
       title: "Login Page",
-    },
-  },
-  {
-    path: "/signup",
-    name: "SignupPage",
-    component: load("Auth/Auth"),
-    meta: {
-      title: "Signup Page",
     },
   },
   {
