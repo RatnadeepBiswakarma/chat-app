@@ -31,7 +31,7 @@
           ref="msgBox"
           type="text"
           v-model="message"
-          class="input h-full w-full text-grey p-2 border"
+          class="input h-full w-full text-grey p-2 outline-none"
           placeholder="Enter your message"
           @input="handleMessageInput"
         />
@@ -318,9 +318,20 @@ export default {
 
 .input-section {
   height: 3rem;
+  border-top: 1px solid var(--message-input-border-top-color);
+}
+
+.input {
+  background: var(--message-input-bg-color);
+  color: var(--message-input-color);
+}
+
+.input::placeholder {
+  color: var(--message-input-placeholder-color);
 }
 
 .send-btn {
   width: 3rem;
+  background: var(--message-input-bg-color);
 }
 </style>
