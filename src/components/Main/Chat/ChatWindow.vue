@@ -3,7 +3,7 @@
     <div class="">
       <div class="header flex items-center">
         <button
-          class="back-button text-white leading-none ml-2 px-2"
+          class="back-button text-white leading-none pl-4 px-2 h-full"
           @click="goBack"
         >
           <Back class="back-arrow" />
