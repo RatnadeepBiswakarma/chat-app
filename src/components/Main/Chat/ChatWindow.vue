@@ -1,6 +1,6 @@
 <template>
   <transition name="zoomIn" appear>
-    <div class="">
+    <div class="chat-window flex flex-col">
       <div class="header flex items-center">
         <button
           class="back-button text-white leading-none pl-4 px-2 h-full"

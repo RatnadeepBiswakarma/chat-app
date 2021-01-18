@@ -172,6 +172,10 @@ body {
   height: 94vh;
 }
 
+.chat-window {
+  height: 94vh;
+}
+
 @media screen and (max-width: 940px) {
   .room-list-container {
     max-width: 100%;
@@ -193,6 +197,10 @@ body {
     position: absolute;
     top: 0;
     left: 0;
+    height: 100vh;
+  }
+
+  .chat-window {
     height: 100vh;
   }
 
