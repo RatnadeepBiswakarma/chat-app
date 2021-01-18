@@ -33,11 +33,11 @@ export default {
   props: {
     item: {
       type: Object,
-      required: true,
-    },
+      required: true
+    }
   },
   computed: {
-    ...mapGetters("auth", ["getMyDetails"]),
+    ...mapGetters("auth", ["getMyDetails"])
   },
   methods: {
     getUserName(user) {
@@ -48,8 +48,8 @@ export default {
     },
     sentByMe(senderId) {
       return senderId === this.getMyDetails.id
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -62,12 +62,12 @@ export default {
 }
 
 .received .message-section {
-  background-color: #3b5894;
+  background: var(--other-message-bg-color);
   border-radius: 0px 10px 8px 10px;
 }
 
 .sent .message-section {
-  background-color: var(--other-message-bg-color);
+  background: var(--own-message-bg-color);
   border-radius: 10px 0px 10px 8px;
 }
 

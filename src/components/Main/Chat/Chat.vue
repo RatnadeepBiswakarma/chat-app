@@ -14,6 +14,6 @@ export default {
 
 <style scoped>
 .chat-window-container {
-  background: var(--messages-background);
+  background: var(--chat-window-background);
 }
 </style>

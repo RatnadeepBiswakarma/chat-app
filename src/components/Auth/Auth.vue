@@ -110,7 +110,7 @@ export default {
   computed: {
     heading() {
       if (this.existingUser) {
-        return `Welcome back! ${this.firstName}`
+        return `Welcome back!`
       }
       if (this.newUser) {
         return `Let's sign up!`

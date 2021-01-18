@@ -116,11 +116,14 @@ export default {
 <style scoped>
 .room-list-container {
   background: var(--room-list-background-color);
+  backdrop-filter: blur(5px);
 }
 
 .room-list-item {
-  border-bottom: 1px solid silver;
+  border: 1px solid var(--header-border-color);
   background: var(--room-list-item-background);
+  border-radius: 3px;
+  margin: 0.3rem;
 }
 
 .user-name {
