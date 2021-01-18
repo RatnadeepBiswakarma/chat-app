@@ -8,7 +8,7 @@
     "
   >
     <div
-      class="message-section my-1 p-1 px-2 text-white leading-tight shadow-lg flex items-end"
+      class="message-section my-1 p-1 px-2 text-white leading-tight shadow-lg flex items-end whitespace-pre-wrap"
     >
       {{ item.text }}
       <span v-if="sentByMe(item.sender_id)" class="flex justify-end">

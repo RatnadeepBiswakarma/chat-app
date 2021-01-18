@@ -27,14 +27,16 @@
         </div>
       </div>
       <form class="input-section flex" @submit.prevent="sendMessage">
-        <input
+        <textarea
+          :value="message"
           ref="msgBox"
-          type="text"
-          v-model="message"
-          class="input h-full w-full text-grey p-2 outline-none"
+          contenteditable="true"
+          spellcheck="true"
+          class="input h-full w-full text-grey m-2 outline-none resize-none"
           placeholder="Enter your message"
           @input="handleMessageInput"
-        />
+          @keydown.enter="handleKeydown"
+        ></textarea>
         <input type="submit" value="➤" class="send-btn" />
       </form>
     </div>
@@ -189,10 +191,29 @@ export default {
         this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
       })
     },
-    handleMessageInput() {
+    handleMessageInput(evt) {
+      this.message = evt.target.value
       if (this.getOpenWindow) {
         this.userTyping()
         debounce(this.userNoLongerTyping, 500)
+      }
+      this.adjustHeight()
+    },
+    adjustHeight() {
+      const el = this.$refs.msgBox
+      el.style.height = "1px"
+      if (!this.message) {
+        el.value = ""
+        el.style.height = 0
+      } else {
+        el.style.height = `${3 + el.scrollHeight}px`
+        el.scrollTop = el.scrollHeight
+      }
+    },
+    handleKeydown(evt) {
+      if (!evt.shiftKey) {
+        evt.preventDefault()
+        this.sendMessage()
       }
     },
     handleNewMessage(message) {
@@ -212,7 +233,7 @@ export default {
       }
       // send message
       const payload = {
-        text: this.message,
+        text: this.message.trim(),
         sender_id: this.getMyDetails.id
       }
       if (this.getOpenWindow) {
@@ -223,6 +244,7 @@ export default {
       }
       this.emitSocketEvent("new_message", payload)
       this.message = ""
+      this.adjustHeight()
     },
     goBack() {
       this.$router.replace({ name: "Home" })
@@ -311,13 +333,15 @@ export default {
 }
 
 .input-section {
-  height: 3rem;
   border-top: 1px solid var(--message-input-border-top-color);
 }
 
 .input {
   background: var(--message-input-bg-color);
   color: var(--message-input-color);
+  min-height: 1.8rem;
+  max-height: 115px;
+  overflow-y: auto;
 }
 
 .input::placeholder {
