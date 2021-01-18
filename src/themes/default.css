@@ -10,7 +10,7 @@
   --last-message-on-room-list-unread: #079b07;
   --user-name-on-room-list: var(--primary-color);
   --last-message-seen-on-room-list: var(--secondary-light-color);
-  --last-message-seen-on-room-list-time: #9b9b9b;
+  --last-message-seen-on-room-list-time: var(--secondary-light-color);
   --typing-text-color: #35ff35;
   --search-input-font-color: #ffffff;
   --search-input-placeholder-color: #c0c0c0;

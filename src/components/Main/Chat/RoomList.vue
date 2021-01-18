@@ -23,7 +23,7 @@
         </div>
         <div class="flex justify-between w-full">
           <small
-            class="truncate w-4/5 leading-none"
+            class="truncate w-4/5"
             :class="
               unreads(room.id) === 0
                 ? 'user-list-last-message'
@@ -39,7 +39,7 @@
           </span>
           <span
             v-else-if="room.last_message"
-            class="user-list-last-message-time leading-none"
+            class="user-list-last-message-time"
           >
             {{ getLastMessageTime(room.last_message.created_at) }}
           </span>
