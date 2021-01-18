@@ -125,6 +125,9 @@ export default {
 </script>
 
 <style scoped>
+.new-chat-window-container {
+  background: var(--chat-window-background);
+}
 .back-arrow {
   width: 1.3rem;
   fill: white;
@@ -136,10 +139,6 @@ export default {
 
 .email-input::placeholder {
   color: var(--search-input-placeholder-color);
-}
-
-.room-list-item {
-  border-bottom: 1px solid silver;
 }
 
 .user-name {

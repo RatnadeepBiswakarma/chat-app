@@ -3,6 +3,7 @@
 
   --primary-color: #ffffff;
   --secondary-light-color: #eeeeee;
+  --primary-dark-color: #424242;
   --own-message-bg-color: linear-gradient(0deg, #ffffff10, #ffffff2f);
   --other-message-bg-color: linear-gradient(0deg, #29292978, #29292952);
   --secondary-color: #7289da;
@@ -12,8 +13,8 @@
   --last-message-seen-on-room-list: var(--secondary-light-color);
   --last-message-seen-on-room-list-time: var(--secondary-light-color);
   --typing-text-color: #35ff35;
-  --search-input-font-color: #ffffff;
-  --search-input-placeholder-color: #c0c0c0;
+  --search-input-font-color: var(--primary-color);
+  --search-input-placeholder-color: var(--secondary-light-color);
   --auth-page-submit-btn-bg-color: transparent;
   --auth-page-submit-btn-color: var(--primary-color);
   --auth-page-input-default-border: #b1b1b1;
@@ -22,4 +23,5 @@
   --chat-window-background: #27272752;
   --auth-page-card-wrapper-bg: #27272752;
   --header-border-color: #dfdfdf78;
+  --search-user-background: linear-gradient(0deg, #e3e3e317, #e3e3e357);
 }

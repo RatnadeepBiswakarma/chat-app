@@ -119,13 +119,6 @@ export default {
   backdrop-filter: blur(5px);
 }
 
-.room-list-item {
-  border: 1px solid var(--header-border-color);
-  background: var(--room-list-item-background);
-  border-radius: 3px;
-  margin: 0.3rem;
-}
-
 .user-name {
   color: var(--user-name-on-room-list);
   font-weight: 500;
@@ -174,6 +167,6 @@ export default {
   bottom: 1rem;
   right: 1rem;
   border-radius: 100px;
-  background-color: var(--header-bg-color);
+  background: var(--search-user-background);
 }
 </style>
