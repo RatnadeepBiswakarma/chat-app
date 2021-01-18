@@ -141,7 +141,7 @@ body {
   width: 100%;
   max-width: 90rem;
   margin: auto;
-  box-shadow: 0 4px 15px 0 #858585;
+  box-shadow: 0 4px 15px 0 #00000054;
   background-color: var(--primary-bg-color);
 }
 
