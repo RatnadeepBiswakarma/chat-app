@@ -1,5 +1,5 @@
 <template>
-  <div class="relative min-h-screen max-h-screen w-full room-list-container">
+  <div class="relative w-full room-list-container">
     <div class="header flex items-center">
       <div class="name text-xl text-white pl-12">
         All Chats
@@ -114,11 +114,6 @@ export default {
 </script>
 
 <style scoped>
-.room-list-container {
-  background: var(--room-list-background-color);
-  backdrop-filter: blur(5px);
-}
-
 .user-name {
   color: var(--user-name-on-room-list);
   font-weight: 500;

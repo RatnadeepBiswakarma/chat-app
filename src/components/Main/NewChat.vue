@@ -1,8 +1,6 @@
 <template>
   <transition name="zoomIn" appear>
-    <div
-      class="new-chat-window-container w-full min-h-screen max-h-screen bg-white"
-    >
+    <div class="new-chat-window-container w-full bg-white">
       <div class="header flex items-center">
         <button
           class="back-button text-white leading-none ml-2 px-2"
@@ -125,9 +123,6 @@ export default {
 </script>
 
 <style scoped>
-.new-chat-window-container {
-  background: var(--chat-window-background);
-}
 .back-arrow {
   width: 1.3rem;
   fill: white;

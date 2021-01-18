@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-window-container w-full h-full">
+  <div class="chat-window-container w-full">
     <ChatWindow />
   </div>
 </template>

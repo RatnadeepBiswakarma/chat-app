@@ -310,12 +310,6 @@ export default {
   z-index: 1;
 }
 
-.messages {
-  height: calc(100vh - 3rem - 3rem);
-  transform: translateZ(0);
-  will-change: transform;
-}
-
 .input-section {
   height: 3rem;
   border-top: 1px solid var(--message-input-border-top-color);
