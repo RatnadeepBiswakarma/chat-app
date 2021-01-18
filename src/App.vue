@@ -1,5 +1,8 @@
 <template>
-  <div class="relative overflow-x-hidden chat-app">
+  <div
+    class="relative overflow-x-hidden chat-app"
+    :class="{ 'full-width': loginPage }"
+  >
     <transition name="zoomOut" appear>
       <RoomList
         v-if="isLoggedIn"
@@ -38,6 +41,9 @@ export default {
     ...mapGetters("auth", ["getMyDetails", "isLoggedIn"]),
     focused() {
       return this.$route.path === "/"
+    },
+    loginPage() {
+      return this.$route.name === "LoginPage"
     }
   },
   methods: {

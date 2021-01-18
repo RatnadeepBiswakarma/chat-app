@@ -149,6 +149,10 @@ body {
   background-color: var(--primary-bg-color);
 }
 
+.full-width {
+  max-width: 100vw;
+}
+
 .messages {
   height: calc(94vh - 3rem - 3rem);
   transform: translateZ(0);
