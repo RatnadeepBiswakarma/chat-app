@@ -1,6 +1,6 @@
 <template>
   <transition name="zoomIn" appear>
-    <div>
+    <div class="">
       <div class="header flex items-center">
         <button
           class="back-button text-white leading-none ml-2 px-2"

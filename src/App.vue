@@ -4,7 +4,7 @@
       <RoomList
         v-if="isLoggedIn"
         class="bg-white"
-        :class="{ zoomOut: focused }"
+        :class="focused ? 'zoomOut' : 'off-screen-mobile'"
       />
     </transition>
     <router-view @setup="setup"> </router-view>

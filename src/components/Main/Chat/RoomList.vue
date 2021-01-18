@@ -114,8 +114,13 @@ export default {
 </script>
 
 <style scoped>
+.room-list-container {
+  background: var(--room-list-background-color);
+}
+
 .room-list-item {
   border-bottom: 1px solid silver;
+  background: var(--room-list-item-background);
 }
 
 .user-name {

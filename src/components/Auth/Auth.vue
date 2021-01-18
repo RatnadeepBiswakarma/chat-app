@@ -1,7 +1,12 @@
 <template>
   <transition name="zoomOut" appear>
     <div class="login-page flex justify-center items-center">
-      <div class="card-wrapper" :class="getCardClass">
+      <div class="particle one"></div>
+      <div class="particle two"></div>
+      <div class="particle three"></div>
+      <div class="particle four"></div>
+      <div class="particle five"></div>
+      <div class="card-wrapper relative" :class="getCardClass">
         <h2
           class="text-2xl md:text-3xl"
           :class="{
@@ -218,8 +223,9 @@ export default {
   padding: 1.5rem;
   box-shadow: 0 2px 5px 0 #1b1b1b;
   border-radius: 2px;
-  background-color: var(--primary-bg-color);
+  background-color: var(--auth-page-card-wrapper-bg);
   transition: height 0.3s ease-out;
+  backdrop-filter: blur(5px);
 }
 
 .card-new-user {
@@ -248,7 +254,7 @@ export default {
 
 .form .submit-btn {
   text-align: center;
-  background: #7289da;
+  background: var(--auth-page-submit-btn-bg-color);
   padding: 0.5rem 1rem;
   color: var(--auth-page-submit-btn-color);
 }
@@ -256,15 +262,12 @@ export default {
 .form input:active,
 .form input:focus {
   outline: none;
-  border-color: #7289da;
+  border-color: var(--primary-color);
 }
 
 @media screen and (max-width: 540px) {
   .card-wrapper {
     max-width: 96%;
-    top: 5%;
-    left: 0;
-    margin: 2%;
   }
 }
 </style>

@@ -1,9 +1,10 @@
 :root {
-  --primary-bg-color: #ffffff;
-  --primary-color: #3a3a3a;
+  --primary-bg-color: linear-gradient(19deg, #21d4fd 0%, #b721ff 100%);
+
+  --primary-color: #f6f6f6;
   --other-message-bg-color: #0093ad;
   --secondary-color: #7289da;
-  --header-bg-color: #0093ad;
+  --header-bg-color: #ffffff00;
   --last-message-on-room-list-unread: #079b07;
   --user-name-on-room-list: #444444;
   --last-message-seen-on-room-list: #808080;
@@ -11,13 +12,30 @@
   --typing-text-color: #35ff35;
   --search-input-font-color: #ffffff;
   --search-input-placeholder-color: #c0c0c0;
-  --auth-page-submit-btn-color: #fff;
-  --auth-page-input-default-border: #e6e6e6;
+  --auth-page-submit-btn-bg-color: transparent;
+  --auth-page-submit-btn-color: var(--primary-color);
+  --auth-page-input-default-border: #b1b1b1;
+  --room-list-background-color: linear-gradient(
+    90deg,
+    #dbdbdb6c,
+    #c8c8c883,
+    #ffffff4b
+  );
+  --room-list-item-background: linear-gradient(
+    90deg,
+    #ffffffa8,
+    #ffffff80,
+    #ffffff4b
+  );
+  --messages-background: #d4d4d463;
+  --auth-page-card-wrapper-bg: #27272752;
 }
 
 .messages {
   /* https://in.pinterest.com/pin/543950461247824082/ */
-  background-image: url("https://i.pinimg.com/564x/1b/b1/3f/1bb13f4acb5b69fb41bc5974c6dc8248.jpg");
+  /* background-image: url("https://i.pinimg.com/564x/1b/b1/3f/1bb13f4acb5b69fb41bc5974c6dc8248.jpg");
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: cover; */
+  /* background-color: #efebe2; */
+  /* background-image: var(--messages-background); */
 }
