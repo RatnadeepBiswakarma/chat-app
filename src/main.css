@@ -160,6 +160,7 @@ body {
   background: var(--room-list-background-color);
   backdrop-filter: blur(5px);
   height: 94vh;
+  border-right: 1px solid var(--header-border-color);
 }
 
 .new-chat-window-container {
@@ -171,6 +172,7 @@ body {
   .room-list-container {
     max-width: 100%;
     height: 100vh;
+    border-right: none;
   }
 
   .chat-window-container {

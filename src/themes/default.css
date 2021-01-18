@@ -1,13 +1,13 @@
 :root {
   --primary-bg-color: linear-gradient(19deg, #21d4fd 0%, #b721ff 100%);
-
+  --main-glass-bg-color: #27272766;
   --primary-color: #ffffff;
   --secondary-light-color: #eeeeee;
   --primary-dark-color: #424242;
   --own-message-bg-color: linear-gradient(0deg, #ffffff10, #ffffff2f);
   --other-message-bg-color: linear-gradient(0deg, #29292978, #29292952);
   --secondary-color: #7289da;
-  --header-bg-color: #ffffff00;
+  --header-bg-color: inherit;
   --last-message-on-room-list-unread: #079b07;
   --user-name-on-room-list: var(--primary-color);
   --last-message-seen-on-room-list: var(--secondary-light-color);
@@ -18,10 +18,10 @@
   --auth-page-submit-btn-bg-color: transparent;
   --auth-page-submit-btn-color: var(--primary-color);
   --auth-page-input-default-border: #b1b1b1;
-  --room-list-background-color: #27272787;
+  --room-list-background-color: var(--main-glass-bg-color);
   --room-list-item-background: linear-gradient(0deg, #ffffff18, #ffffff3b);
-  --chat-window-background: #27272752;
-  --auth-page-card-wrapper-bg: #27272752;
+  --chat-window-background: var(--main-glass-bg-color);
+  --auth-page-card-wrapper-bg: var(--main-glass-bg-color);
   --header-border-color: #dfdfdf78;
   --search-user-background: linear-gradient(0deg, #e3e3e317, #e3e3e357);
   --message-input-bg-color: transparent;
