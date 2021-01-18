@@ -32,12 +32,18 @@
           ref="msgBox"
           contenteditable="true"
           spellcheck="true"
-          class="input h-full w-full text-grey m-2 outline-none resize-none"
+          class="input h-full w-full text-grey outline-none resize-none"
           placeholder="Enter your message"
           @input="handleMessageInput"
           @keydown.enter="handleKeydown"
         ></textarea>
-        <input type="submit" value="➤" class="send-btn" />
+        <div class="flex justify-center items-center mr-2 rounded-full">
+          <input
+            type="submit"
+            value="➤"
+            class="send-btn rounded-full flex justify-center items-center"
+          />
+        </div>
       </form>
     </div>
   </transition>
@@ -206,7 +212,7 @@ export default {
         el.value = ""
         el.style.height = 0
       } else {
-        el.style.height = `${3 + el.scrollHeight}px`
+        el.style.height = `${el.scrollHeight}px`
         el.scrollTop = el.scrollHeight
       }
     },
@@ -339,9 +345,13 @@ export default {
 .input {
   background: var(--message-input-bg-color);
   color: var(--message-input-color);
-  min-height: 1.8rem;
+  min-height: 2.125rem;
+  height: 2.125rem;
   max-height: 115px;
   overflow-y: auto;
+  border-radius: 10px;
+  padding: 0.3rem;
+  margin: 0.5rem;
 }
 
 .input::placeholder {
@@ -349,7 +359,8 @@ export default {
 }
 
 .send-btn {
-  width: 3rem;
+  width: 2.125rem;
+  height: 2.125rem;
   background: var(--message-input-bg-color);
 }
 </style>

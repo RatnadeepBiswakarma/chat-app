@@ -24,7 +24,7 @@
   --auth-page-card-wrapper-bg: var(--main-glass-bg-color);
   --header-border-color: #dfdfdf78;
   --search-user-background: linear-gradient(0deg, #e3e3e317, #e3e3e357);
-  --message-input-bg-color: transparent;
+  --message-input-bg-color: #ffffff40;
   --message-input-placeholder-color: var(--secondary-light-color);
   --message-input-border-top-color: #b1b1b1;
   --message-input-color: var(--primary-color);
