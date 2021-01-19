@@ -8,5 +8,5 @@ module.exports = {
     svgRule
       .use("svg-inline-loader")
       .loader("svg-inline-loader?classPrefix&idPrefix")
-  },
+  }
 }

@@ -67,7 +67,7 @@ export default {
       validateUserToken()
         .then(res => {
           this.UPDATE_MY_DETAILS(res.data.user)
-          const socket = socketConnect("http://localhost:5050/", {
+          const socket = socketConnect(process.env.VUE_APP_BASE_URL, {
             auth: { userId: this.getMyDetails.id },
             transports: ["websocket"]
           })
