@@ -19,7 +19,7 @@
   --auth-page-submit-btn-color: var(--primary-color);
   --auth-page-input-default-border: #b1b1b1;
   --room-list-background-color: var(--main-glass-bg-color);
-  --room-list-item-background: linear-gradient(0deg, #ffffff18, #ffffff3b);
+  --room-list-item-background: linear-gradient(0deg, #0000001f, #bebebe23);
   --chat-window-background: var(--main-glass-bg-color);
   --auth-page-card-wrapper-bg: var(--main-glass-bg-color);
   --header-border-color: #dfdfdf78;

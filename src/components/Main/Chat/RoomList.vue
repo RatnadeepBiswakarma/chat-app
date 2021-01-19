@@ -9,7 +9,7 @@
       v-for="room in getAllRooms"
       :key="room.id"
       @click="chatWith(room)"
-      class="room-list-item flex items-center p-2 bg-white cursor-pointer"
+      class="room-list-item flex items-center p-2 bg-white cursor-pointer shadow-md"
     >
       <div
         class="room-pic mr-4 ml-2"
