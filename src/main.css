@@ -146,7 +146,7 @@ body {
   max-width: 90rem;
   margin: auto;
   box-shadow: 0 4px 15px 0 #00000054;
-  background-color: var(--primary-bg-color);
+  background: var(--main-glass-bg-color);
 }
 
 .full-width {
