@@ -22,9 +22,7 @@
         </div>
       </div>
       <div ref="messages" class="messages overflow-y-auto py-4">
-        <div v-for="item in allMessages" :key="item.id">
-          <Message :item="item" />
-        </div>
+        <Message v-for="item in allMessages" :key="item.id" :item="item" />
       </div>
       <form class="input-section flex" @submit.prevent="sendMessage">
         <textarea
