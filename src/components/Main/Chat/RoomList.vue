@@ -1,9 +1,14 @@
 <template>
   <div class="relative w-full room-list-container">
-    <div class="header flex items-center">
+    <div class="header flex items-center justify-between">
       <div class="name text-xl text-white pl-12">
         All Chats
       </div>
+      <router-link
+        to="/new"
+        class="search-user-header flex justify-center items-center mr-12"
+        ><AppIcon name="add-user" :attributes="iconAttributes" />
+      </router-link>
     </div>
     <div
       v-for="room in getAllRooms"
@@ -162,6 +167,14 @@ export default {
   bottom: 1rem;
   right: 1rem;
   border-radius: 100px;
+  background: var(--search-user-background);
+}
+
+.search-user-header {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 100px;
+  background: transparent;
   background: var(--search-user-background);
 }
 </style>

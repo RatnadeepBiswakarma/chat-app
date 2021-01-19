@@ -198,7 +198,23 @@ body {
   height: 94vh;
 }
 
+.search-user-header {
+  display: flex;
+}
+
+.search-user {
+  display: none;
+}
+
 @media screen and (max-width: 940px) {
+  .search-user-header {
+    display: none;
+  }
+
+  .search-user {
+    display: flex;
+  }
+
   .room-list-container {
     max-width: 100%;
     height: 100vh;
