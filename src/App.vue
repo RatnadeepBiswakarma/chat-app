@@ -125,7 +125,7 @@ export default {
         if (message.sender_id !== this.getMyDetails.id) {
           this.emitRead(this.getOpenWindow.id, message.sender_id)
         }
-      } else {
+      } else if (message.sender_id !== this.getMyDetails.id) {
         this.ADD_UNREAD_MESSAGE(message)
       }
     },
