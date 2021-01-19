@@ -65,6 +65,7 @@ import { getMessages, patchRead } from "@/apis/messages"
 import Back from "@/components/Shared/Back"
 import AppIcon from "@/components/Shared/AppIcon"
 import { format, parseISO, differenceInDays } from "date-fns"
+import { isMobile } from "@/util/platform"
 
 export default {
   components: { Message, Back, AppIcon },
@@ -185,7 +186,9 @@ export default {
     if (this.allMessages.length > 0) {
       this.updateReadToSocket()
     }
-    this.focusInput()
+    if (!isMobile()) {
+      this.focusInput()
+    }
   },
   methods: {
     ...mapActions("chat", [
