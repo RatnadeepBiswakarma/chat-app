@@ -257,6 +257,9 @@ export default {
       } else {
         payload.target_id = this.getNewUser.id
       }
+      if (this.getOtherUser.email === "sage@chatapp.com") {
+        payload.sage = true
+      }
       this.emitSocketEvent("new_message", payload)
       this.message = ""
       this.adjustHeight()
