@@ -134,7 +134,7 @@ export default {
 .unread-count {
   min-width: 1.1rem;
   height: 1.1rem;
-  background-color: var(--last-message-on-room-list-unread);
+  background-color: transparent;
   padding: 4px;
 }
 

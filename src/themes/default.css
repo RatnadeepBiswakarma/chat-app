@@ -8,7 +8,7 @@
   --other-message-bg-color: linear-gradient(0deg, #29292978, #29292952);
   --secondary-color: #7289da;
   --header-bg-color: inherit;
-  --last-message-on-room-list-unread: #079b07;
+  --last-message-on-room-list-unread: #2bff2b;
   --user-name-on-room-list: var(--primary-color);
   --last-message-seen-on-room-list: var(--secondary-light-color);
   --last-message-seen-on-room-list-time: var(--secondary-light-color);
