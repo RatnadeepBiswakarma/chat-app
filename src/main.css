@@ -16,27 +16,6 @@ body {
   );
 }
 
-/* width */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  border-radius: 10px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #0000003b;
-  border-radius: 10px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #29292978;
-}
-
 #app {
   height: 100vh;
   width: 100vw;
@@ -262,6 +241,29 @@ body {
   }
   .zoomOut-leave-active {
     animation: zoom-out 0.4s;
+  }
+}
+
+@media screen and (min-width: 941px) {
+  /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #0000003b;
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #29292978;
   }
 }
 
