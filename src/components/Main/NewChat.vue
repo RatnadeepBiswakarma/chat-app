@@ -90,6 +90,7 @@ export default {
         this.EXCLUDE_UNREAD_MESSAGE(room.id)
       } else {
         // else user id is used to create initial chat window
+        this.UPDATE_CHAT_WINDOW(null)
         this.UPDATE_NEW_USER_DETAILS(user)
         this.$router.push({
           name: "NewChatWindow",
