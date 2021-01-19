@@ -359,7 +359,7 @@ export default {
   max-height: 115px;
   overflow-y: auto;
   border-radius: 10px;
-  padding: 0.3rem;
+  padding: 0.3rem 0.7rem;
   margin: 0.5rem;
 }
 
