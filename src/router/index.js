@@ -10,43 +10,43 @@ const routes = [
     name: "LoginPage",
     component: load("Auth/Auth"),
     meta: {
-      title: "Login Page",
-    },
+      title: "Login Page"
+    }
   },
   {
     path: "/:roomId",
     name: "Chat",
     component: load("Main/Chat/Chat"),
     meta: {
-      title: "Chat",
-    },
+      title: "Chat"
+    }
   },
   {
     path: "/start-chat/:userId",
     name: "NewChatWindow",
     component: load("Main/Chat/Chat"),
     meta: {
-      title: "Chat",
-    },
+      title: "Chat"
+    }
   },
   {
     path: "/new",
     name: "Search",
     component: load("Main/NewChat"),
     meta: {
-      title: "Search",
-    },
+      title: "Search"
+    }
   },
   {
     path: "/*",
     name: "Home",
-    redirect: "/",
-  },
+    redirect: "/"
+  }
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes
 })
 
 export default router
