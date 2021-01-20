@@ -57,7 +57,7 @@ export default {
   data() {
     return {
       search: true,
-      email: "coder@mail.com",
+      email: "",
       searchResult: [],
       errorMessage: ""
     }

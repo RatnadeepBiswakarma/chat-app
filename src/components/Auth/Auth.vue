@@ -100,7 +100,7 @@ export default {
     return {
       firstName: "",
       lastName: "",
-      email: "test@mail.com",
+      email: "",
       newUser: false,
       existingUser: false,
       errorMessage: false,
