@@ -1,7 +1,8 @@
 import { createWebHistory, createRouter } from "vue-router"
 
 function load(component) {
-  return () => import(`@/components/${component}.vue`)
+  return () =>
+    import(/* webpackPrefetch: true */ `@/components/${component}.vue`)
 }
 
 const routes = [
