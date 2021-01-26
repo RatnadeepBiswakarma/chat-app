@@ -1,6 +1,6 @@
 <template>
   <transition name="zoomIn" appear>
-    <div class="new-chat-window-container w-full bg-white">
+    <div class="new-chat-window-container w-full bg-white relative">
       <div class="header flex items-center">
         <button
           class="back-button text-white leading-none ml-2 px-2"
@@ -42,6 +42,7 @@
         </div>
       </div>
       <div v-else class="text-center mt-8">{{ errorMessage }}</div>
+      <div v-if="loading" class="loader"></div>
     </div>
   </transition>
 </template>
@@ -56,6 +57,7 @@ export default {
   components: { Back, AppIcon },
   data() {
     return {
+      loading: false,
       search: true,
       email: "",
       searchResult: [],
@@ -105,12 +107,15 @@ export default {
       this.$router.replace({ name: "Home" })
     },
     findUser() {
+      this.loading = true
       this.errorMessage = ""
       getUser(this.email)
         .then(res => {
           this.searchResult = [res.data.user]
+          this.loading = false
         })
         .catch(err => {
+          this.loading = false
           if (err.response && err.response.status === 404) {
             this.errorMessage = "No user found with this email id"
           } else {
