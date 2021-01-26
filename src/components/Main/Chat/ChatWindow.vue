@@ -109,7 +109,7 @@ export default {
         return ""
       }
       if (
-        differenceInDays(parseISO(this.getOtherUser.last_online), new Date()) >
+        differenceInDays(new Date(), parseISO(this.getOtherUser.last_online)) >
         1
       ) {
         return format(parseISO(this.getOtherUser.last_online), "dd/MM/yy")
