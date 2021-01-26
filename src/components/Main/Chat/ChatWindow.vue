@@ -1,6 +1,6 @@
 <template>
   <transition name="zoomIn" appear>
-    <div class="chat-window flex flex-col">
+    <div class="chat-window flex flex-col relative">
       <div class="header flex items-center">
         <button
           class="back-button text-white leading-none pl-4 px-2 h-full"
@@ -53,6 +53,7 @@
           </button>
         </div>
       </form>
+      <div v-if="loading" class="loader"></div>
     </div>
   </transition>
 </template>
@@ -72,6 +73,7 @@ export default {
   data() {
     return {
       message: "",
+      loading: false,
       timerId: null
     }
   },
@@ -308,16 +310,19 @@ export default {
       })
     },
     fetchMessages() {
+      this.loading = true
       getMessages(this.getOpenWindow.id)
         .then(res => {
           this.UPDATE_ROOM_MESSAGES({
             room_id: this.getOpenWindow.id,
             messages: res.data.items
           })
+          this.loading = false
           this.markMessagesAsRead()
         })
         .catch(err => {
           console.log(err)
+          this.loading = false
         })
     }
   }
