@@ -51,6 +51,7 @@
         </div>
       </div>
     </div>
+    <div v-if="getAllRooms.length === 0" class="loader"></div>
     <router-link
       to="/new"
       class="search-user flex justify-center items-center shadow-lg"
