@@ -4,11 +4,41 @@
       <div class="name text-xl text-white pl-12">
         All Chats
       </div>
-      <router-link
-        to="/new"
-        class="search-user-header flex justify-center items-center mr-12"
-        ><AppIcon name="add-user" :attributes="iconAttributes" />
-      </router-link>
+      <div class="flex items-center justify-center relative">
+        <router-link
+          to="/new"
+          class="search-user-header flex justify-center items-center mr-4"
+          ><AppIcon name="add-user" :attributes="iconAttributes" />
+        </router-link>
+        <button
+          @focus="showMenu = true"
+          @blur="showMenu = false"
+          class="menu-icon mr-4 w-full h-full"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="w-full h-full p-2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="{2}"
+              d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+            />
+          </svg>
+        </button>
+        <div v-if="showMenu" class="popup-menu fadeIn">
+          <button
+            class="px-4 py-2 w-full btn-hover transition-colors"
+            @mousedown="logout"
+          >
+            Log Out
+          </button>
+        </div>
+      </div>
     </div>
     <div
       v-for="room in getAllRooms"
@@ -67,6 +97,11 @@ import { format, parseISO, differenceInDays } from "date-fns"
 
 export default {
   components: { AppIcon },
+  data() {
+    return {
+      showMenu: false
+    }
+  },
   computed: {
     ...mapGetters("auth", ["getMyDetails"]),
     ...mapGetters("chat", [
@@ -114,6 +149,10 @@ export default {
         return format(parseISO(date), "dd/MM/yy")
       }
       return format(parseISO(date), "HH:mm")
+    },
+    logout() {
+      localStorage.removeItem("token")
+      window.location.reload()
     }
   }
 }
@@ -177,5 +216,18 @@ export default {
   border-radius: 100px;
   background: transparent;
   background: var(--search-user-background);
+}
+
+.menu-icon {
+  max-width: 3rem;
+}
+
+.popup-menu {
+  width: 10rem;
+  height: auto;
+  position: absolute;
+  top: 3.3rem;
+  right: 2.5rem;
+  background: var(--room-list-popup-menu-bg-color);
 }
 </style>

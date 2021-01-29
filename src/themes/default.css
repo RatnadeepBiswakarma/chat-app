@@ -28,4 +28,6 @@
   --message-input-placeholder-color: var(--secondary-light-color);
   --message-input-border-top-color: #b1b1b1;
   --message-input-color: var(--primary-color);
+  --room-list-popup-menu-bg-color: #27272766;
+  --room-list-popup-menu-bg-hover-color: #27272773;
 }
