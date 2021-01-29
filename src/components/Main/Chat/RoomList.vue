@@ -123,6 +123,7 @@ export default {
     },
     getRoomName(users) {
       const user = users.find(item => item.id !== this.getMyDetails.id)
+      if (!user) return ""
       return `${user.first_name} ${user.last_name}`
     },
     chatWith(room) {
