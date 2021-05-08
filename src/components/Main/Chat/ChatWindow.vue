@@ -20,7 +20,7 @@
             >{{ subText }}</small
           >
         </div>
-        <button @click="call" class="ml-14">
+        <button @click="call" class="ml-14 call-btn">
           <AppIcon
             name="phone-call"
             :attributes="{ width: 25, height: 25, fill: '#fff' }"
@@ -430,5 +430,11 @@ export default {
   width: 50%;
   height: 50%;
   transform: rotate(90deg);
+}
+
+@media screen and (max-width: 640px) {
+  .call-btn {
+    margin-left: 1rem;
+  }
 }
 </style>

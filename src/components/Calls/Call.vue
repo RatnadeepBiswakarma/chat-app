@@ -15,7 +15,7 @@
       </div>
       <div v-else class="text-center flex flex-col justify-between h-full">
         <div class=" flex justify-center flex-col">
-          <h3 class="text-2xl">
+          <h3 class="text-2xl mt-8">
             {{ getCallHeading }}
           </h3>
           <AppIcon
