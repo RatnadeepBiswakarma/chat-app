@@ -20,6 +20,12 @@
             >{{ subText }}</small
           >
         </div>
+        <button @click="call" class="ml-14">
+          <AppIcon
+            name="phone-call"
+            :attributes="{ width: 25, height: 25, fill: '#fff' }"
+          />
+        </button>
       </div>
       <div ref="messages" class="messages overflow-y-auto py-4">
         <Message v-for="item in allMessages" :key="item.id" :item="item" />
@@ -74,6 +80,7 @@ export default {
     return {
       message: "",
       loading: false,
+      stream: null,
       timerId: null
     }
   },
@@ -84,6 +91,8 @@ export default {
       "getNewUser",
       "allMessages",
       "socket",
+      "peer",
+      "getCall",
       "getOnlineRooms",
       "getLastMessage"
     ]),
@@ -198,8 +207,41 @@ export default {
       "UPDATE_NEW_USER_DETAILS",
       "UPDATE_ROOM_MESSAGES",
       "UPDATE_READ",
+      "UPDATE_PEER",
+      "UPDATE_CALL",
       "UPDATE_CHAT_WINDOW"
     ]),
+    call() {
+      navigator.mediaDevices
+        .getUserMedia({
+          video: { width: { min: 1280 }, height: { min: 720 } },
+          audio: true
+        })
+        .then(myStream => {
+          const call = this.peer.call(this.getOtherUser.id, myStream, {
+            metadata: {
+              type: "video",
+              initiator: this.getMyDetails.id,
+              target_user: this.getOtherUser,
+              room_id: this.getOpenWindow.id
+            }
+          })
+          this.UPDATE_CALL(call)
+          this.$nextTick(() => {
+            let video = document.querySelector("#own-video")
+            video.autoplay = true
+            video.volume = 0
+            video.muted = true
+            video.srcObject = myStream
+          })
+          this.getCall.on("stream", remoteStream => {
+            let video = document.querySelector("#video")
+            video.autoplay = true
+            video.volume = 0.5
+            video.srcObject = remoteStream
+          })
+        })
+    },
     focusInput() {
       if (this.$refs.msgBox) {
         this.$refs.msgBox.focus()

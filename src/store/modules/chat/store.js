@@ -3,6 +3,8 @@ import mutations from "./mutations"
 
 const getters = {
   socket: state => state.socket,
+  peer: state => state.peer,
+  getCall: state => state.call,
   getAllRooms: state => state.allRooms,
   getTypingUsers: state => state.typingUsers,
   getOpenWindow: state => state.openWindow,
@@ -16,11 +18,13 @@ const getters = {
   getLastMessage: state => state.lastMessage,
   getUnreadCounts: state => state.unreadCounts,
   getLatestMessages: state => state.latestMessages,
-  getOnlineRooms: state => state.onlineRooms,
+  getOnlineRooms: state => state.onlineRooms
 }
 
 const state = () => ({
   socket: null,
+  peer: null,
+  call: null,
   allRooms: [],
   onlineRooms: [],
   typingUsers: [],
@@ -29,7 +33,7 @@ const state = () => ({
   messages: {},
   lastMessage: {},
   unreadCounts: {},
-  latestMessages: {},
+  latestMessages: {}
 })
 
 const module = {
@@ -37,7 +41,7 @@ const module = {
   actions,
   mutations,
   getters,
-  state,
+  state
 }
 
 export default module

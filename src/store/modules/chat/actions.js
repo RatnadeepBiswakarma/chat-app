@@ -4,6 +4,12 @@ const actions = {
   UPDATE_SOCKET({ commit }, socket) {
     commit("SET_SOCKET", socket)
   },
+  UPDATE_PEER({ commit }, peer) {
+    commit("SET_PEER", peer)
+  },
+  UPDATE_CALL({ commit }, call) {
+    commit("SET_CALL", call)
+  },
   UPDATE_ROOM_MESSAGES({ commit }, payload) {
     commit("SET_ROOM_MESSAGE", payload)
   },
@@ -46,7 +52,7 @@ const actions = {
   ADD_UNREAD_MESSAGE({ commit }, message) {
     commit("SET_UNREAD_MESSAGE", message)
   },
-  ADD_ALL_UNREADS( {commit }, unreads) {
+  ADD_ALL_UNREADS({ commit }, unreads) {
     commit("SET_ALL_UNREADS", unreads)
   },
   EXCLUDE_UNREAD_MESSAGE({ commit }, room_id) {

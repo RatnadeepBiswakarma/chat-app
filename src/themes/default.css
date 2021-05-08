@@ -30,4 +30,6 @@
   --message-input-color: var(--primary-color);
   --room-list-popup-menu-bg-color: #27272766;
   --room-list-popup-menu-bg-hover-color: #27272773;
+  --incoming-call-popup-bg-color: #27272767;
+  --incoming-call-popup-border-color: #dfdfdf50;
 }

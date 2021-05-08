@@ -5,10 +5,12 @@ import axios from "@/apis/axios"
 import "@/main.css"
 import "@/themes/default.css"
 import App from "./App.vue"
+import VueFinalModal from "vue-final-modal"
 
 window.axios = axios
 
 const app = createApp(App)
 app.use(router)
 app.use(store)
+app.use(VueFinalModal())
 app.mount("#app")

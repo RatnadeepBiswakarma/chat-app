@@ -4,6 +4,12 @@ const mutations = {
   SET_SOCKET(state, socket) {
     state.socket = socket
   },
+  SET_PEER(state, peer) {
+    state.peer = peer
+  },
+  SET_CALL(state, call) {
+    state.call = call
+  },
   SET_ROOM_MESSAGE(state, data) {
     // initial fetch, store directly
     state.messages[data.room_id] = data.messages

@@ -11,6 +11,7 @@
       />
     </transition>
     <router-view @setup="setup"> </router-view>
+    <Call v-if="getCall && Object.keys(getCall).length > 0" />
   </div>
 </template>
 
@@ -19,9 +20,11 @@ import { mapActions, mapGetters } from "vuex"
 import RoomList from "@/components/Main/Chat/RoomList"
 import socketConnect from "socket.io-client"
 import { validateUserToken } from "@/apis/auth"
+import Peer from "peerjs"
+import Call from "@/components/Calls/Call"
 
 export default {
-  components: { RoomList },
+  components: { RoomList, Call },
   created() {
     if (localStorage.token) {
       this.setup()
@@ -41,7 +44,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("chat", ["socket", "getOpenWindow"]),
+    ...mapGetters("chat", ["socket", "peer", "getOpenWindow", "getCall"]),
     ...mapGetters("auth", ["getMyDetails", "isLoggedIn"]),
     focused() {
       return this.$route.path === "/"
@@ -54,6 +57,8 @@ export default {
     ...mapActions("chat", [
       "UPDATE_ALL_ROOMS",
       "UPDATE_SOCKET",
+      "UPDATE_PEER",
+      "UPDATE_CALL",
       "INCLUDE_TYPING_ROOM",
       "EXCLUDE_TYPING_ROOM",
       "UPDATE_NEW_MESSAGE",
@@ -81,6 +86,11 @@ export default {
           this.socket.on("connect", () => {
             this.updateUserActiveStatus(true)
             this.socket.emit("get_unread_messages")
+            const peer = new Peer(this.getMyDetails.id)
+            this.UPDATE_PEER(peer)
+            peer.on("call", call => {
+              this.UPDATE_CALL(call)
+            })
           })
         })
         .catch(err => {
@@ -97,6 +107,7 @@ export default {
       this.socket.on("all_messages_delivered", this.handleAllMessagesDelivery)
       this.socket.on("user_online_status", this.handleOtherUserOnlineStatus)
       this.socket.on("unread_messages", this.handleUnreadMessages)
+      this.socket.on("call_disconnected", this.handleCallDisconnect)
     },
     updateUserActiveStatus(status) {
       this.UPDATE_USER_ACTIVE_STATE(status)
@@ -159,6 +170,15 @@ export default {
     },
     handleUnreadMessages(data) {
       this.ADD_ALL_UNREADS(data.unreads)
+    },
+    handleCallDisconnect() {
+      if (this.getCall.localStream) {
+        this.getCall.localStream.getTracks().forEach(function(track) {
+          track.stop()
+        })
+      }
+      this.getCall.close()
+      this.UPDATE_CALL(null)
     }
   }
 }
