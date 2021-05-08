@@ -179,8 +179,6 @@ export default {
   background: var(--incoming-call-popup-bg-color);
   width: 100%;
   height: 100%;
-  max-width: 25rem;
-  max-height: 40rem;
   box-shadow: 0 8px 30px 0px #0000008f;
   backdrop-filter: blur(3px);
 }
