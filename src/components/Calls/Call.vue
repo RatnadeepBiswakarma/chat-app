@@ -229,6 +229,12 @@ export default {
   z-index: 1;
 }
 
+/* flip the video */
+.own-video,
+.remote-video {
+  transform: scaleX(-1);
+}
+
 @keyframes wide-shadow {
   40% {
     box-shadow: 0px 0px 0px 0px #ffffff41;
