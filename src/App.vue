@@ -11,7 +11,7 @@
       />
     </transition>
     <router-view @setup="setup"> </router-view>
-    <Call v-if="getCall && Object.keys(getCall).length > 0" />
+    <Call v-if="getCall && Object.keys(getCall).length > 0" :call="getCall" />
   </div>
 </template>
 
