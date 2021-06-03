@@ -20,9 +20,15 @@
             >{{ subText }}</small
           >
         </div>
-        <button @click="call" class="ml-14 call-btn">
+        <button @click="call(false)" class="ml-14 call-btn">
           <AppIcon
             name="phone-call"
+            :attributes="{ width: 25, height: 25, fill: '#fff' }"
+          />
+        </button>
+        <button @click="call(true)" class="ml-14 call-btn">
+          <AppIcon
+            name="video-camera"
             :attributes="{ width: 25, height: 25, fill: '#fff' }"
           />
         </button>
@@ -211,16 +217,16 @@ export default {
       "UPDATE_CALL",
       "UPDATE_CHAT_WINDOW"
     ]),
-    call() {
+    call(video = false) {
       navigator.mediaDevices
         .getUserMedia({
-          video: { width: { min: 1280 }, height: { min: 720 } },
+          video,
           audio: true
         })
         .then(myStream => {
           const call = this.peer.call(this.getOtherUser.id, myStream, {
             metadata: {
-              type: "video",
+              video: video ? true : false,
               initiator: this.getMyDetails.id,
               target_user: this.getOtherUser,
               room_id: this.getOpenWindow.id

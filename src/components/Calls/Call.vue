@@ -38,7 +38,7 @@
           />
         </button>
         <button
-          v-if="videoCall && !initiatedByMe && !callConnected"
+          v-if="videoCall && !initiatedByMe && !callConnected && videoCall"
           @click="answerCall()"
           class="call-btn mx-4 rounded-full call-accept"
         >
@@ -98,7 +98,7 @@ export default {
       return `Incoming ${this.videoCall ? "Video" : "Audio"} Call`
     },
     videoCall() {
-      return this.getCall && this.getCall.metadata.type === "video"
+      return this.getCall && this.getCall.metadata.video
     },
     initiatedByMe() {
       return (
@@ -119,7 +119,7 @@ export default {
       navigator.mediaDevices
         .getUserMedia({
           audio: true,
-          video: { width: { min: 1280 }, height: { min: 720 } }
+          video: this.getCall.metadata.video
         })
         .then(stream => {
           this.getCall.on("close", () => {
