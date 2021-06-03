@@ -1,37 +1,45 @@
 <template>
   <transition name="zoomIn" appear>
     <div class="chat-window flex flex-col relative">
-      <div class="header flex items-center">
-        <button
-          class="back-button text-white leading-none pl-4 px-2 h-full"
-          @click="goBack"
-        >
-          <Back class="back-arrow" />
-        </button>
-        <div class="user-pic">
-          <AppIcon name="user" :attributes="prifilePicAttributes" />
-        </div>
-        <div class="name text-base text-white ml-2 flex flex-col leading-tight">
-          {{ getFullName }}
-          <small
-            v-if="subText"
-            class="text-xs font-normal scale-up"
-            :class="{ 'typing-text': isTyping || isOnline }"
-            >{{ subText }}</small
+      <div class="header flex justify-between">
+        <div class="flex items-center">
+          <button
+            class="back-button text-white leading-none pl-4 px-2 h-full"
+            @click="goBack"
           >
+            <Back class="back-arrow" />
+          </button>
+          <div class="user-pic">
+            <AppIcon name="user" :attributes="prifilePicAttributes" />
+          </div>
+          <div
+            class="name text-base text-white ml-2 flex flex-col leading-tight truncate"
+          >
+            {{ getFullName }}
+            <small
+              v-if="subText"
+              class="text-xs font-normal scale-up"
+              :class="{ 'typing-text': isTyping || isOnline }"
+              >{{ subText }}</small
+            >
+          </div>
         </div>
-        <button @click="call(false)" class="ml-14 call-btn">
-          <AppIcon
-            name="phone-call"
-            :attributes="{ width: 25, height: 25, fill: '#fff' }"
-          />
-        </button>
-        <button @click="call(true)" class="ml-14 call-btn">
-          <AppIcon
-            name="video-camera"
-            :attributes="{ width: 25, height: 25, fill: '#fff' }"
-          />
-        </button>
+        <div class="buttons flex items-center justify-center">
+          <button @click="call(true)" class="call-btn">
+            <AppIcon
+              name="video-camera"
+              :attributes="{ width: 25, height: 25, fill: '#fff' }"
+              class="flex justify-center items-center"
+            />
+          </button>
+          <button @click="call(false)" class="call-btn">
+            <AppIcon
+              name="phone-call"
+              :attributes="{ width: 25, height: 25, fill: '#fff' }"
+              class="flex justify-center items-center"
+            />
+          </button>
+        </div>
       </div>
       <div ref="messages" class="messages overflow-y-auto py-4">
         <Message v-for="item in allMessages" :key="item.id" :item="item" />
@@ -438,9 +446,26 @@ export default {
   transform: rotate(90deg);
 }
 
+.buttons {
+  margin-right: 3rem;
+}
+
+.call-btn {
+  width: 4rem;
+  height: 100%;
+}
+
 @media screen and (max-width: 640px) {
+  .buttons {
+    margin-right: 0.5rem;
+  }
+
   .call-btn {
-    margin-left: 1rem;
+    width: 3rem;
+    height: 100%;
+  }
+  .name {
+    max-width: 8.5rem;
   }
 }
 </style>
