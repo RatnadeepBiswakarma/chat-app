@@ -3,10 +3,10 @@
     <div class="new-chat-window-container w-full bg-white relative">
       <div class="header flex items-center">
         <button
-          class="back-button text-white leading-none ml-2 px-2"
+          class="back-button text-white leading-none px-2"
           @click="goBack"
         >
-          <Back class="back-arrow" />
+          <ion-icon name="arrow-back"></ion-icon>
         </button>
         <form
           v-if="search"
@@ -20,7 +20,7 @@
             placeholder="Enter user email"
           />
           <button class="w-1/5 h-full flex items-center justify-center">
-            <AppIcon name="magnifying-glass" :attributes="iconAttributes" />
+            <ion-icon name="search"></ion-icon>
           </button>
         </form>
       </div>

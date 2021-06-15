@@ -322,6 +322,8 @@ body {
 
 ion-icon {
   font-size: 2rem;
+  width: 1.6rem;
+  height: 1.6rem;
 }
 
 @keyframes animate-gradient {
