@@ -49,7 +49,7 @@
           />
         </button>
         <button
-          v-if="!initiatedByMe && !callConnected"
+          v-if="!initiatedByMe && !callConnected &&  !videoCall"
           @click="answerCall"
           class="call-btn mx-4 rounded-full call-accept"
         >
