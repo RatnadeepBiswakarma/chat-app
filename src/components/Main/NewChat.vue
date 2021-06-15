@@ -3,7 +3,7 @@
     <div class="new-chat-window-container w-full bg-white relative">
       <div class="header flex items-center">
         <button
-          class="back-button text-white leading-none px-2"
+          class="back-button text-white leading-none px-2 h-full"
           @click="goBack"
         >
           <ion-icon name="arrow-back"></ion-icon>
@@ -49,12 +49,11 @@
 
 <script>
 import { getUser } from "@/apis/room"
-import Back from "@/components/Shared/Back"
 import AppIcon from "@/components/Shared/AppIcon"
 import { mapActions, mapGetters } from "vuex"
 
 export default {
-  components: { Back, AppIcon },
+  components: { AppIcon },
   data() {
     return {
       loading: false,
