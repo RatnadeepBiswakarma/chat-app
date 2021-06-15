@@ -36,7 +36,7 @@
       <div ref="messages" class="messages overflow-y-auto py-4">
         <Message v-for="item in allMessages" :key="item.id" :item="item" />
       </div>
-      <form class="input-section flex" @submit.prevent="sendMessage">
+      <form class="input-section flex justify-center items-center" @submit.prevent="sendMessage">
         <textarea
           :value="message"
           ref="msgBox"
@@ -47,23 +47,13 @@
           @input="handleMessageInput"
           @keydown.enter="handleKeydown"
         ></textarea>
-        <div class="flex justify-center items-center mr-2 rounded-full">
-          <button
-            class="send-btn rounded-full flex justify-center items-center"
-            @click="sendMessage"
-          >
-            <svg
-              class="send-btn-icon"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"
-              />
-            </svg>
-          </button>
-        </div>
+        <button
+          class="flex justify-center items-center mr-2 rounded-full send-btn"
+          style="padding-left:3px"
+          @click="sendMessage"
+        >
+          <ion-icon name="send"></ion-icon>
+        </button>
       </form>
       <div v-if="loading" class="loader"></div>
     </div>
@@ -428,13 +418,12 @@ export default {
 .send-btn {
   width: 2.125rem;
   height: 2.125rem;
+  flex-shrink: 0;
   background: var(--message-input-bg-color);
 }
 
-.send-btn-icon {
-  width: 50%;
-  height: 50%;
-  transform: rotate(90deg);
+.send-btn ion-icon {
+  width: 60%;
 }
 
 .buttons {
