@@ -30,34 +30,21 @@
           class="call-btn mx-4 rounded-full call-decline"
           @click="hangUpCall"
         >
-          <AppIcon
-            name="phone-call"
-            :attributes="{ width: 30, height: 30, fill: '#fff' }"
-            class="flex justify-center"
-            style="transform: rotate(135deg);"
-          />
+          <ion-icon name="call"></ion-icon>
         </button>
         <button
           v-if="videoCall && !initiatedByMe && !callConnected && videoCall"
           @click="answerCall()"
           class="call-btn mx-4 rounded-full call-accept"
         >
-          <AppIcon
-            name="video-camera"
-            :attributes="{ width: 30, height: 30, fill: '#fff' }"
-            class="flex justify-center"
-          />
+          <ion-icon name="videocam"></ion-icon>
         </button>
         <button
-          v-if="!initiatedByMe && !callConnected &&  !videoCall"
+          v-if="!initiatedByMe && !callConnected && !videoCall"
           @click="answerCall"
           class="call-btn mx-4 rounded-full call-accept"
         >
-          <AppIcon
-            name="phone-call"
-            :attributes="{ width: 30, height: 30, fill: '#fff' }"
-            class="flex justify-center"
-          />
+          <ion-icon name="call"></ion-icon>
         </button>
       </div>
     </vue-final-modal>
@@ -208,14 +195,26 @@ export default {
 }
 
 .call-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 3.5rem;
   height: 3.5rem;
   background: #00d300;
   z-index: 2;
 }
 
+.call-btn ion-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
 .call-decline {
   background: #ff2c2c;
+}
+
+.call-decline ion-icon {
+  transform: rotate(136deg);
 }
 
 .own-video {
