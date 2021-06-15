@@ -72,7 +72,7 @@
     <router-link
       to="/new"
       class="search-user flex justify-center items-center shadow-lg"
-      ><AppIcon name="add-user" :attributes="iconAttributes" />
+      ><ion-icon name="person-add"></ion-icon>
     </router-link>
   </div>
 </template>
