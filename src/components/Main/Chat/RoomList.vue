@@ -7,8 +7,8 @@
       <div class="flex items-center justify-center relative">
         <router-link
           to="/new"
-          class="search-user-header flex justify-center items-center mr-4"
-          ><AppIcon name="add-user" :attributes="iconAttributes" />
+          class="search-user-header flex justify-center items-center mr-4 p-2"
+          ><ion-icon name="person-add"></ion-icon>
         </router-link>
         <button
           @focus="showMenu = true"
