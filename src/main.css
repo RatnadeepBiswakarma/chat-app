@@ -320,6 +320,10 @@ body {
   transform: rotate(45deg);
 }
 
+ion-icon {
+  font-size: 2rem;
+}
+
 @keyframes animate-gradient {
   0% {
     background-position: 0% 50%;

@@ -4,10 +4,10 @@
       <div class="header flex justify-between">
         <div class="flex items-center">
           <button
-            class="back-button text-white leading-none pl-4 px-2 h-full"
+            class="back-button text-white leading-none px-2 h-full"
             @click="goBack"
           >
-            <Back class="back-arrow" />
+            <ion-icon name="arrow-back"></ion-icon>
           </button>
           <div class="user-pic">
             <AppIcon name="user" :attributes="prifilePicAttributes" />
@@ -26,18 +26,10 @@
         </div>
         <div class="buttons flex items-center justify-center">
           <button @click="call(true)" class="call-btn">
-            <AppIcon
-              name="video-camera"
-              :attributes="{ width: 25, height: 25, fill: '#fff' }"
-              class="flex justify-center items-center"
-            />
+            <ion-icon name="videocam"></ion-icon>
           </button>
           <button @click="call(false)" class="call-btn">
-            <AppIcon
-              name="phone-call"
-              :attributes="{ width: 25, height: 25, fill: '#fff' }"
-              class="flex justify-center items-center"
-            />
+            <ion-icon name="call"></ion-icon>
           </button>
         </div>
       </div>
@@ -83,13 +75,12 @@ import Message from "@/components/Main/Chat/Message"
 import debounce from "@/util/debouncer"
 import { mapActions, mapGetters } from "vuex"
 import { getMessages, patchRead } from "@/apis/messages"
-import Back from "@/components/Shared/Back"
 import AppIcon from "@/components/Shared/AppIcon"
 import { format, parseISO, differenceInDays } from "date-fns"
 import { isMobile } from "@/util/platform"
 
 export default {
-  components: { Message, Back, AppIcon },
+  components: { Message, AppIcon },
   data() {
     return {
       message: "",
@@ -453,6 +444,13 @@ export default {
 .call-btn {
   width: 4rem;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.call-btn ion-icon {
+  height: 1.8rem;
 }
 
 @media screen and (max-width: 640px) {
