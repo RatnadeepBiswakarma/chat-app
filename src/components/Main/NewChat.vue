@@ -106,6 +106,7 @@ export default {
       this.$router.replace({ name: "Home" })
     },
     findUser() {
+      if (!this.email) return
       this.loading = true
       this.errorMessage = ""
       getUser(this.email)
