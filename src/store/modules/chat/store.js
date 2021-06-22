@@ -19,7 +19,8 @@ const getters = {
   getUnreadCounts: state => state.unreadCounts,
   getLatestMessages: state => state.latestMessages,
   getOnlineRooms: state => state.onlineRooms,
-  getMyMediaStream: state => state.myMediaStream
+  getMyMediaStream: state => state.myMediaStream,
+  getCallConnectionStatus: state => state.callConnected,
 }
 
 const state = () => ({
@@ -36,6 +37,7 @@ const state = () => ({
   unreadCounts: {},
   latestMessages: {},
   myMediaStream: null,
+  callConnected: false,
 })
 
 const module = {

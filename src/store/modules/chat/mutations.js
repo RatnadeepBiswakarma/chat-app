@@ -91,6 +91,9 @@ const mutations = {
   },
   SET_MY_MEDIA_STREAM(state, stream) {
     state.myMediaStream = stream
+  },
+  SET_CALL_CONNECTION_STATUS(state, status) {
+    state.callConnected = status
   }
 }
 

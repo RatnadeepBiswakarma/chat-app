@@ -7,7 +7,7 @@
       :clickToClose="false"
     >
       <div
-        v-if="callConnected || initiatedByMe"
+        v-if="getCallConnectionStatus || initiatedByMe"
         class="flex justify-center h-full"
       >
         <video id="video" class="w-full h-auto remote-video"></video>
@@ -27,7 +27,7 @@
       </div>
       <div class="btns-section flex justify-center">
         <button
-          v-if="callConnected"
+          v-if="getCallConnectionStatus"
           class="call-btn mx-4 rounded-full"
           :class="{ 'mic-muted': !micEnabled }"
           @click="toggleMuteMyAudio"
@@ -36,14 +36,16 @@
           <ion-icon v-else name="mic-off"></ion-icon>
         </button>
         <button
-          v-if="videoCall && !initiatedByMe && !callConnected && videoCall"
+          v-if="
+            videoCall && !initiatedByMe && !getCallConnectionStatus && videoCall
+          "
           @click="answerCall()"
           class="call-btn mx-4 rounded-full call-accept"
         >
           <ion-icon name="videocam"></ion-icon>
         </button>
         <button
-          v-if="!initiatedByMe && !callConnected && !videoCall"
+          v-if="!initiatedByMe && !getCallConnectionStatus && !videoCall"
           @click="answerCall"
           class="call-btn mx-4 rounded-full call-accept"
         >
@@ -84,12 +86,13 @@ export default {
       "peer",
       "getOpenWindow",
       "getCall",
+      "getCallConnectionStatus",
       "getMyMediaStream"
     ]),
     ...mapGetters("auth", ["getMyDetails", "isLoggedIn"]),
     getContentClasses() {
       let classes = "modal-content bg-white p-12"
-      if (this.callConnected) {
+      if (this.getCallConnectionStatus) {
         classes = +" call-connected"
       }
       return classes
@@ -109,9 +112,6 @@ export default {
         this.getCall.metadata.initiator === this.getMyDetails.id
       )
     },
-    callConnected() {
-      return this.getCall.open
-    },
     profilePicAttributes() {
       return { width: 100, height: 100 }
     }
@@ -121,6 +121,7 @@ export default {
       "UPDATE_PEER",
       "UPDATE_SIGNAL_DATA",
       "UPDATE_CALL",
+      "UPDATE_CALL_CONNECTION_STATUS",
       "UPDATE_MY_MEDIA_STREAM"
     ]),
     toggleMuteMyAudio() {
@@ -162,6 +163,7 @@ export default {
             video.volume = 0.5
             video.srcObject = remoteStream
           })
+          this.UPDATE_CALL_CONNECTION_STATUS(true)
         })
     },
     hangUpCall() {
@@ -175,7 +177,7 @@ export default {
       })
       this.getCall.close()
       this.UPDATE_CALL(null)
-      // emit socket event here to inform other party
+      this.UPDATE_CALL_CONNECTION_STATUS(false)
     }
   }
 }

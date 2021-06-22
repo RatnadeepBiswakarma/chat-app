@@ -66,6 +66,9 @@ const actions = {
   },
   UPDATE_MY_MEDIA_STREAM({ commit }, stream) {
     commit("SET_MY_MEDIA_STREAM", stream)
+  },
+  UPDATE_CALL_CONNECTION_STATUS({ commit }, status) {
+    commit("SET_CALL_CONNECTION_STATUS", status)
   }
 }
 

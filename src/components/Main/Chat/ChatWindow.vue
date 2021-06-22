@@ -208,6 +208,7 @@ export default {
       "UPDATE_PEER",
       "UPDATE_CALL",
       "UPDATE_MY_MEDIA_STREAM",
+      "UPDATE_CALL_CONNECTION_STATUS",
       "UPDATE_CHAT_WINDOW"
     ]),
     call(video = false) {
@@ -235,6 +236,7 @@ export default {
             video.srcObject = myStream
           })
           this.getCall.on("stream", remoteStream => {
+            this.UPDATE_CALL_CONNECTION_STATUS(true)
             let video = document.querySelector("#video")
             video.autoplay = true
             video.volume = 0.5
