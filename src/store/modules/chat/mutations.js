@@ -88,6 +88,9 @@ const mutations = {
   },
   SET_ONLINE_ROOM(state, data) {
     state.onlineRooms[data.room_id] = data.status
+  },
+  SET_MY_MEDIA_STREAM(state, stream) {
+    state.myMediaStream = stream
   }
 }
 

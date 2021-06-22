@@ -36,7 +36,10 @@
       <div ref="messages" class="messages overflow-y-auto py-4">
         <Message v-for="item in allMessages" :key="item.id" :item="item" />
       </div>
-      <form class="input-section flex justify-center items-center" @submit.prevent="sendMessage">
+      <form
+        class="input-section flex justify-center items-center"
+        @submit.prevent="sendMessage"
+      >
         <textarea
           :value="message"
           ref="msgBox"
@@ -204,6 +207,7 @@ export default {
       "UPDATE_READ",
       "UPDATE_PEER",
       "UPDATE_CALL",
+      "UPDATE_MY_MEDIA_STREAM",
       "UPDATE_CHAT_WINDOW"
     ]),
     call(video = false) {
@@ -213,6 +217,7 @@ export default {
           audio: true
         })
         .then(myStream => {
+          this.UPDATE_MY_MEDIA_STREAM(myStream)
           const call = this.peer.call(this.getOtherUser.id, myStream, {
             metadata: {
               video: video ? true : false,

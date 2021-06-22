@@ -27,10 +27,13 @@
       </div>
       <div class="btns-section flex justify-center">
         <button
-          class="call-btn mx-4 rounded-full call-decline"
-          @click="hangUpCall"
+          v-if="callConnected"
+          class="call-btn mx-4 rounded-full"
+          :class="{ 'mic-muted': !micEnabled }"
+          @click="toggleMuteMyAudio"
         >
-          <ion-icon name="call"></ion-icon>
+          <ion-icon v-if="micEnabled" name="mic"></ion-icon>
+          <ion-icon v-else name="mic-off"></ion-icon>
         </button>
         <button
           v-if="videoCall && !initiatedByMe && !callConnected && videoCall"
@@ -43,6 +46,12 @@
           v-if="!initiatedByMe && !callConnected && !videoCall"
           @click="answerCall"
           class="call-btn mx-4 rounded-full call-accept"
+        >
+          <ion-icon name="call"></ion-icon>
+        </button>
+        <button
+          class="call-btn mx-4 rounded-full call-decline"
+          @click="hangUpCall"
         >
           <ion-icon name="call"></ion-icon>
         </button>
@@ -65,11 +74,18 @@ export default {
   },
   data() {
     return {
-      showIncomingCallModal: true
+      showIncomingCallModal: true,
+      micEnabled: true
     }
   },
   computed: {
-    ...mapGetters("chat", ["socket", "peer", "getOpenWindow", "getCall"]),
+    ...mapGetters("chat", [
+      "socket",
+      "peer",
+      "getOpenWindow",
+      "getCall",
+      "getMyMediaStream"
+    ]),
     ...mapGetters("auth", ["getMyDetails", "isLoggedIn"]),
     getContentClasses() {
       let classes = "modal-content bg-white p-12"
@@ -101,7 +117,22 @@ export default {
     }
   },
   methods: {
-    ...mapActions("chat", ["UPDATE_PEER", "UPDATE_SIGNAL_DATA", "UPDATE_CALL"]),
+    ...mapActions("chat", [
+      "UPDATE_PEER",
+      "UPDATE_SIGNAL_DATA",
+      "UPDATE_CALL",
+      "UPDATE_MY_MEDIA_STREAM"
+    ]),
+    toggleMuteMyAudio() {
+      if (this.getMyMediaStream) {
+        this.getMyMediaStream.getAudioTracks().forEach(track => {
+          if (track.kind === "audio") {
+            track.enabled = !track.enabled
+            this.micEnabled = track.enabled
+          }
+        })
+      }
+    },
     answerCall() {
       navigator.mediaDevices
         .getUserMedia({
@@ -109,6 +140,7 @@ export default {
           video: this.getCall.metadata.video
         })
         .then(stream => {
+          this.UPDATE_MY_MEDIA_STREAM(stream)
           this.getCall.on("close", () => {
             //
           })
@@ -210,7 +242,11 @@ export default {
 }
 
 .call-decline {
-  background: #ff2c2c;
+  background: var(--button-danger-bg-color);
+}
+
+.mic-muted {
+  background: var(--button-danger-bg-color);
 }
 
 .call-decline ion-icon {

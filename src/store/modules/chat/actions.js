@@ -63,6 +63,9 @@ const actions = {
   },
   UPDATE_ONLINE_ROOM({ commit }, data) {
     commit("SET_ONLINE_ROOM", data)
+  },
+  UPDATE_MY_MEDIA_STREAM({ commit }, stream) {
+    commit("SET_MY_MEDIA_STREAM", stream)
   }
 }
 
