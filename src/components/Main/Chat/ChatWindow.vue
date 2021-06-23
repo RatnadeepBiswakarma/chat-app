@@ -43,7 +43,13 @@
             {{ loading ? "Loading..." : "Load More" }}
           </button>
         </div>
-        <Message v-for="item in allMessages" :key="item.id" :item="item" />
+        <Message
+          v-for="item in allMessages"
+          :key="item.id"
+          :item="item"
+          :id="`id-${item.id}`"
+          class="fadeIn"
+        />
       </div>
       <form
         class="input-section flex justify-center items-center"
@@ -91,6 +97,8 @@ export default {
       timerId: null,
       skip: 0,
       limit: 40,
+      topMessageId: null,
+      initialHeight: null,
       allLoaded: false
     }
   },
@@ -179,11 +187,7 @@ export default {
       this.$router.replace({ name: "Home" })
       return
     }
-    if (this.getNewUser) {
-      //
-    } else if (this.allMessages.length === 0) {
-      this.fetchMessages()
-    }
+    this.fetchMessages()
   },
   watch: {
     getLastMessage(msg) {
@@ -198,6 +202,10 @@ export default {
     },
     $route(nextRoute) {
       if (nextRoute.name === "Chat") {
+        this.skip = 0
+        this.topMessageId = null
+        this.initialHeight = null
+        this.allLoaded = false
         this.fetchMessages()
       }
     }
@@ -224,9 +232,13 @@ export default {
       "UPDATE_CALL_CONNECTION_STATUS",
       "UPDATE_CHAT_WINDOW"
     ]),
-    loadMoreMessages() {
+    async loadMoreMessages() {
+      if (this.allMessages.length > 0) {
+        this.topMessageId = this.allMessages[0].id
+      }
       this.skip = this.skip + this.limit
-      this.fetchMessages(true)
+      this.initialHeight = this.$refs.messages.scrollHeight
+      await this.fetchMessages(true)
     },
     call(video = false) {
       navigator.mediaDevices
@@ -387,6 +399,13 @@ export default {
         if (res.data.items.length < this.limit) {
           this.allLoaded = true
         }
+        this.$nextTick(() => {
+          if (oldMessages && this.topMessageId) {
+            /* keep scroll position */
+            this.$refs.messages.scrollTop =
+              this.$refs.messages.scrollHeight - this.initialHeight
+          }
+        })
       } catch (err) {
         console.log(err)
         this.loading = false
