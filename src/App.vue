@@ -38,10 +38,6 @@ export default {
     }
     window.onblur = () => this.updateUserActiveStatus(false)
     window.onfocus = () => this.updateUserActiveStatus(true)
-    let loader = document.querySelector(".loader")
-    if (loader) {
-      loader.remove()
-    }
   },
   computed: {
     ...mapGetters("chat", ["socket", "peer", "getOpenWindow", "getCall"]),
@@ -95,6 +91,12 @@ export default {
         })
         .catch(err => {
           console.error(err)
+        })
+        .finally(() => {
+          let loader = document.querySelector(".loader")
+          if (loader) {
+            loader.remove()
+          }
         })
     },
     bindSocketEvents() {
