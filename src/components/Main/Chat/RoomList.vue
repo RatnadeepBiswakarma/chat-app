@@ -1,7 +1,7 @@
 <template>
   <div class="relative w-full room-list-container">
     <div class="header flex items-center justify-between">
-      <div class="name text-xl text-white pl-12">
+      <div class="name text-xl text-white pl-6">
         All Chats
       </div>
       <div class="flex items-center justify-center relative">

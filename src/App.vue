@@ -11,6 +11,30 @@
       />
     </transition>
     <router-view @setup="setup"> </router-view>
+    <div v-if="!getOpenWindow" class="text-center w-full">
+      <ion-icon
+        name="chatbubbles"
+        class="big-chat-icon block m-auto"
+      ></ion-icon>
+      <span class="text-xl font-light"
+        >Stay connected with your friends and family!
+      </span>
+      <span class="text-sm block mt-4">
+        Hey, I'm Ratnadeep. I coded this chat app. Hope you find it fun to use.
+        Let's connect
+      </span>
+      <span class="block mt-2">
+        <a
+          v-for="item in socialAccounts"
+          :key="item.logo"
+          :href="item.link"
+          class="mx-2"
+          target="_blank"
+        >
+          <ion-icon :name="item.logo"></ion-icon>
+        </a>
+      </span>
+    </div>
     <Call v-if="getCall && Object.keys(getCall).length > 0" :call="getCall" />
   </div>
 </template>
@@ -44,6 +68,22 @@ export default {
     ...mapGetters("auth", ["getMyDetails", "isLoggedIn"]),
     focused() {
       return this.$route.path === "/"
+    },
+    socialAccounts() {
+      return [
+        {
+          link: "https://github.com/RatnadeepBiswakarma",
+          logo: "logo-github"
+        },
+        {
+          link: "https://www.linkedin.com/in/ratnadeepbiswakarma/",
+          logo: "logo-linkedin"
+        },
+        {
+          link: "https://twitter.com/RatnadeepBiswa3",
+          logo: "logo-twitter"
+        }
+      ]
     },
     loginPage() {
       return this.$route.name === "LoginPage"
