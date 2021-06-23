@@ -34,6 +34,15 @@
         </div>
       </div>
       <div ref="messages" class="messages overflow-y-auto py-4">
+        <div class="text-center mb-4">
+          <button
+            v-if="!allLoaded"
+            class="load-more-button rounded-full px-4 py-1"
+            @click="loadMoreMessages"
+          >
+            {{ loading ? "Loading..." : "Load More" }}
+          </button>
+        </div>
         <Message v-for="item in allMessages" :key="item.id" :item="item" />
       </div>
       <form
@@ -79,7 +88,10 @@ export default {
       message: "",
       loading: false,
       stream: null,
-      timerId: null
+      timerId: null,
+      skip: 0,
+      limit: 40,
+      allLoaded: false
     }
   },
   computed: {
@@ -193,6 +205,7 @@ export default {
   mounted() {
     this.scrollToBottom()
     if (this.allMessages.length > 0) {
+      this.skip = this.allMessages.length
       this.updateReadToSocket()
     }
     if (!isMobile()) {
@@ -211,6 +224,10 @@ export default {
       "UPDATE_CALL_CONNECTION_STATUS",
       "UPDATE_CHAT_WINDOW"
     ]),
+    loadMoreMessages() {
+      this.skip = this.skip + this.limit
+      this.fetchMessages(true)
+    },
     call(video = false) {
       navigator.mediaDevices
         .getUserMedia({
@@ -353,21 +370,27 @@ export default {
         sender_id: this.getOtherUser.id
       })
     },
-    fetchMessages() {
+    async fetchMessages(oldMessages = false) {
       this.loading = true
-      getMessages(this.getOpenWindow.id)
-        .then(res => {
-          this.UPDATE_ROOM_MESSAGES({
-            room_id: this.getOpenWindow.id,
-            messages: res.data.items
-          })
-          this.loading = false
-          this.markMessagesAsRead()
+      try {
+        const res = await getMessages(this.getOpenWindow.id, {
+          skip: this.skip,
+          limit: this.limit
         })
-        .catch(err => {
-          console.log(err)
-          this.loading = false
+        this.UPDATE_ROOM_MESSAGES({
+          room_id: this.getOpenWindow.id,
+          oldMessages,
+          messages: res.data.items
         })
+        this.loading = false
+        this.markMessagesAsRead()
+        if (res.data.items.length < this.limit) {
+          this.allLoaded = true
+        }
+      } catch (err) {
+        console.log(err)
+        this.loading = false
+      }
     }
   }
 }
@@ -447,6 +470,12 @@ export default {
 
 .call-btn ion-icon {
   height: 1.8rem;
+}
+
+.load-more-button {
+  background: var(--search-user-background);
+  min-width: 7.5rem;
+  text-align: center;
 }
 
 @media screen and (max-width: 640px) {

@@ -161,7 +161,6 @@ body {
   height: calc(94vh - 3rem - 3rem);
   transform: translateZ(0);
   will-change: transform;
-  scroll-behavior: smooth;
 }
 
 .room-list-container {

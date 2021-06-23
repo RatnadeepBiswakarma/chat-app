@@ -11,8 +11,12 @@ const mutations = {
     state.call = call
   },
   SET_ROOM_MESSAGE(state, data) {
-    // initial fetch, store directly
-    state.messages[data.room_id] = data.messages
+    if (data.oldMessages) {
+      state.messages[data.room_id].unshift(...data.messages)
+    } else {
+      // initial fetch, store directly
+      state.messages[data.room_id] = data.messages
+    }
   },
   SET_ALL_ROOMS(state, rooms) {
     state.allRooms = rooms
