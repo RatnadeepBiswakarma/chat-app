@@ -113,6 +113,7 @@ export default {
       "UPDATE_CHAT_WINDOW",
       "UPDATE_ONLINE_ROOM",
       "ADD_ALL_UNREADS",
+      "UPDATE_CALL_CONNECTION_STATUS",
       "UPDATE_NEW_ROOM"
     ]),
     ...mapActions("auth", ["UPDATE_MY_DETAILS"]),
@@ -228,6 +229,7 @@ export default {
           track.stop()
         })
       }
+      this.UPDATE_CALL_CONNECTION_STATUS(false)
       this.getCall.close()
       this.UPDATE_CALL(null)
     }
