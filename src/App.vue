@@ -11,13 +11,16 @@
       />
     </transition>
     <router-view @setup="setup"> </router-view>
-    <div v-if="isLoggedIn && !getOpenWindow" class="text-center w-full">
+    <div
+      v-if="isLoggedIn && !getOpenWindow && getAllRooms.length > 0"
+      class="text-center w-full"
+    >
       <ion-icon
         name="chatbubbles"
         class="big-chat-icon block m-auto"
       ></ion-icon>
       <span class="text-xl font-light"
-        >Stay connected with your friends and family!
+        >Chat with your friends and have fun!
       </span>
       <span class="text-sm block mt-4">
         Hey, I'm Ratnadeep. I coded this chat app. Hope you find it fun to use.
@@ -64,7 +67,13 @@ export default {
     window.onfocus = () => this.updateUserActiveStatus(true)
   },
   computed: {
-    ...mapGetters("chat", ["socket", "peer", "getOpenWindow", "getCall"]),
+    ...mapGetters("chat", [
+      "socket",
+      "peer",
+      "getOpenWindow",
+      "getCall",
+      "getAllRooms"
+    ]),
     ...mapGetters("auth", ["getMyDetails", "isLoggedIn"]),
     focused() {
       return this.$route.path === "/"
