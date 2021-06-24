@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full room-list-container">
+  <div class="relative w-full room-list-container fadeIn">
     <div class="header flex items-center justify-between">
       <div class="name text-xl text-white pl-6">
         All Chats

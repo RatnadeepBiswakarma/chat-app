@@ -13,7 +13,7 @@
     <router-view @setup="setup"> </router-view>
     <div
       v-if="isLoggedIn && !getOpenWindow && getAllRooms.length > 0"
-      class="text-center w-full"
+      class="text-center w-full fadeIn"
     >
       <ion-icon
         name="chatbubbles"
@@ -26,12 +26,12 @@
         Hey, I'm Ratnadeep. I coded this chat app. Hope you find it fun to use.
         Let's connect
       </span>
-      <span class="block mt-2">
+      <span class="block mt-2 flex justify-center">
         <a
           v-for="item in socialAccounts"
           :key="item.logo"
           :href="item.link"
-          class="mx-2"
+          class="mx-2 social-link"
           target="_blank"
         >
           <ion-icon :name="item.logo"></ion-icon>
