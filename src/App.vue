@@ -13,7 +13,7 @@
     <router-view @setup="setup"> </router-view>
     <div
       v-if="isLoggedIn && !getOpenWindow && getAllRooms.length > 0"
-      class="text-center w-full fadeIn"
+      class="text-center w-full fadeIn empty-chat-window-placeholder"
     >
       <ion-icon
         name="chatbubbles"

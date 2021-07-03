@@ -245,6 +245,10 @@ body {
   .zoomOut-leave-active {
     animation: zoom-out 0.4s;
   }
+
+  .empty-chat-window-placeholder {
+    display: none;
+  }
 }
 
 @media screen and (min-width: 941px) {
