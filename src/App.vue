@@ -12,7 +12,7 @@
     </transition>
     <router-view @setup="setup"> </router-view>
     <div
-      v-if="isLoggedIn && !getOpenWindow && getAllRooms.length > 0"
+      v-if="homeRoute && isLoggedIn && !getOpenWindow && getAllRooms.length > 0"
       class="text-center w-full fadeIn empty-chat-window-placeholder"
     >
       <ion-icon
@@ -76,6 +76,9 @@ export default {
     ]),
     ...mapGetters("auth", ["getMyDetails", "isLoggedIn"]),
     focused() {
+      return this.$route.path === "/"
+    },
+    homeRoute() {
       return this.$route.path === "/"
     },
     socialAccounts() {
