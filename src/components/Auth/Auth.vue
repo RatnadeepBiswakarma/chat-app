@@ -25,6 +25,7 @@
               type="email"
               placeholder="Email"
               autocomplete="off"
+              :readonly="newUser || existingUser"
             />
           </div>
           <div v-if="newUser">
