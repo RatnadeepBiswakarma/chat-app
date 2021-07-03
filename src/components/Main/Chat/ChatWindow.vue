@@ -251,7 +251,7 @@ export default {
           const call = this.peer.call(this.getOtherUser.id, myStream, {
             metadata: {
               video: video ? true : false,
-              initiator: this.getMyDetails.id,
+              initiator: this.getMyDetails,
               target_user: this.getOtherUser,
               room_id: this.getOpenWindow.id
             }

@@ -6,24 +6,19 @@
       :content-class="getContentClasses"
       :clickToClose="false"
     >
+      <CallDetails
+        v-if="!getCallConnectionStatus || !videoCall"
+        :callType="videoCall ? 'video' : 'audio'"
+        :initiatedByMe="initiatedByMe"
+        :targetPerson="targetPerson"
+        class="mt-12"
+      />
       <div
         v-if="getCallConnectionStatus || initiatedByMe"
         class="flex justify-center h-full"
       >
         <video id="video" class="w-full h-auto remote-video"></video>
         <video id="own-video" class="own-video"></video>
-      </div>
-      <div v-else class="text-center flex flex-col justify-between h-full">
-        <div class=" flex justify-center flex-col">
-          <h3 class="text-2xl mt-8">
-            {{ getCallHeading }}
-          </h3>
-          <AppIcon
-            name="user"
-            :attributes="profilePicAttributes"
-            class="flex justify-center my-10 user-pic m-auto rounded-full"
-          />
-        </div>
       </div>
       <div class="btns-section flex justify-center">
         <button
@@ -63,11 +58,11 @@
 </template>
 
 <script>
-import AppIcon from "@/components/Shared/AppIcon"
 import { mapGetters, mapActions } from "vuex"
+import CallDetails from "@/components/Calls/CallDetails"
 
 export default {
-  components: { AppIcon },
+  components: { CallDetails },
   props: {
     call: {
       type: Object,
@@ -93,7 +88,7 @@ export default {
     getContentClasses() {
       let classes = "modal-content bg-white p-12"
       if (this.getCallConnectionStatus) {
-        classes = +" call-connected"
+        classes += " call-connected"
       }
       return classes
     },
@@ -109,8 +104,14 @@ export default {
     initiatedByMe() {
       return (
         this.getCall.metadata &&
-        this.getCall.metadata.initiator === this.getMyDetails.id
+        this.getCall.metadata.initiator.id === this.getMyDetails.id
       )
+    },
+    targetPerson() {
+      if (this.getCall.metadata.initiator.id === this.getMyDetails.id) {
+        return this.getCall.metadata.target_user
+      }
+      return this.getCall.metadata.initiator
     },
     profilePicAttributes() {
       return { width: 100, height: 100 }
