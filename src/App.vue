@@ -8,6 +8,8 @@
         v-if="isLoggedIn"
         class="bg-white"
         :class="focused ? 'zoomOut' : 'off-screen-mobile'"
+        :notificationAllowed="notificationAllowed"
+        @notification-allowed="notificationAllowed = true"
       />
     </transition>
     <router-view @setup="setup"> </router-view>
@@ -55,7 +57,8 @@ export default {
   components: { RoomList, Call },
   data() {
     return {
-      msgAudio: null
+      msgAudio: null,
+      notificationAllowed: false
     }
   },
   created() {
@@ -63,6 +66,7 @@ export default {
       this.setup()
     }
     this.msgAudio = new Audio(msg_noti_audio)
+    this.notificationAllowed = this.$notificationAllowed()
   },
   mounted() {
     if (localStorage.token) {
@@ -174,6 +178,26 @@ export default {
     playAudio() {
       this.msgAudio.play()
     },
+    showNotification(message) {
+      const title = this.getRoomName(message.room_id)
+      const room = this.getRoom(message.room_id)
+      const vm = this
+      this.$notify(title, {
+        body: message.text,
+        timeout: 4000,
+        onClick: function() {
+          window.focus()
+          if (room) {
+            vm.UPDATE_CHAT_WINDOW(room)
+            vm.$router.push({
+              name: "Chat",
+              params: { roomId: message.room_id }
+            })
+          }
+          this.close()
+        }
+      })
+    },
     updateUserActiveStatus(status) {
       this.UPDATE_USER_ACTIVE_STATE(status)
       if (this.socket) {
@@ -210,6 +234,9 @@ export default {
       }
       if (message.target_id === this.getMyDetails.id) {
         this.playAudio()
+        if (this.$notificationAllowed()) {
+          this.showNotification(message)
+        }
       }
     },
     messageReceived(message) {
@@ -248,6 +275,24 @@ export default {
       this.UPDATE_CALL_CONNECTION_STATUS(false)
       this.getCall.close()
       this.UPDATE_CALL(null)
+    },
+    getRoom(room_id) {
+      const room = this.getAllRooms.find(r => r.id === room_id)
+      if (room) {
+        return room
+      }
+      return null
+    },
+    getRoomName(room_id) {
+      const room = this.getAllRooms.find(r => r.id === room_id)
+      if (room) {
+        const otherUser = room.users.find(u => u.id !== this.getMyDetails.id)
+        if (otherUser) {
+          return `${otherUser.first_name} ${otherUser.last_name}`
+        }
+        return "New message"
+      }
+      return "New message"
     }
   }
 }
