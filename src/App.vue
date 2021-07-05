@@ -49,13 +49,20 @@ import socketConnect from "socket.io-client"
 import { validateUserToken } from "@/apis/auth"
 import Peer from "peerjs"
 import Call from "@/components/Calls/Call"
+const msg_noti_audio = require("../public/msg-noti.mp3")
 
 export default {
   components: { RoomList, Call },
+  data() {
+    return {
+      msgAudio: null
+    }
+  },
   created() {
     if (localStorage.token) {
       this.setup()
     }
+    this.msgAudio = new Audio(msg_noti_audio)
   },
   mounted() {
     if (localStorage.token) {
@@ -164,6 +171,9 @@ export default {
       this.socket.on("unread_messages", this.handleUnreadMessages)
       this.socket.on("call_disconnected", this.handleCallDisconnect)
     },
+    playAudio() {
+      this.msgAudio.play()
+    },
     updateUserActiveStatus(status) {
       this.UPDATE_USER_ACTIVE_STATE(status)
       if (this.socket) {
@@ -197,6 +207,9 @@ export default {
         }
       } else if (message.sender_id !== this.getMyDetails.id) {
         this.ADD_UNREAD_MESSAGE(message)
+      }
+      if (message.target_id === this.getMyDetails.id) {
+        this.playAudio()
       }
     },
     messageReceived(message) {
