@@ -11,7 +11,7 @@
       class="message-section my-2 p-1 px-2 text-white leading-tight shadow-lg flex flex-row items-end whitespace-pre-wrap flex-wrap justify-end"
     >
       {{ item.text }}
-      <span class="flex items-center ml-2 timestamp-container">
+      <span class="flex items-center timestamp-container">
         <span class="text-xs">{{ geMessageTime(item.created_at) }}</span>
         <span v-if="sentByMe(item.sender_id)" class="flex justify-end">
           <DoubleTick
