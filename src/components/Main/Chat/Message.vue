@@ -45,8 +45,8 @@ export default {
   },
   methods: {
     geMessageTime(date) {
-      if (differenceInDays(parseISO(date), new Date()) > 1) {
-        return format(parseISO(date), "dd/MM/yy")
+      if (differenceInDays(new Date(), parseISO(date)) > 1) {
+        return format(parseISO(date), "LLL d, HH:mm")
       }
       return format(parseISO(date), "HH:mm")
     },
