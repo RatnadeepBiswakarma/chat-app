@@ -24,7 +24,10 @@
             >
           </div>
         </div>
-        <div class="buttons flex items-center justify-center">
+        <div
+          v-if="callsAllowed"
+          class="buttons flex items-center justify-center"
+        >
           <button @click="call(true)" class="call-btn">
             <ion-icon name="videocam"></ion-icon>
           </button>
@@ -115,7 +118,16 @@ export default {
       "getLastMessage"
     ]),
     ...mapGetters("auth", ["getMyDetails"]),
+    isSage() {
+      return this.getOtherUser.email === "sage@chatapp.com"
+    },
+    callsAllowed() {
+      return !this.isSage
+    },
     subText() {
+      if (this.isSage) {
+        return null
+      }
       if (this.isTyping) {
         return "typing..."
       }

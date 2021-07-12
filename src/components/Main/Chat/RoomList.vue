@@ -5,6 +5,14 @@
         All Chats
       </div>
       <div class="flex items-center justify-center relative">
+        <button
+          v-if="!notificationAllowed"
+          class="notification-icon flex justify-center items-center mr-4 p-2 relative"
+          title="Get notified for new messages"
+          @click="requestNotificationPermission"
+        >
+          <ion-icon name="notifications"></ion-icon>
+        </button>
         <router-link
           to="/new"
           class="search-user-header flex justify-center items-center mr-4 p-2"
@@ -84,6 +92,12 @@ import { format, parseISO, differenceInDays } from "date-fns"
 
 export default {
   components: { AppIcon },
+  props: {
+    notificationAllowed: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       showMenu: false
@@ -105,6 +119,19 @@ export default {
   },
   methods: {
     ...mapActions("chat", ["UPDATE_CHAT_WINDOW", "EXCLUDE_UNREAD_MESSAGE"]),
+    requestNotificationPermission() {
+      this.$requestNotificationPermission(() => {
+        this.$notify("Awesome Job!", {
+          body: "You'll be notified for new messages!",
+          timeout: 4000,
+          onClick: function() {
+            window.focus()
+            this.close()
+          }
+        })
+        this.$emit("notification-allowed")
+      })
+    },
     generateRandomColor() {
       return `#${Math.floor(Math.random() * 16777215).toString(16)}`
     },
@@ -198,7 +225,8 @@ export default {
   background: var(--search-user-background);
 }
 
-.search-user-header {
+.search-user-header,
+.notification-icon {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 100px;
@@ -213,5 +241,39 @@ export default {
   top: 3.3rem;
   right: 2.5rem;
   background: var(--room-list-popup-menu-bg-color);
+}
+
+.notification-icon::before {
+  content: " ";
+  position: absolute;
+  top: 12px;
+  right: 10px;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: #ff3e3e;
+  border-radius: 100px;
+  z-index: 1;
+}
+
+.notification-icon:hover {
+  animation: 0.2s wave-shadow linear 2;
+}
+
+@keyframes wave-shadow {
+  0% {
+    transform: rotate(15deg);
+  }
+  25% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-15deg);
+  }
+  75% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(15deg);
+  }
 }
 </style>

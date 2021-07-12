@@ -8,6 +8,8 @@
         v-if="isLoggedIn"
         class="bg-white"
         :class="focused ? 'zoomOut' : 'off-screen-mobile'"
+        :notificationAllowed="notificationAllowed"
+        @notification-allowed="notificationAllowed = true"
       />
     </transition>
     <router-view @setup="setup"> </router-view>
@@ -49,13 +51,22 @@ import socketConnect from "socket.io-client"
 import { validateUserToken } from "@/apis/auth"
 import Peer from "peerjs"
 import Call from "@/components/Calls/Call"
+const msg_noti_audio = require("../public/msg-noti.mp3")
 
 export default {
   components: { RoomList, Call },
+  data() {
+    return {
+      msgAudio: null,
+      notificationAllowed: false
+    }
+  },
   created() {
     if (localStorage.token) {
       this.setup()
     }
+    this.msgAudio = new Audio(msg_noti_audio)
+    this.notificationAllowed = this.$notificationAllowed()
   },
   mounted() {
     if (localStorage.token) {
@@ -164,6 +175,29 @@ export default {
       this.socket.on("unread_messages", this.handleUnreadMessages)
       this.socket.on("call_disconnected", this.handleCallDisconnect)
     },
+    playAudio() {
+      this.msgAudio.play()
+    },
+    showNotification(message) {
+      const title = this.getRoomName(message.room_id)
+      const room = this.getRoom(message.room_id)
+      const vm = this
+      this.$notify(title, {
+        body: message.text,
+        timeout: 4000,
+        onClick: function() {
+          window.focus()
+          if (room) {
+            vm.UPDATE_CHAT_WINDOW(room)
+            vm.$router.push({
+              name: "Chat",
+              params: { roomId: message.room_id }
+            })
+          }
+          this.close()
+        }
+      })
+    },
     updateUserActiveStatus(status) {
       this.UPDATE_USER_ACTIVE_STATE(status)
       if (this.socket) {
@@ -197,6 +231,12 @@ export default {
         }
       } else if (message.sender_id !== this.getMyDetails.id) {
         this.ADD_UNREAD_MESSAGE(message)
+      }
+      if (message.target_id === this.getMyDetails.id) {
+        this.playAudio()
+        if (this.$notificationAllowed()) {
+          this.showNotification(message)
+        }
       }
     },
     messageReceived(message) {
@@ -235,6 +275,24 @@ export default {
       this.UPDATE_CALL_CONNECTION_STATUS(false)
       this.getCall.close()
       this.UPDATE_CALL(null)
+    },
+    getRoom(room_id) {
+      const room = this.getAllRooms.find(r => r.id === room_id)
+      if (room) {
+        return room
+      }
+      return null
+    },
+    getRoomName(room_id) {
+      const room = this.getAllRooms.find(r => r.id === room_id)
+      if (room) {
+        const otherUser = room.users.find(u => u.id !== this.getMyDetails.id)
+        if (otherUser) {
+          return `${otherUser.first_name} ${otherUser.last_name}`
+        }
+        return "New message"
+      }
+      return "New message"
     }
   }
 }
