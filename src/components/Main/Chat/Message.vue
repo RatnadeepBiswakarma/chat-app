@@ -8,7 +8,7 @@
     "
   >
     <div
-      class="message-section my-2 p-1 px-2 text-white leading-tight shadow-lg flex flex-row items-end whitespace-pre-wrap flex-wrap justify-end"
+      class="message-section my-2 p-1 px-2 text-white leading-tight shadow-lg flex flex-row items-baseline whitespace-pre-wrap flex-wrap justify-end"
     >
       {{ item.text }}
       <span class="flex items-center timestamp-container">
