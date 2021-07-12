@@ -8,16 +8,19 @@
     "
   >
     <div
-      class="message-section my-1 p-1 px-2 text-white leading-tight shadow-lg flex items-end whitespace-pre-wrap"
+      class="message-section my-2 p-1 px-2 text-white leading-tight shadow-lg flex flex-row items-end whitespace-pre-wrap flex-wrap justify-end"
     >
       {{ item.text }}
-      <span v-if="sentByMe(item.sender_id)" class="flex justify-end">
-        <DoubleTick
-          v-if="item.status === 'read' || item.status === 'delivered'"
-          :read="item.status === 'read'"
-          class="tick-mark ml-2"
-        />
-        <SingleTick v-else class="tick-mark single-tick ml-2" />
+      <span class="flex items-center ml-2 timestamp-container">
+        <span class="text-xs">{{ geMessageTime(item.created_at) }}</span>
+        <span v-if="sentByMe(item.sender_id)" class="flex justify-end">
+          <DoubleTick
+            v-if="item.status === 'read' || item.status === 'delivered'"
+            :read="item.status === 'read'"
+            class="tick-mark ml-2"
+          />
+          <SingleTick v-else class="tick-mark single-tick ml-2" />
+        </span>
       </span>
     </div>
   </div>
@@ -27,6 +30,7 @@
 import SingleTick from "@/components/Main/Chat/SingleTick"
 import DoubleTick from "@/components/Main/Chat/DoubleTick"
 import { mapGetters } from "vuex"
+import { format, parseISO, differenceInDays } from "date-fns"
 
 export default {
   components: { SingleTick, DoubleTick },
@@ -40,6 +44,12 @@ export default {
     ...mapGetters("auth", ["getMyDetails"])
   },
   methods: {
+    geMessageTime(date) {
+      if (differenceInDays(parseISO(date), new Date()) > 1) {
+        return format(parseISO(date), "dd/MM/yy")
+      }
+      return format(parseISO(date), "HH:mm")
+    },
     getUserName(user) {
       return `${user.first_name} ${user.last_name}`
     },
@@ -75,5 +85,10 @@ export default {
   width: 1rem;
   fill: #ffffff;
   padding-bottom: 2px;
+}
+
+.timestamp-container {
+  height: 0.8rem;
+  color: var(--message-timestamp-color);
 }
 </style>
