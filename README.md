@@ -1,5 +1,7 @@
 # chat-app
 
+### Live: https://ratnadeep-chat-app.netlify.app/
+
 ## Project setup
 ```
 yarn install
