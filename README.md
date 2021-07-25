@@ -61,3 +61,4 @@ yarn lint
 1. FlatIcon for free icons (https://www.flaticon.com/)
 2. IonIcons (https://ionic.io/ionicons)
 3. Google font (https://fonts.google.com/)
+4. CSS gradient generator (https://cssgradient.io/)
