@@ -3,6 +3,8 @@
 #### Live link: https://ratnadeep-chat-app.netlify.app
 #### Backend: https://github.com/RatnadeepBiswakarma/rest-api
 
+<img src="./public/screenshots/Screenshot from 2021-07-25 21-46-57.png" alt="Screenshot">
+
 ### Features
 
 1. Video & Audio calls
