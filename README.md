@@ -41,7 +41,7 @@ yarn lint
 
 ### Tech Stuffs
 
-##### Languages used
+##### Frameworks and Languages used
 
 1. VueJS
 2. Vuex
@@ -62,3 +62,5 @@ yarn lint
 2. IonIcons (https://ionic.io/ionicons)
 3. Google font (https://fonts.google.com/)
 4. CSS gradient generator (https://cssgradient.io/)
+
+#### Made with ❤ by Ratnadeep
