@@ -234,7 +234,11 @@ export default {
       }
       if (message.target_id === this.getMyDetails.id) {
         this.playAudio()
-        if (this.$notificationAllowed()) {
+        if (
+          !this.getOpenWindow ||
+          (this.getOpenWindow.id !== message.room_id &&
+            this.$notificationAllowed())
+        ) {
           this.showNotification(message)
         }
       }
