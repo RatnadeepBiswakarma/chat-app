@@ -1,6 +1,7 @@
 # Chat App
 
 #### Live link: https://ratnadeep-chat-app.netlify.app
+#### Backend: https://github.com/RatnadeepBiswakarma/rest-api
 
 ### Features
 
