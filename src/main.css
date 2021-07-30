@@ -379,3 +379,12 @@ ion-icon {
     transform: scale(4);
   }
 }
+
+.notyf__toast {
+  backdrop-filter: blur(5px);
+  min-width: 300px;
+}
+
+.notyf__wrapper {
+  padding: 0.5rem 30px 0.5rem 0 !important;
+}

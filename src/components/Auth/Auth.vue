@@ -61,6 +61,7 @@
             <input
               ref="password"
               v-model="password"
+              minlength="6"
               required
               id="password"
               placeholder="Password"
@@ -195,7 +196,6 @@ export default {
       signupUser(payload)
         .then(res => {
           if (res.data.user && res.data.token) {
-            console.log("sign up successful!")
             localStorage.token = res.data.token
             localStorage.user = JSON.stringify(res.data.user)
             localStorage.userId = res.data.user.id
@@ -205,7 +205,15 @@ export default {
             alert(res.data.message)
           }
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          if (err.response && err.response.data && err.response.data.errors) {
+            const errors = err.response.data.errors
+            errors.forEach(msg => {
+              window.Noty.error(msg)
+            })
+          }
+          console.error(err)
+        })
     }
   }
 }
