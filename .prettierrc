@@ -2,5 +2,6 @@
   "tabWidth": 2,
   "useTabs": false,
   "arrowParens": "avoid",
+  "trailingComma": "none",
   "semi": false
 }
