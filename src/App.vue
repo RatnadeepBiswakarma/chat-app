@@ -200,7 +200,7 @@ export default {
       this.$notify(title, {
         body: message.text,
         timeout: 4000,
-        onClick: function () {
+        onClick: function() {
           window.focus()
           if (room) {
             vm.UPDATE_CHAT_WINDOW(room)
@@ -287,7 +287,7 @@ export default {
     },
     handleCallDisconnect() {
       if (this.getCall.localStream) {
-        this.getCall.localStream.getTracks().forEach(function (track) {
+        this.getCall.localStream.getTracks().forEach(function(track) {
           track.stop()
         })
       }

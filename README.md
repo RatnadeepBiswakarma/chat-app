@@ -4,10 +4,21 @@
 
 #### Backend: https://github.com/RatnadeepBiswakarma/rest-api
 
+#### HD video call
+
+<img src="./public/screenshots/in%20call%20demo.png" alt="Demo of ongoing call">
+
+#### Video call demo on YouTube (click to play)
+
 [![Video Call Demo](./public/screenshots/video%20call%20thumbnail.png)](https://www.youtube.com/watch?v=I4F1nVg4cfo)
 
+#### Main screen
+
 <img src="./public/screenshots/main%20screen.png" alt="Main screenshot">
-<img src="./public/screenshots/chat%20demo.png" alt="Chat screenshot>
+
+#### Chat window
+
+<img src="./public/screenshots/chat%20demo.png" alt="Chat screenshot">
 
 ### Features
 
