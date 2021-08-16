@@ -1,9 +1,13 @@
 # Chat App
 
 #### Live link: https://ratnadeep-chat-app.netlify.app
+
 #### Backend: https://github.com/RatnadeepBiswakarma/rest-api
 
-<img src="./public/screenshots/Screenshot from 2021-07-25 21-46-57.png" alt="Screenshot">
+[![Video Call Demo](./public/screenshots/video%20call%20thumbnail.png)](https://www.youtube.com/watch?v=I4F1nVg4cfo)
+
+<img src="./public/screenshots/main%20screen.png" alt="Main screenshot">
+<img src="./public/screenshots/chat%20demo.png" alt="Chat screenshot>
 
 ### Features
 
