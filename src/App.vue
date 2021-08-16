@@ -49,6 +49,7 @@ import { mapActions, mapGetters } from "vuex"
 import RoomList from "@/components/Main/Chat/RoomList"
 import socketConnect from "socket.io-client"
 import { validateUserToken } from "@/apis/auth"
+import { pingServer } from "@/apis/misc"
 import Peer from "peerjs"
 import Call from "@/components/Calls/Call"
 const msg_noti_audio = require("../public/msg-noti.mp3")
@@ -62,11 +63,15 @@ export default {
     }
   },
   created() {
+    /* TEMP HACK: this is just to connect server, heroku puts backend to sleep
+    after 30 mins of inactivity, this will restart the server before new users
+    hits signup endpoint */
     if (localStorage.token) {
       this.setup()
     }
     this.msgAudio = new Audio(msg_noti_audio)
     this.notificationAllowed = this.$notificationAllowed()
+    this.connectToBackend()
   },
   mounted() {
     if (localStorage.token) {
@@ -163,6 +168,16 @@ export default {
           }
         })
     },
+    connectToBackend() {
+      pingServer()
+        .then(res => console.log(res.data.message))
+        .catch(err => {
+          console.error(err)
+          window.Noty.error(
+            "This is awkward! Not able to reach the server. Can you try again?"
+          )
+        })
+    },
     bindSocketEvents() {
       this.socket.on("room_created", this.handleNewRoomCreated)
       this.socket.on("new_message", this.handleNewMessage)
@@ -185,7 +200,7 @@ export default {
       this.$notify(title, {
         body: message.text,
         timeout: 4000,
-        onClick: function() {
+        onClick: function () {
           window.focus()
           if (room) {
             vm.UPDATE_CHAT_WINDOW(room)
@@ -272,7 +287,7 @@ export default {
     },
     handleCallDisconnect() {
       if (this.getCall.localStream) {
-        this.getCall.localStream.getTracks().forEach(function(track) {
+        this.getCall.localStream.getTracks().forEach(function (track) {
           track.stop()
         })
       }
