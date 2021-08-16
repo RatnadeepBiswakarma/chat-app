@@ -25,7 +25,6 @@
           </div>
         </div>
         <div
-          v-if="callsAllowed"
           class="buttons flex items-center justify-center"
         >
           <button @click="call(true)" class="call-btn">
@@ -120,9 +119,6 @@ export default {
     ...mapGetters("auth", ["getMyDetails"]),
     isSage() {
       return this.getOtherUser.email === "sage@chatapp.com"
-    },
-    callsAllowed() {
-      return !this.isSage
     },
     subText() {
       if (this.isSage) {
