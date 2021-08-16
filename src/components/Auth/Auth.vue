@@ -85,7 +85,11 @@
               value="Back"
               @click.prevent="goBack"
             />
-            <input type="submit" class="submit-btn px-4" value="Next" />
+            <input
+              type="submit"
+              class="submit-btn px-4"
+              :value="getDynamicValue"
+            />
           </div>
         </form>
       </div>
@@ -100,6 +104,7 @@ import { getUser } from "@/apis/room"
 export default {
   data() {
     return {
+      loading: false,
       firstName: "",
       lastName: "",
       email: "",
@@ -110,6 +115,18 @@ export default {
     }
   },
   computed: {
+    getDynamicValue() {
+      if (this.loading) {
+        return "Loading..."
+      }
+      if (this.newUser) {
+        return "Sign Up"
+      }
+      if (this.existingUser) {
+        return "Login"
+      }
+      return "Next"
+    },
     heading() {
       if (this.existingUser) {
         return `Welcome back!`
@@ -131,6 +148,7 @@ export default {
   },
   methods: {
     handleSubmit() {
+      this.loading = true
       if (!this.newUser && !this.existingUser) {
         this.findUser()
       } else if (this.existingUser) {
@@ -147,6 +165,7 @@ export default {
           this.$nextTick(() => {
             this.existingUser = true
             this.newUser = false
+            this.loading = false
             setTimeout(() => {
               this.$refs.password.focus()
             }, 1000)
@@ -155,6 +174,7 @@ export default {
         .catch(() => {
           this.existingUser = false
           this.newUser = true
+          this.loading = false
           setTimeout(() => {
             this.$refs.firstName.focus()
           }, 1000)
@@ -178,9 +198,11 @@ export default {
           localStorage.user = JSON.stringify(res.data.user)
           localStorage.userId = res.data.user.id
           this.$emit("setup")
+          this.loading = false
           this.$router.push({ name: "Home" })
         })
         .catch(err => {
+          this.loading = false
           if (err && err.response.status === 403) {
             this.errorMessage = "Invalid password"
           }
@@ -200,6 +222,7 @@ export default {
             localStorage.user = JSON.stringify(res.data.user)
             localStorage.userId = res.data.user.id
             this.$emit("setup")
+            this.loading = false
             this.$router.push({ name: "Home" })
           } else {
             alert(res.data.message)
@@ -208,6 +231,7 @@ export default {
         .catch(err => {
           if (err.response && err.response.data && err.response.data.errors) {
             const errors = err.response.data.errors
+            this.loading = false
             errors.forEach(msg => {
               window.Noty.error(msg)
             })
