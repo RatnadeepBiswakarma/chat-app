@@ -1,4 +1,4 @@
-# Chat App
+# Audio Video Chatting App (You need two people to try out video & audio calls)
 
 #### Live link: https://ratnadeep-chat-app.netlify.app
 
