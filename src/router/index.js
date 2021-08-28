@@ -39,6 +39,14 @@ const routes = [
     }
   },
   {
+    path: "/settings",
+    name: "Settings",
+    component: load("Settings/UserSettings"),
+    meta: {
+      title: "Settings"
+    }
+  },
+  {
     path: "/*",
     name: "Home",
     redirect: "/"
