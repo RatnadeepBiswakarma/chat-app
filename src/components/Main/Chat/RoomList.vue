@@ -20,14 +20,20 @@
         </router-link>
         <button
           @focus="showMenu = true"
-          @blur="showMenu = false"
+          @blur="handleTimeout"
           class="menu-icon mr-4 w-full h-full flex justify-center items-center"
         >
           <ion-icon name="ellipsis-vertical"></ion-icon>
         </button>
         <div v-if="showMenu" class="popup-menu fadeIn">
+          <router-link
+            to="/settings"
+            class="px-4 py-2 w-full btn-hover transition-colors w-full block text-center"
+          >
+            Settings
+          </router-link>
           <button
-            class="px-4 py-2 w-full btn-hover transition-colors"
+            class="px-4 py-2 w-full btn-hover transition-colors divider-top-line"
             @mousedown="logout"
           >
             Log Out
@@ -168,6 +174,11 @@ export default {
     logout() {
       localStorage.removeItem("token")
       window.location.reload()
+    },
+    handleTimeout() {
+      setTimeout(() => {
+        this.showMenu = false
+      }, 250)
     }
   }
 }
