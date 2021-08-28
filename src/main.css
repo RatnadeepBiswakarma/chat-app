@@ -188,6 +188,14 @@ body {
   display: none;
 }
 
+.divider-top-line {
+  border-top: 1px solid var(--settings-item-divider-color);
+}
+
+.divider-bottom-line {
+  border-bottom: 1px solid var(--settings-item-divider-color);
+}
+
 @media screen and (max-width: 940px) {
   .search-user-header {
     display: none;
@@ -213,7 +221,8 @@ body {
     height: calc(100vh - 3rem - 3rem);
   }
 
-  .new-chat-window-container {
+  .new-chat-window-container,
+  .settings-window {
     position: absolute;
     top: 0;
     left: 0;
