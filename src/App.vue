@@ -94,6 +94,9 @@ export default {
     focused() {
       return this.$route.path === "/"
     },
+    notificationEnabledByUser() {
+      return this.getMyDetails.browser_notification
+    },
     homeRoute() {
       return this.$route.path === "/"
     },
@@ -247,7 +250,10 @@ export default {
       } else if (message.sender_id !== this.getMyDetails.id) {
         this.ADD_UNREAD_MESSAGE(message)
       }
-      if (message.target_id === this.getMyDetails.id) {
+      if (
+        this.notificationEnabledByUser &&
+        message.target_id === this.getMyDetails.id
+      ) {
         this.playAudio()
         if (
           !this.getOpenWindow ||
