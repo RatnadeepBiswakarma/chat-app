@@ -29,6 +29,7 @@
 <script>
 import ToggleButton from "@/components/Shared/ToggleButton"
 import { mapActions, mapGetters } from "vuex"
+import { updatePreference } from "@/apis/auth"
 
 export default {
   components: {
@@ -41,6 +42,16 @@ export default {
     ...mapActions("auth", ["UPDATE_BROWSER_NOTIFICATION"]),
     updateBrowserNotification(state) {
       this.UPDATE_BROWSER_NOTIFICATION(state)
+      updatePreference({ browser_notification: state })
+        .then(() => {
+          window.Noty.success(`Notification ${state ? "Enabled" : "Disabled"}!`)
+        })
+        .catch(err => {
+          console.error(err)
+          window.Noty.error(
+            "Failed to update notification preference to server"
+          )
+        })
     },
     goBack() {
       this.$router.replace({ name: "Home" })

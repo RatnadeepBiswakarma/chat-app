@@ -7,5 +7,9 @@ export function loginUser(payload) {
 }
 
 export function validateUserToken() {
-	return window.api.get("/auth")
+  return window.api.get("/auth")
+}
+
+export function updatePreference(payload) {
+  return window.api.post("/users/preference", payload)
 }
