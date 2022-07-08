@@ -179,12 +179,6 @@ export default {
     prifilePicAttributes() {
       return { width: 32, height: 32 }
     },
-    messages() {
-      if (this.getOpenWindow) {
-        return this.allMessages[this.getOpenWindow.id]
-      }
-      return []
-    },
     getOtherUser() {
       if (this.getOpenWindow) {
         let user = this.getOpenWindow.users.find(
@@ -345,16 +339,6 @@ export default {
         evt.preventDefault()
         this.sendMessage()
       }
-    },
-    handleNewMessage(message) {
-      if (this.getOpenWindow && message.room_id === this.getOpenWindow.id) {
-        this.messages.push(message)
-        this.scrollToBottom()
-      }
-    },
-    handleNewRoomCreated(room) {
-      this.UPDATE_CHAT_WINDOW(room)
-      this.$router.replace({ name: "Chat", params: { roomId: room.id } })
     },
     sendMessage() {
       this.userNoLongerTyping()
