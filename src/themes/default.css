@@ -35,4 +35,6 @@
   --button-danger-bg-color: #ff2c2c;
   --message-timestamp-color: #dadada;
   --settings-item-divider-color: #b1b1b1;
+  --day-indicator-background: linear-gradient(0deg, #ffffff10, #ffffff2f);
+  --day-indicator-color: #dadada;
 }

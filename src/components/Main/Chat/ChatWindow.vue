@@ -24,9 +24,7 @@
             >
           </div>
         </div>
-        <div
-          class="buttons flex items-center justify-center"
-        >
+        <div class="buttons flex items-center justify-center">
           <button @click="call(true)" class="call-btn">
             <ion-icon name="videocam"></ion-icon>
           </button>
@@ -45,13 +43,20 @@
             {{ loading ? "Loading..." : "Load More" }}
           </button>
         </div>
-        <Message
-          v-for="item in allMessages"
-          :key="item.id"
-          :item="item"
-          :id="`id-${item.id}`"
-          class="fadeIn"
-        />
+        <div v-for="(messages, day) of messagesByDate" :key="day">
+          <div class="flex justify-center items-center sticky top-0 z-10">
+            <span class="day-indicator">
+              {{ day }}
+            </span>
+          </div>
+          <Message
+            v-for="item in messages"
+            :key="item.id"
+            :item="item"
+            :id="`id-${item.id}`"
+            class="fadeIn"
+          />
+        </div>
       </div>
       <form
         class="input-section flex justify-center items-center"
@@ -86,7 +91,13 @@ import debounce from "@/util/debouncer"
 import { mapActions, mapGetters } from "vuex"
 import { getMessages, patchRead } from "@/apis/messages"
 import AppIcon from "@/components/Shared/AppIcon"
-import { format, parseISO, differenceInDays } from "date-fns"
+import {
+  format,
+  parseISO,
+  differenceInDays,
+  isToday,
+  isYesterday
+} from "date-fns"
 import { isMobile } from "@/util/platform"
 
 export default {
@@ -117,6 +128,18 @@ export default {
       "getLastMessage"
     ]),
     ...mapGetters("auth", ["getMyDetails"]),
+    messagesByDate() {
+      let msgObj = {}
+      this.allMessages.forEach(msg => {
+        const dateKey = this.getDateOrDay(new Date(msg.created_at))
+        if (msgObj[dateKey]) {
+          msgObj[dateKey].push(msg)
+        } else {
+          msgObj[dateKey] = [msg]
+        }
+      })
+      return msgObj
+    },
     isSage() {
       return this.getOtherUser.email === "sage@chatapp.com"
     },
@@ -240,6 +263,13 @@ export default {
       "UPDATE_CALL_CONNECTION_STATUS",
       "UPDATE_CHAT_WINDOW"
     ]),
+    getDateOrDay(date) {
+      return isToday(date)
+        ? "Today"
+        : isYesterday(date)
+        ? "Yesterday"
+        : date.toLocaleDateString()
+    },
     async loadMoreMessages() {
       if (this.allMessages.length > 0) {
         this.topMessageId = this.allMessages[0].id
@@ -503,6 +533,14 @@ export default {
   background: var(--search-user-background);
   min-width: 7.5rem;
   text-align: center;
+}
+
+.day-indicator {
+  background: var(--day-indicator-background);
+  border-radius: 3px;
+  padding: 0.1rem 0.4rem;
+  color: var(--day-indicator-color);
+  font-size: 0.9rem;
 }
 
 @media screen and (max-width: 640px) {
