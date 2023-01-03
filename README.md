@@ -2,7 +2,7 @@
 
 #### Live link: https://ratnadeep-chat-app.netlify.app
 
-#### Backend: https://github.com/RatnadeepBiswakarma/rest-api
+#### Backend: https://github.com/RatnadeepBiswakarma/chat-app-backend
 
 #### HD video call
 
